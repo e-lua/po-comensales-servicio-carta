@@ -55,9 +55,13 @@ func (cr *cartaRouter_pg) GetBusinessInformation(c echo.Context) error {
 		return c.JSON(403, results)
 	}
 
+	//Agregamos la vista del comensal
 	GetBusinessInformation_Service(data_idcomensal, idbusiness_int)
 
-	return c.JSON(status, get_respuesta)
+	//Enviamos el resultado de la consulta del endpoint
+	results := ResponseBusiness{Error: boolerror, DataError: dataerror, Data: get_respuesta}
+
+	return c.JSON(status, results)
 }
 
 /*----------------------GET DATA OF MENU----------------------*/

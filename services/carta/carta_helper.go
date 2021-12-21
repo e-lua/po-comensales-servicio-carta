@@ -8,6 +8,12 @@ type Response struct {
 	Data      string `json:"data"`
 }
 
+type ResponseBusiness struct {
+	Error     bool               `json:"error"`
+	DataError string             `json:"dataError"`
+	Data      models.Mo_Business `json:"data"`
+}
+
 type ResponseJWT struct {
 	Error     bool   `json:"error"`
 	DataError string `json:"dataError"`
