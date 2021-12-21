@@ -8,6 +8,8 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/rs/cors"
+
+	carta "github.com/Aphofisis/po-comensales-servicio-carta/services/carta"
 )
 
 func Manejadores() {
@@ -19,9 +21,15 @@ func Manejadores() {
 
 	e.GET("/", index)
 	//VERSION
-	//version_1 := e.Group("/v1")
+	version_1 := e.Group("/v1")
 
-	/*====================FLUJO DE INFORMACIÓN====================*/
+	/*===========CARTA===========*/
+	//V1 FROM V1 TO ...TO ENTITY CATEGORY-ELEMENTS
+	router_business := version_1.Group("/business/data")
+	router_business.GET("/:idbusiness", carta.CartaRouter_pg.GetBusinessInformation)
+	router_business.GET("/:idbusiness/menu/:date/category", carta.CartaRouter_pg.GetBusinessCategory)
+	router_business.GET("/:idbusiness/menu/:date/category/:idcategory/elements", carta.CartaRouter_pg.GetBusinessElement)
+	router_business.GET("/:idbusiness/menu/:date/scheduleranges", carta.CartaRouter_pg.GetBusinessSchedule)
 
 	/*===========CARTA===========*/
 

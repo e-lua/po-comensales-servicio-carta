@@ -27,3 +27,33 @@ type Pg_R_TypeFood struct {
 	Url         string `json:"url"`
 	IsAvailable bool   `json:"available"`
 }
+
+type Pg_Category struct {
+	IDCarta          int    `json:"idcarta"`
+	IDCategory       int    `json:"idcategory"`
+	Name             string `json:"namecategory"`
+	UrlPhoto         string `json:"urlphotocategory"`
+	AmountOfElements int    `json:"elements"`
+}
+
+type Pg_Element_With_Stock struct {
+	IDElement        int     `json:"id"`
+	IDBusiness       int     `json:"idbusiness"`
+	IDCategory       int     `json:"idcategory"`
+	NameCategory     string  `json:"namecategory"`
+	UrlPhotoCategory string  `json:"urlphotocategory"`
+	Name             string  `json:"name"`
+	Price            float32 `json:"price"`
+	Description      string  `json:"description"`
+	TypeMoney        int     `json:"typemoney"`
+	Stock            int     `json:"stock"`
+	UrlPhoto         string  `json:"url"`
+}
+
+type Pg_ScheduleList struct {
+	IDSchedule     int    `json:"idschedule"`
+	Starttime      string `json:"starttime"`
+	Endtime        string `json:"endtime"`
+	MaxOrders      int    `json:"maxorders"`
+	ShowToComensal string `json:"showtocomensal"`
+}
