@@ -44,6 +44,7 @@ func (cr *cartaRouter_pg) GetBusinessInformation(c echo.Context) error {
 
 	//Recibimos el id del Business Owner
 	idbusiness := c.Param("idbusiness")
+	idbusiness_int, _ := strconv.Atoi(idbusiness)
 
 	//Enviamos los datos al servicio de anfitriones para obtener los datos completos
 	respuesta, _ := http.Get("http://137.184.74.10:5800/v1/business/comensal/bnss/" + idbusiness)
@@ -53,6 +54,8 @@ func (cr *cartaRouter_pg) GetBusinessInformation(c echo.Context) error {
 		results := Response{Error: true, DataError: "El valor ingresado no cumple con la regla de negocio", Data: ""}
 		return c.JSON(403, results)
 	}
+
+	GetBusinessInformation_Service(data_idcomensal, idbusiness_int)
 
 	return c.JSON(status, get_respuesta)
 }
@@ -137,5 +140,30 @@ func (cr *cartaRouter_pg) GetBusinessSchedule(c echo.Context) error {
 	//Enviamos los datos al servicio
 	status, boolerror, dataerror, data := GetBusinessSchedule_Service(date, idbusiness_int)
 	results := ResponseCartaSchedule{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+}
+
+/*----------------------ADD VIEW DATA ELEMENT----------------------*/
+
+func (cr *cartaRouter_pg) AddViewElement(c echo.Context) error {
+
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idcomensal := GetJWT(c.Request().Header.Get("Authorization"))
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: dataerror, Data: dataerror}
+		return c.JSON(status, results)
+	}
+	if data_idcomensal <= 0 {
+		results := Response{Error: boolerror, DataError: "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Recibimos el id del negocio
+	idelement := c.Param("idelement")
+	idelement_int, _ := strconv.Atoi(idelement)
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := AddViewElement_Service(data_idcomensal, idelement_int)
+	results := Response{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 }
