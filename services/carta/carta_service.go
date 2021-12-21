@@ -57,7 +57,10 @@ func GetBusinessSchedule_Service(date string, idbusiness int) (int, bool, string
 func AddViewElement_Service(idcomensal int, idelement int) (int, bool, string, string) {
 
 	//Obtenemos las categorias
-	view_repository.Pg_Add_ViewElement(idcomensal, idelement)
+	error_add := view_repository.Pg_Add_ViewElement(idcomensal, idelement)
+	if error_add != nil {
+		return 500, true, "Error en el servidor interno al intentar registrar la vista, detalles: " + error_add.Error(), ""
+	}
 
 	return 201, false, "", "Vista registrada"
 }

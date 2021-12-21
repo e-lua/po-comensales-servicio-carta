@@ -10,7 +10,7 @@ func Pg_Find_Elements(date string, idbusiness int, idcategory int) ([]models.Pg_
 
 	db := models.Conectar_Pg_DB()
 
-	q := "SELECT e.idelement,e.idbusiness,e.idcategory,e.namecategory,e.urlphotcategory,e.name,e.price,e.description,e.urlphoto,e.typemoney,e.stock FROM element e LEFT JOIN carta c ON e.idbusiness=c.idbusiness WHERE c.date=$1 AND e.idbusiness=$2 AND e.idcategory=$3 ORDER BY stock ASC"
+	q := "SELECT e.idelement,e.idbusiness,e.idcategory,e.namecategory,e.urlphotcategory,e.name,e.price,e.description,e.urlphoto,e.typemoney,e.stock FROM element e LEFT JOIN carta c ON e.idcarta=c.idcarta WHERE c.date=$1 AND e.idbusiness=$2 AND e.idcategory=$3 ORDER BY stock ASC"
 	rows, error_shown := db.Query(context.Background(), q, date, idbusiness, idcategory)
 
 	//Instanciamos una variable del modelo Pg_TypeFoodXBusiness

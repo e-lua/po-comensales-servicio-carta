@@ -26,7 +26,7 @@ func Pg_Add_ViewMenu(idcomensal int) error {
 	db_external := models.Conectar_Pg_DB()
 
 	query := `INSERT INTO View(idcomensal,idtype,date) VALUES ($1,$2,$3)`
-	_, err := db_external.Query(context.Background(), query, idcomensal, 1, time.Now())
+	_, err := db_external.Query(context.Background(), query, idcomensal, 2, time.Now())
 
 	if err != nil {
 		return err
@@ -39,7 +39,7 @@ func Pg_Add_ViewElement(idcomensal int, idelement int) error {
 
 	db_external := models.Conectar_Pg_DB()
 
-	query := `INSERT INTO View(idcomensal,idtype,date,idelement) VALUES ($1,$2,$3,$4) RETURNING idcarta`
+	query := `INSERT INTO View(idcomensal,idtype,date,idelement) VALUES ($1,$2,$3,$4)`
 	_, err := db_external.Query(context.Background(), query, idcomensal, 3, time.Now(), idelement)
 
 	if err != nil {
