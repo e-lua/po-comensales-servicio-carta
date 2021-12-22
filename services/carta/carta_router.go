@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/Aphofisis/po-comensales-servicio-carta/models"
 	"github.com/labstack/echo/v4"
 )
 
@@ -48,7 +47,7 @@ func (cr *cartaRouter_pg) GetBusinessInformation(c echo.Context) error {
 
 	//Enviamos los datos al servicio de anfitriones para obtener los datos completos
 	respuesta, _ := http.Get("http://137.184.74.10:5800/v1/business/comensal/bnss/" + idbusiness)
-	var get_respuesta models.Mo_Business
+	var get_respuesta ResponseBusiness
 	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
 	if error_decode_respuesta != nil {
 		results := Response{Error: true, DataError: "El valor ingresado no cumple con la regla de negocio", Data: ""}
@@ -58,10 +57,7 @@ func (cr *cartaRouter_pg) GetBusinessInformation(c echo.Context) error {
 	//Agregamos la vista del comensal
 	GetBusinessInformation_Service(data_idcomensal, idbusiness_int)
 
-	//Enviamos el resultado de la consulta del endpoint
-	results := ResponseBusiness{Error: boolerror, DataError: dataerror, Data: get_respuesta}
-
-	return c.JSON(status, results)
+	return c.JSON(200, get_respuesta)
 }
 
 /*----------------------GET DATA OF MENU----------------------*/
