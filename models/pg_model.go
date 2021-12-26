@@ -57,3 +57,15 @@ type Pg_ScheduleList struct {
 	MaxOrders      int    `json:"maxorders"`
 	ShowToComensal string `json:"showtocomensal"`
 }
+
+type Pg_ToElement_Mqtt struct {
+	IDElement []int `json:"idElement"`
+	IDCarta   []int `json:"idCarta"`
+	Quantity  []int `json:"Quantity"`
+}
+
+type Pg_ToElement_Mqtt_Obj struct {
+	IDElement int `json:"idElement"`
+	IDCarta   int `json:"idCarta"`
+	Quantity  int `json:"Quantity"`
+}
