@@ -52,8 +52,10 @@ type Pg_Element_With_Stock struct {
 
 type Pg_ScheduleList struct {
 	IDSchedule     int    `json:"idschedule"`
+	Date           string `json:"date"`
 	Starttime      string `json:"starttime"`
 	Endtime        string `json:"endtime"`
+	TimeZone       string `json:"timezone"`
 	MaxOrders      int    `json:"maxorders"`
 	ShowToComensal string `json:"showtocomensal"`
 }
