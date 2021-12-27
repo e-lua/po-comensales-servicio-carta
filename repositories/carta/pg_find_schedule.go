@@ -24,7 +24,7 @@ func Pg_Find_ScheduleRange(date string, idbusiness int) ([]models.Pg_ScheduleLis
 	//Scaneamos l resultado y lo asignamos a la variable instanciada
 	for rows.Next() {
 		var oSchedule models.Pg_ScheduleList
-		rows.Scan(&oSchedule.IDSchedule, &oSchedule.Starttime, &oSchedule.Endtime, &oSchedule.MaxOrders, &oSchedule.ShowToComensal)
+		rows.Scan(&oSchedule.IDSchedule, &oSchedule.Date, &oSchedule.Starttime, &oSchedule.Endtime, &oSchedule.TimeZone, &oSchedule.MaxOrders, &oSchedule.ShowToComensal)
 		oScheduleList = append(oScheduleList, oSchedule)
 	}
 
