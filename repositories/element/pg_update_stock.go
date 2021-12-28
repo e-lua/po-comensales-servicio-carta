@@ -18,7 +18,7 @@ func Pg_Update_Stock(elements_stock models.Pg_ToElement_Mqtt) error {
 		time.Sleep(1 * time.Second)
 	}*/
 
-	query := `UPDATE Element SET stock=stock-ex.stock FROM (select * from  unnest($1::int[], $2::int[],$3::int[])) as ex(stock,idelement,idcarta) WHERE idelement=ex.idelement AND idcarta=ex.idcarta`
+	query := `UPDATE Element SET stock=stock-ex.stck FROM (select * from  unnest($1::int[], $2::int[],$3::int[])) as ex(stck,idelemt,idcrta) WHERE idelement=ex.idelemt AND idcarta=ex.idcrta`
 	if _, err := db.Exec(context.Background(), query, elements_stock.Quantity, elements_stock.IDElement, elements_stock.IDCarta); err != nil {
 		return err
 	}
