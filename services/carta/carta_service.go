@@ -5,9 +5,35 @@ import (
 
 	models "github.com/Aphofisis/po-comensales-servicio-carta/models"
 	carta_repository "github.com/Aphofisis/po-comensales-servicio-carta/repositories/carta"
+	element_repository "github.com/Aphofisis/po-comensales-servicio-carta/repositories/element"
+	schedule_repository "github.com/Aphofisis/po-comensales-servicio-carta/repositories/schedule"
 	view_repository "github.com/Aphofisis/po-comensales-servicio-carta/repositories/view"
 )
 
+/*----------------------UDPATE DATA CONSUME----------------------*/
+
+func UpdateElementStock_Service(input_elements models.Pg_ToElement_Mqtt) error {
+
+	//Obtenemos las categorias
+	error_add_view := element_repository.Pg_Update_Stock(input_elements)
+	if error_add_view != nil {
+		return error_add_view
+	}
+
+	return nil
+}
+func UpdateScheduleStock_Service(input_schedule models.Pg_ToSchedule_Mqtt) error {
+
+	//Obtenemos las categorias
+	error_add_view := schedule_repository.Pg_Update_Stock(input_schedule)
+	if error_add_view != nil {
+		return error_add_view
+	}
+
+	return nil
+}
+
+/*----------------------GET DATA ----------------------*/
 func GetBusinessInformation_Service(idcomensal int, idbusiness int) error {
 
 	//Obtenemos las categorias

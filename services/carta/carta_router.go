@@ -2,15 +2,37 @@ package carta
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 
+	"github.com/Aphofisis/po-comensales-servicio-carta/models"
 	"github.com/labstack/echo/v4"
 )
 
 var CartaRouter_pg *cartaRouter_pg
 
 type cartaRouter_pg struct {
+}
+
+/*----------------------UDPATE DATA CONSUME----------------------*/
+
+func (cr *cartaRouter_pg) UpdateElementStock(element_stock models.Pg_ToElement_Mqtt) {
+
+	//Enviamos los datos al servicio
+	error_element_stock := UpdateElementStock_Service(element_stock)
+	if error_element_stock != nil {
+		log.Fatal(error_element_stock)
+	}
+}
+
+func (cr *cartaRouter_pg) UpdateScheduleStock(schedule_stock models.Pg_ToSchedule_Mqtt) {
+
+	//Enviamos los datos al servicio
+	error_schedule_stock := UpdateScheduleStock_Service(schedule_stock)
+	if error_schedule_stock != nil {
+		log.Fatal(error_schedule_stock)
+	}
 }
 
 /*----------------------TRAEMOS LOS DATOS DEL AUTENTICADOR----------------------*/

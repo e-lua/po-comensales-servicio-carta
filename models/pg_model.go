@@ -71,3 +71,9 @@ type Pg_ToElement_Mqtt_Obj struct {
 	IDCarta   int `json:"idCarta"`
 	Quantity  int `json:"Quantity"`
 }
+
+type Pg_ToSchedule_Mqtt struct {
+	IDSchedule int `json:"idSchedule"`
+	IDCarta    int `json:"idCarta"`
+	Quantity   int `json:"Quantity"`
+}
