@@ -65,7 +65,7 @@ func (cr *cartaRouter_pg) GetBusinessInformation(c echo.Context) error {
 
 	//Recibimos el id del Business Owner
 	idbusiness := c.Param("idbusiness")
-	idbusiness_int, _ := strconv.Atoi(idbusiness)
+	//idbusiness_int, _ := strconv.Atoi(idbusiness)
 
 	//Enviamos los datos al servicio de anfitriones para obtener los datos completos
 	respuesta, _ := http.Get("http://137.184.74.10:5800/v1/business/comensal/bnss/" + idbusiness)
@@ -77,7 +77,7 @@ func (cr *cartaRouter_pg) GetBusinessInformation(c echo.Context) error {
 	}
 
 	//Agregamos la vista del comensal
-	GetBusinessInformation_Service(data_idcomensal, idbusiness_int)
+	//GetBusinessInformation_Service(data_idcomensal, idbusiness_int)
 
 	return c.JSON(200, get_respuesta)
 }
