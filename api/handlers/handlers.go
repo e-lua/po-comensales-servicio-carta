@@ -33,7 +33,7 @@ func Manejadores() {
 	/*===========CARTA===========*/
 	//V1 FROM V1 TO ...TO ENTITY MENU
 	router_business := version_1.Group("/business/data")
-	router_business.GET("/:idbusiness", carta.CartaRouter_pg.GetBusinessInformation)
+	//router_business.GET("/:idbusiness", carta.CartaRouter_pg.GetBusinessInformation)
 	router_business.GET("/:idbusiness/menu/:date/category", carta.CartaRouter_pg.GetBusinessCategory)
 	router_business.GET("/:idbusiness/menu/:date/category/:idcategory/elements", carta.CartaRouter_pg.GetBusinessElement)
 	router_business.GET("/:idbusiness/menu/:date/scheduleranges", carta.CartaRouter_pg.GetBusinessSchedule)
