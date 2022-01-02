@@ -39,7 +39,7 @@ func (cr *cartaRouter_pg) UpdateScheduleStock(schedule_stock models.Pg_ToSchedul
 
 func GetJWT(jwt string) (int, bool, string, int) {
 	//Obtenemos los datos del auth
-	respuesta, _ := http.Get("http://143.110.145.136:3000/v1/trylogin?jwt=" + jwt)
+	respuesta, _ := http.Get("http://c-registro-authenticacion.restoner-api.fun:3000/v1/trylogin?jwt=" + jwt)
 	var get_respuesta ResponseJWT
 	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
 	if error_decode_respuesta != nil {
@@ -68,7 +68,7 @@ func (cr *cartaRouter_pg) GetBusinessInformation(c echo.Context) error {
 	//idbusiness_int, _ := strconv.Atoi(idbusiness)
 
 	//Enviamos los datos al servicio de anfitriones para obtener los datos completos
-	respuesta, _ := http.Get("http://137.184.74.10:5800/v1/business/comensal/bnss/" + idbusiness)
+	respuesta, _ := http.Get("http://a-informacion.restoner-api.fun:5800/v1/business/comensal/bnss/" + idbusiness)
 	var get_respuesta interface{}
 	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
 	if error_decode_respuesta != nil {
