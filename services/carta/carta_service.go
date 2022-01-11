@@ -7,7 +7,6 @@ import (
 	carta_repository "github.com/Aphofisis/po-comensales-servicio-carta/repositories/carta"
 	element_repository "github.com/Aphofisis/po-comensales-servicio-carta/repositories/element"
 	schedule_repository "github.com/Aphofisis/po-comensales-servicio-carta/repositories/schedule"
-	view_repository "github.com/Aphofisis/po-comensales-servicio-carta/repositories/view"
 )
 
 /*----------------------UDPATE DATA CONSUME----------------------*/
@@ -34,16 +33,6 @@ func UpdateScheduleStock_Service(input_schedule models.Pg_ToSchedule_Mqtt) error
 }
 
 /*----------------------GET DATA ----------------------*/
-func GetBusinessInformation_Service(idcomensal int, idbusiness int) error {
-
-	//Obtenemos las categorias
-	error_add_view := view_repository.Pg_Add_ViewBusiness(idcomensal, idbusiness)
-	if error_add_view != nil {
-		return error_add_view
-	}
-
-	return nil
-}
 
 func GetBusinessCategory_Service(date string, idbusiness int) (int, bool, string, []models.Pg_Category) {
 
@@ -76,17 +65,4 @@ func GetBusinessSchedule_Service(date string, idbusiness int) (int, bool, string
 	}
 
 	return 201, false, "", carta_schedule
-}
-
-/*----------------------ADD VIEW DATA ELEMENT----------------------*/
-
-func AddViewElement_Service(idcomensal int, idelement int) (int, bool, string, string) {
-
-	//Obtenemos las categorias
-	error_add := view_repository.Pg_Add_ViewElement(idcomensal, idelement)
-	if error_add != nil {
-		return 500, true, "Error en el servidor interno al intentar registrar la vista, detalles: " + error_add.Error(), ""
-	}
-
-	return 201, false, "", "Vista registrada"
 }
