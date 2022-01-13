@@ -1,12 +1,10 @@
 package carta
 
 import (
-	"bytes"
 	"encoding/json"
 	"log"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/Aphofisis/po-comensales-servicio-carta/models"
 	"github.com/labstack/echo/v4"
@@ -186,33 +184,14 @@ func (cr *cartaRouter_pg) AddViewElement(c echo.Context) error {
 	idelement := c.Param("idelement")
 	idelement_int, _ := strconv.Atoi(idelement)
 
-	//Enviando datos POST
-	var view_element Send_View_Element
-	view_element.IDComensal = data_idcomensal
-	view_element.IDElement = idelement_int
-	view_element.Date = time.Now()
-
-	url := "http://a-informacion.restoner-api.fun:5800/v1/business/viewelement"
-
-	//Byte - Buffer
-	var b bytes.Buffer
-	encoder := json.NewEncoder(&b)
-	err_b := encoder.Encode(view_element)
-	if err_b != nil {
-		results := Response{Error: true, DataError: "Error en el servidor interno en el buffer de conversion, detalle: " + err_b.Error(), Data: ""}
-		return c.JSON(500, results)
+	//Validamos los valores enviados
+	if idelement_int < 1 {
+		results := Response{Error: true, DataError: "El valor ingresado no cumple con la regla de negocio"}
+		return c.JSON(403, results)
 	}
-	req, _ := http.NewRequest("POST", url, bytes.NewBuffer(b.Bytes()))
-	req.Header.Set("Content-Type", "application/json")
-	client := &http.Client{}
-	resp, err_d := client.Do(req)
-	if err_d != nil {
-		results := Response{Error: true, DataError: "Error en el servidor interno registrar los datos de la vista, detalle: " + err_d.Error(), Data: ""}
-		return c.JSON(500, results)
-	}
-	defer resp.Body.Close()
 
 	//Enviamos los datos al servicio
-	results := Response{Error: false, DataError: "", Data: "Vista enviada correctamente"}
-	return c.JSON(201, results)
+	status, boolerror, dataerror, data := AddViewInformation_Service(idelement_int, data_idcomensal)
+	results := Response{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
 }

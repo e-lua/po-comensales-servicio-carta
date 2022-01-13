@@ -45,6 +45,13 @@ func GetBusinessCategory_Service(date string, idbusiness int) (int, bool, string
 	return 201, false, "", carta_category
 }
 
+func AddViewInformation_Service(idelement int, idcomensal int) (int, bool, string, string) {
+
+	element_repository.Pg_ExportView(idelement, idcomensal)
+
+	return 200, false, "", "Vista registrada"
+}
+
 func GetBusinessElement_Service(date string, idbusiness int, idcategory int) (int, bool, string, []models.Pg_Element_With_Stock) {
 
 	//Obtenemos las categorias

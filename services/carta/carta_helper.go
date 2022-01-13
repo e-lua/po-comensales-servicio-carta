@@ -1,8 +1,6 @@
 package carta
 
 import (
-	"time"
-
 	"github.com/Aphofisis/po-comensales-servicio-carta/models"
 )
 
@@ -48,10 +46,4 @@ type ResponseCartaSchedule struct {
 	Error     bool                     `json:"error"`
 	DataError string                   `json:"dataError"`
 	Data      []models.Pg_ScheduleList `json:"data"`
-}
-
-type Send_View_Element struct {
-	IDElement  int       `bson:"idelement" json:"idelement"`
-	IDComensal int       `bson:"idcomensal" json:"idcomensal"`
-	Date       time.Time `bson:"date" json:"date"`
 }
