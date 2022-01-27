@@ -2,16 +2,22 @@ package repositories
 
 import (
 	"context"
+	"time"
 
 	models "github.com/Aphofisis/po-comensales-servicio-carta/models"
 )
 
 func Pg_Find_ScheduleRange(date string, idbusiness int) ([]models.Pg_ScheduleList, error) {
 
+	//Tiempo limite al contexto
+	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
+	//defer cancelara el contexto
+	defer cancel()
+
 	db := models.Conectar_Pg_DB()
 
 	q := "SELECT ls.idschedule,c.date::date::varchar(12),ls.starttime::time::varchar(5),ls.endtime::time::varchar(5),ls.timezone,ls.maxorders,CONCAT(ls.starttime,' - ',ls.endtime) FROM listschedulerange ls LEFT JOIN carta c ON ls.idcarta=c.idcarta WHERE c.date::date=$1::date AND ls.idbusiness=$2 AND ls.maxorders>0 AND concat(ls.starttime,ls.timezone)::time with time zone>NOW()::time at time zone CONCAT('UTC',(ls.timezone::integer*-1)::varchar(3)) ORDER BY REPLACE(ls.starttime,':','')::int  ASC"
-	rows, error_shown := db.Query(context.Background(), q, date, idbusiness)
+	rows, error_shown := db.Query(ctx, q, date, idbusiness)
 
 	//Instanciamos una variable del modelo Pg_TypeFoodXBusiness
 	var oScheduleList []models.Pg_ScheduleList

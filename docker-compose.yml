@@ -36,7 +36,7 @@ services:
       - "83:80"
     environment:
       PGADMIN_DEFAULT_EMAIL: adminxd4@adminxd4.com
-      PGADMIN_DEFAULT_PASSWORD: adminx4y
+      PGADMIN_DEFAULT_PASSWORD: asd34Fg2Dsaf53543Fgge65sGGS45
     depends_on:
       - postgres
   traefik: # apache.app.test - nginx.app.test

@@ -13,6 +13,7 @@ type Mo_Business struct {
 	TypeOfFood     []Mo_TypeFood     `bson:"typeoffood" json:"typeoffood"`
 	Services       []Mo_Service      `bson:"services" json:"services"`
 	PaymentMethods []Mo_PaymenthMeth `bson:"paymentmethods" json:"paymentmethods"`
+	Uniquename     string            `bson:"uniquename" json:"uniquename"`
 }
 
 type Mo_Banner struct {

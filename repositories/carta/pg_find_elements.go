@@ -2,16 +2,22 @@ package repositories
 
 import (
 	"context"
+	"time"
 
 	models "github.com/Aphofisis/po-comensales-servicio-carta/models"
 )
 
 func Pg_Find_Elements(date string, idbusiness int, idcategory int) ([]models.Pg_Element_With_Stock, error) {
 
+	//Tiempo limite al contexto
+	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
+	//defer cancelara el contexto
+	defer cancel()
+
 	db := models.Conectar_Pg_DB()
 
 	q := "SELECT e.idelement,e.idbusiness,e.idcategory,e.namecategory,e.urlphotcategory,e.name,e.price,e.description,e.urlphoto,e.typemoney,e.stock,e.typefood FROM element e LEFT JOIN carta c ON e.idcarta=c.idcarta WHERE c.date=$1 AND e.idbusiness=$2 AND e.idcategory=$3 ORDER BY stock ASC"
-	rows, error_shown := db.Query(context.Background(), q, date, idbusiness, idcategory)
+	rows, error_shown := db.Query(ctx, q, date, idbusiness, idcategory)
 
 	//Instanciamos una variable del modelo Pg_TypeFoodXBusiness
 	var oListElementsWithStock []models.Pg_Element_With_Stock
