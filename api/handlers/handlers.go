@@ -42,7 +42,16 @@ func Manejadores() {
 	router_view := version_1.Group("/view")
 	router_view.POST("/:idelement", carta.CartaRouter_pg.AddViewElement)
 
+	/*===========================*/
+	/*=========VERSION 2=========*/
+	/*===========================*/
+
+	version_2 := e.Group("/v2")
+
 	/*===========CARTA===========*/
+	//V1 FROM V1 TO ...TO ENTITY MENU
+	router_business2 := version_2.Group("/business/data")
+	router_business2.GET("/:idbusiness/information", carta.CartaRouter_pg.GetBusinessInformation)
 
 	//Abrimos el puerto
 	PORT := os.Getenv("PORT")

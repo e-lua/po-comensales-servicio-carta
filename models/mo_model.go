@@ -13,7 +13,6 @@ type Mo_Business struct {
 	TypeOfFood     []Mo_TypeFood     `bson:"typeoffood" json:"typeoffood"`
 	Services       []Mo_Service      `bson:"services" json:"services"`
 	PaymentMethods []Mo_PaymenthMeth `bson:"paymentmethods" json:"paymentmethods"`
-	Comments       []interface{}     `bson:"comments" json:"comments"`
 	Uniquename     string            `bson:"uniquename" json:"uniquename"`
 }
 
@@ -69,4 +68,23 @@ type Mo_Contact struct {
 	Name        string `bson:"name" json:"name"`
 	DataContact string `bson:"data" json:"data"`
 	IsAvaiable  bool   `bson:"available" json:"available"`
+}
+
+/*===========================*/
+/*=========VERSION 2=========*/
+/*===========================*/
+
+type Mo_Business_V2 struct {
+	Name           string            `bson:"name" json:"name"`
+	TimeZone       string            `bson:"timezone" json:"timezone"`
+	DeliveryRange  string            `bson:"deliveryrange" json:"deliveryrange"`
+	Contact        []Mo_Contact      `bson:"contact" json:"contact"`
+	DailySchedule  []Mo_Day          `bson:"schedule" json:"schedule"`
+	Address        Mo_Address        `bson:"address" json:"address"`
+	Banner         []Mo_Banner       `bson:"banners" json:"banners"`
+	TypeOfFood     []Mo_TypeFood     `bson:"typeoffood" json:"typeoffood"`
+	Services       []Mo_Service      `bson:"services" json:"services"`
+	PaymentMethods []Mo_PaymenthMeth `bson:"paymentmethods" json:"paymentmethods"`
+	Comments       []interface{}     `bson:"comments" json:"comments"`
+	Uniquename     string            `bson:"uniquename" json:"uniquename"`
 }

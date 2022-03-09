@@ -195,3 +195,39 @@ func (cr *cartaRouter_pg) AddViewElement(c echo.Context) error {
 	results := Response{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 }
+
+/*===========================*/
+/*=========VERSION 2=========*/
+/*===========================*/
+
+func (cr *cartaRouter_pg) GetBusinessInformation_V2(c echo.Context) error {
+
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idcomensal := GetJWT(c.Request().Header.Get("Authorization"))
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
+		return c.JSON(status, results)
+	}
+	if data_idcomensal <= 0 {
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Recibimos el id del Business Owner
+	idbusiness := c.Param("idbusiness")
+	//idbusiness_int, _ := strconv.Atoi(idbusiness)
+
+	//Enviamos los datos al servicio de anfitriones para obtener los datos completos
+	respuesta, _ := http.Get("http://a-informacion.restoner-api.fun:5800/v1/business/comensal/bnss/" + idbusiness)
+	var get_respuesta ResponseBusiness_V2
+	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
+	if error_decode_respuesta != nil {
+		results := Response{Error: true, DataError: "El valor ingresado no cumple con la regla de negocio", Data: ""}
+		return c.JSON(403, results)
+	}
+
+	//Agregamos la vista del comensal
+	//GetBusinessInformation_Service(data_idcomensal, idbusiness_int)
+
+	return c.JSON(200, get_respuesta)
+}
