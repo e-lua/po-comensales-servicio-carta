@@ -51,7 +51,7 @@ func Manejadores() {
 	/*===========CARTA===========*/
 	//V1 FROM V1 TO ...TO ENTITY MENU
 	router_business2 := version_2.Group("/business/data")
-	router_business2.GET("/:idbusiness/information", carta.CartaRouter_pg.GetBusinessInformation)
+	router_business2.GET("/:idbusiness/information", carta.CartaRouter_pg.GetBusinessInformation_V2)
 
 	//Abrimos el puerto
 	PORT := os.Getenv("PORT")
