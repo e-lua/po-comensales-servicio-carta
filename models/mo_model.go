@@ -3,9 +3,11 @@ package models
 /*------------------------BASIC DATA FOR SEARCH------------------------*/
 
 type Mo_Business struct {
+	Description    string            `bson:"description" json:"description"`
 	Name           string            `bson:"name" json:"name"`
 	TimeZone       string            `bson:"timezone" json:"timezone"`
 	DeliveryRange  string            `bson:"deliveryrange" json:"deliveryrange"`
+	Delivery       Mo_Delivery       `bson:"delivery" json:"delivery"`
 	Contact        []Mo_Contact      `bson:"contact" json:"contact"`
 	DailySchedule  []Mo_Day          `bson:"schedule" json:"schedule"`
 	Address        Mo_Address        `bson:"address" json:"address"`
@@ -14,6 +16,12 @@ type Mo_Business struct {
 	Services       []Mo_Service      `bson:"services" json:"services"`
 	PaymentMethods []Mo_PaymenthMeth `bson:"paymentmethods" json:"paymentmethods"`
 	Uniquename     string            `bson:"uniquename" json:"uniquename"`
+}
+
+type Mo_Delivery struct {
+	Meters        int    `bson:"meters" json:"meters"`
+	Details       string `bson:"details" json:"details"`
+	IsRestriction bool   `bson:"isrestriction" json:"isrestriction"`
 }
 
 type Mo_Banner struct {
