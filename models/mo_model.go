@@ -83,9 +83,11 @@ type Mo_Contact struct {
 /*===========================*/
 
 type Mo_Business_V2 struct {
+	Description    string            `bson:"description" json:"description"`
 	Name           string            `bson:"name" json:"name"`
 	TimeZone       string            `bson:"timezone" json:"timezone"`
 	DeliveryRange  string            `bson:"deliveryrange" json:"deliveryrange"`
+	Delivery       Mo_Delivery       `bson:"delivery" json:"delivery"`
 	Contact        []Mo_Contact      `bson:"contact" json:"contact"`
 	DailySchedule  []Mo_Day          `bson:"schedule" json:"schedule"`
 	Address        Mo_Address        `bson:"address" json:"address"`
