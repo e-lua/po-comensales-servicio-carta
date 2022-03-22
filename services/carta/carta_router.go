@@ -139,6 +139,42 @@ func (cr *cartaRouter_pg) GetBusinessElement(c echo.Context) error {
 	return c.JSON(status, results)
 }
 
+func (cr *cartaRouter_pg) SearchByNameAndDescription(c echo.Context) error {
+
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idcomensal := GetJWT(c.Request().Header.Get("Authorization"))
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: dataerror}
+		return c.JSON(status, results)
+	}
+	if data_idcomensal <= 0 {
+		results := Response{Error: boolerror, DataError: "000" + "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Recibimos la fecha de la carta
+	date := c.Param("date")
+
+	//Recibimos el id del negocio
+	idbusiness := c.Param("idbusiness")
+	idbusiness_int, _ := strconv.Atoi(idbusiness)
+
+	//Recibimos el text
+	text := c.Param("text")
+
+	//Recibimos el limit
+	limit := c.Param("limit")
+	limit_int, _ := strconv.Atoi(limit)
+	//Recibimos el limit
+	offset := c.Param("offset")
+	offset_int, _ := strconv.Atoi(offset)
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := SearchByNameAndDescription_Service(date, idbusiness_int, text, limit_int, offset_int)
+	results := ResponseCartaElements{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+}
+
 func (cr *cartaRouter_pg) GetBusinessSchedule(c echo.Context) error {
 
 	//Obtenemos los datos del auth

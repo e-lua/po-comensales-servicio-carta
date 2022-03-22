@@ -63,6 +63,17 @@ func GetBusinessElement_Service(date string, idbusiness int, idcategory int) (in
 	return 201, false, "", carta_elements
 }
 
+func SearchByNameAndDescription_Service(date string, idbusiness int, text string, limit int, offset int) (int, bool, string, []models.Pg_Element_With_Stock) {
+
+	//Obtenemos las categorias
+	carta_elements, error_find := carta_repository.Pg_Find_Elements_SearchByText(date, idbusiness, text, limit, offset)
+	if error_find != nil {
+		return 500, true, "Error en el servidor interno al intentar encontrar llos elementos, detalles: " + error_find.Error(), carta_elements
+	}
+
+	return 201, false, "", carta_elements
+}
+
 func GetBusinessSchedule_Service(date string, idbusiness int) (int, bool, string, []models.Pg_ScheduleList) {
 
 	//Obtenemos las categorias

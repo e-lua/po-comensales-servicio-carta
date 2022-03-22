@@ -37,6 +37,7 @@ func Manejadores() {
 	router_business.GET("/:idbusiness/menu/:date/category", carta.CartaRouter_pg.GetBusinessCategory)
 	router_business.GET("/:idbusiness/menu/:date/category/:idcategory/elements", carta.CartaRouter_pg.GetBusinessElement)
 	router_business.GET("/:idbusiness/menu/:date/scheduleranges", carta.CartaRouter_pg.GetBusinessSchedule)
+	router_business.GET("/:idbusiness/menu/:date/search/:text/:limit/:offset", carta.CartaRouter_pg.SearchByNameAndDescription)
 
 	//V1 FROM V1 TO ...TO VIEW
 	router_view := version_1.Group("/view")
