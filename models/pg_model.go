@@ -37,7 +37,6 @@ type Pg_R_TypeFood struct {
 type Pg_Category struct {
 	IDCarta          int    `json:"idcarta"`
 	IDCategory       int    `json:"idcategory"`
-	Availableorders  int    `json:"availableorders"`
 	Name             string `json:"namecategory"`
 	UrlPhoto         string `json:"urlphotocategory"`
 	AmountOfElements int    `json:"elements"`
