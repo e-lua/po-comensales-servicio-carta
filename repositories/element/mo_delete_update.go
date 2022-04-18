@@ -2,6 +2,7 @@ package element
 
 import (
 	"context"
+	"log"
 	"time"
 
 	models "github.com/Aphofisis/po-comensales-servicio-carta/models"
@@ -22,6 +23,13 @@ func Mo_Delete_Update(input_mqtt_elements models.Mqtt_Element_With_Stock_Import)
 
 	db := models.MongoCN.Database("restoner_cartadiaria")
 	col := db.Collection("elements")
+
+	log.Println(input_mqtt_elements.Elements_with_stock)
+	log.Println(array_elements)
+	log.Println("--------------------------")
+	log.Println(input_mqtt_elements.Elements_with_stock[0])
+	log.Println(array_elements[0])
+	log.Println("--------------------------")
 
 	// transaction
 	err_transaction := db.Client().UseSession(ctx, func(sessionContext mongo.SessionContext) error {
