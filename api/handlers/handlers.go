@@ -12,7 +12,7 @@ import (
 	"github.com/rs/cors"
 
 	"github.com/Aphofisis/po-comensales-servicio-carta/models"
-	carta "github.com/Aphofisis/po-comensales-servicio-carta/services/carta"
+	cartadiaria "github.com/Aphofisis/po-comensales-servicio-carta/services/cartadiaria"
 )
 
 func Manejadores() {
@@ -25,6 +25,7 @@ func Manejadores() {
 	//Consumidor-MQTT
 	go Consumer_Element_Stock()
 	go Consumer_Schedule_Stock()
+	go Consumer_Elements_With_Stock()
 
 	e.GET("/", index)
 	//VERSION
@@ -33,15 +34,15 @@ func Manejadores() {
 	/*===========CARTA===========*/
 	//V1 FROM V1 TO ...TO ENTITY MENU
 	router_business := version_1.Group("/business/data")
-	router_business.GET("/:idbusiness/information", carta.CartaRouter_pg.GetBusinessInformation)
-	router_business.GET("/:idbusiness/menu/:date/category", carta.CartaRouter_pg.GetBusinessCategory)
-	router_business.GET("/:idbusiness/menu/:date/category/:idcategory/elements", carta.CartaRouter_pg.GetBusinessElement)
-	router_business.GET("/:idbusiness/menu/:date/scheduleranges", carta.CartaRouter_pg.GetBusinessSchedule)
-	router_business.GET("/:idbusiness/menu/:date/search/:text/:limit/:offset", carta.CartaRouter_pg.SearchByNameAndDescription)
+	router_business.GET("/:idbusiness/information", cartadiaria.CartaDiariaRouter_pg.GetBusinessInformation)
+	router_business.GET("/:idbusiness/menu/:date/category", cartadiaria.CartaDiariaRouter_pg.GetBusinessCategory)
+	router_business.GET("/:idbusiness/menu/:date/category/:idcategory/elements", cartadiaria.CartaDiariaRouter_pg.GetBusinessElement)
+	router_business.GET("/:idbusiness/menu/:date/scheduleranges", cartadiaria.CartaDiariaRouter_pg.GetBusinessSchedule)
+	router_business.GET("/:idbusiness/menu/:date/search/:text/:limit/:offset", cartadiaria.CartaDiariaRouter_pg.SearchByNameAndDescription)
 
 	//V1 FROM V1 TO ...TO VIEW
 	router_view := version_1.Group("/view")
-	router_view.POST("/:idelement", carta.CartaRouter_pg.AddViewElement)
+	router_view.POST("/:idelement", cartadiaria.CartaDiariaRouter_pg.AddViewElement)
 
 	/*===========================*/
 	/*=========VERSION 2=========*/
@@ -52,7 +53,7 @@ func Manejadores() {
 	/*===========CARTA===========*/
 	//V1 FROM V1 TO ...TO ENTITY MENU
 	router_business2 := version_2.Group("/business/data")
-	router_business2.GET("/:idbusiness/information", carta.CartaRouter_pg.GetBusinessInformation_V2)
+	router_business2.GET("/:idbusiness/information", cartadiaria.CartaDiariaRouter_pg.GetBusinessInformation_V2)
 
 	//Abrimos el puerto
 	PORT := os.Getenv("PORT")
@@ -95,7 +96,7 @@ func Consumer_Element_Stock() {
 			if err_consume != nil {
 				log.Fatal("Error decoding")
 			}
-			carta.CartaRouter_pg.UpdateElementStock(element_stock)
+			cartadiaria.CartaDiariaRouter_pg.UpdateElementStock(element_stock)
 		}
 	}()
 
@@ -126,10 +127,40 @@ func Consumer_Schedule_Stock() {
 			if err_consume != nil {
 				log.Fatal("Error decoding")
 			}
-			carta.CartaRouter_pg.UpdateScheduleStock(schedule_stock)
+			cartadiaria.CartaDiariaRouter_pg.UpdateScheduleStock(schedule_stock)
 		}
 	}()
 
 	<-noStop2
 
+}
+
+func Consumer_Elements_With_Stock() {
+
+	ch, error_conection := models.MqttCN.Channel()
+	if error_conection != nil {
+		log.Fatal("Error connection canal " + error_conection.Error())
+	}
+
+	msgs, err_consume := ch.Consume("anfitrion/cartadiaria_elements", "", true, false, false, false, nil)
+	if err_consume != nil {
+		log.Fatal("Error connection cola " + err_consume.Error())
+	}
+
+	noStopElementsWithStock := make(chan bool)
+
+	go func() {
+		for d := range msgs {
+			var elements_stock models.Mqtt_Element_With_Stock_Import
+			buf := bytes.NewBuffer(d.Body)
+			decoder := json.NewDecoder(buf)
+			err_consume := decoder.Decode(&elements_stock)
+			if err_consume != nil {
+				log.Fatal("Error decoding")
+			}
+			cartadiaria.CartaDiariaRouter_pg.UpdateCarta_ElementsWithStock(elements_stock)
+		}
+	}()
+
+	<-noStopElementsWithStock
 }

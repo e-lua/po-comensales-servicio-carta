@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 /*------------------------BASIC DATA FOR SEARCH------------------------*/
 
 type Mo_Business struct {
@@ -97,4 +99,40 @@ type Mo_Business_V2 struct {
 	PaymentMethods []Mo_PaymenthMeth `bson:"paymentmethods" json:"paymentmethods"`
 	Comments       []interface{}     `bson:"comments" json:"comments"`
 	Uniquename     string            `bson:"uniquename" json:"uniquename"`
+}
+
+/*------------------------BASIC DATA OF CARTA DIARIA------------------------*/
+
+type Mo_CartaDiaria struct {
+	IdBusiness      int       `bson:"idbusiness" json:"idbusiness"`
+	Date            string    `bson:"date" json:"date"`
+	AvailableOrders bool      `bson:"availableorders" json:"availableorders"`
+	Visible         bool      `bson:"visible" json:"visible"`
+	IsExported      bool      `bson:"isexported" json:"isexported"`
+	DeletedDate     time.Time `bson:"deleteddate" json:"deleteddate"`
+}
+
+type Mo_Category struct {
+	IDCategory       int    `bson:"idcategory" json:"idcategory"`
+	Name             string `bson:"namecategory" json:"namecategory"`
+	UrlPhoto         string `bson:"urlphotocategory" json:"urlphotocategory"`
+	AmountOfElements int    `bson:"elements" json:"elements"`
+}
+
+type Mo_Element_With_Stock_Response struct {
+	IDElement        int         `bson:"id" json:"id"`
+	IDCarta          int         `bson:"idcarta" json:"idcarta"`
+	IDBusiness       int         `bson:"idbusiness" json:"idbusiness"`
+	IDCategory       int         `bson:"idcategory" json:"idcategory"`
+	Typefood         string      `bson:"typefood" json:"typefood"`
+	NameCategory     string      `bson:"namecategory" json:"namecategory"`
+	UrlPhotoCategory string      `bson:"urlphotocategory" json:"urlphotocategory"`
+	Name             string      `bson:"name" json:"name"`
+	Price            float32     `bson:"price" json:"price"`
+	Description      string      `bson:"description" json:"description"`
+	TypeMoney        int         `bson:"typemoney" json:"typemoney"`
+	Stock            int         `bson:"stock" json:"stock"`
+	UrlPhoto         string      `bson:"url" json:"url"`
+	Insumos          []Pg_Insumo `bson:"insumos"  json:"insumos"`
+	AvailableOrders  bool        `bson:"availableorders" json:"availableorders"`
 }

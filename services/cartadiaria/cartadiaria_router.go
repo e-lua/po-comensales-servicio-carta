@@ -10,14 +10,14 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-var CartaRouter_pg *cartaRouter_pg
+var CartaDiariaRouter_pg *cartaDiariaRouter_pg
 
-type cartaRouter_pg struct {
+type cartaDiariaRouter_pg struct {
 }
 
 /*----------------------UDPATE DATA CONSUME----------------------*/
 
-func (cr *cartaRouter_pg) UpdateElementStock(element_stock models.Pg_ToElement_Mqtt) {
+func (cr *cartaDiariaRouter_pg) UpdateElementStock(element_stock models.Pg_ToElement_Mqtt) {
 
 	//Enviamos los datos al servicio
 	error_element_stock := UpdateElementStock_Service(element_stock)
@@ -26,7 +26,7 @@ func (cr *cartaRouter_pg) UpdateElementStock(element_stock models.Pg_ToElement_M
 	}
 }
 
-func (cr *cartaRouter_pg) UpdateScheduleStock(schedule_stock models.Pg_ToSchedule_Mqtt) {
+func (cr *cartaDiariaRouter_pg) UpdateScheduleStock(schedule_stock models.Pg_ToSchedule_Mqtt) {
 
 	//Enviamos los datos al servicio
 	error_schedule_stock := UpdateScheduleStock_Service(schedule_stock)
@@ -50,7 +50,7 @@ func GetJWT(jwt string) (int, bool, string, int) {
 
 /*----------------------EXTERNAL DATA----------------------*/
 
-func (cr *cartaRouter_pg) GetBusinessInformation(c echo.Context) error {
+func (cr *cartaDiariaRouter_pg) GetBusinessInformation(c echo.Context) error {
 
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idcomensal := GetJWT(c.Request().Header.Get("Authorization"))
@@ -84,7 +84,7 @@ func (cr *cartaRouter_pg) GetBusinessInformation(c echo.Context) error {
 
 /*----------------------GET DATA OF MENU----------------------*/
 
-func (cr *cartaRouter_pg) GetBusinessCategory(c echo.Context) error {
+func (cr *cartaDiariaRouter_pg) GetBusinessCategory(c echo.Context) error {
 
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idcomensal := GetJWT(c.Request().Header.Get("Authorization"))
@@ -109,7 +109,7 @@ func (cr *cartaRouter_pg) GetBusinessCategory(c echo.Context) error {
 	return c.JSON(status, results)
 }
 
-func (cr *cartaRouter_pg) GetBusinessElement(c echo.Context) error {
+func (cr *cartaDiariaRouter_pg) GetBusinessElement(c echo.Context) error {
 
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idcomensal := GetJWT(c.Request().Header.Get("Authorization"))
@@ -139,7 +139,7 @@ func (cr *cartaRouter_pg) GetBusinessElement(c echo.Context) error {
 	return c.JSON(status, results)
 }
 
-func (cr *cartaRouter_pg) SearchByNameAndDescription(c echo.Context) error {
+func (cr *cartaDiariaRouter_pg) SearchByNameAndDescription(c echo.Context) error {
 
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idcomensal := GetJWT(c.Request().Header.Get("Authorization"))
@@ -171,11 +171,11 @@ func (cr *cartaRouter_pg) SearchByNameAndDescription(c echo.Context) error {
 
 	//Enviamos los datos al servicio
 	status, boolerror, dataerror, data := SearchByNameAndDescription_Service(date, idbusiness_int, text, limit_int, offset_int)
-	results := ResponseCartaElements{Error: boolerror, DataError: dataerror, Data: data}
+	results := ResponseCartaElements_Searched{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 }
 
-func (cr *cartaRouter_pg) GetBusinessSchedule(c echo.Context) error {
+func (cr *cartaDiariaRouter_pg) GetBusinessSchedule(c echo.Context) error {
 
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idcomensal := GetJWT(c.Request().Header.Get("Authorization"))
@@ -203,7 +203,7 @@ func (cr *cartaRouter_pg) GetBusinessSchedule(c echo.Context) error {
 
 /*----------------------ADD VIEW DATA ELEMENT----------------------*/
 
-func (cr *cartaRouter_pg) AddViewElement(c echo.Context) error {
+func (cr *cartaDiariaRouter_pg) AddViewElement(c echo.Context) error {
 
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idcomensal := GetJWT(c.Request().Header.Get("Authorization"))
@@ -236,7 +236,7 @@ func (cr *cartaRouter_pg) AddViewElement(c echo.Context) error {
 /*=========VERSION 2=========*/
 /*===========================*/
 
-func (cr *cartaRouter_pg) GetBusinessInformation_V2(c echo.Context) error {
+func (cr *cartaDiariaRouter_pg) GetBusinessInformation_V2(c echo.Context) error {
 
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idcomensal := GetJWT(c.Request().Header.Get("Authorization"))
@@ -266,4 +266,14 @@ func (cr *cartaRouter_pg) GetBusinessInformation_V2(c echo.Context) error {
 	//GetBusinessInformation_Service(data_idcomensal, idbusiness_int)
 
 	return c.JSON(200, get_respuesta)
+}
+
+/*-------------------------------------ELEMENTS-------------------------------------*/
+
+func (cr *cartaDiariaRouter_pg) UpdateCarta_ElementsWithStock(inputserialize_elements models.Mqtt_Element_With_Stock_Import) {
+	//Enviamos los datos al servicio
+	error_r := UpdateCarta_ElementsWithStock_Service(inputserialize_elements)
+	if error_r != nil {
+		log.Fatal(error_r)
+	}
 }

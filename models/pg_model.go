@@ -1,5 +1,11 @@
 package models
 
+import (
+	"time"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
+
 type Pg_R_PaymentMethod struct {
 	IDPaymenth  int    `json:"id"`
 	Name        string `json:"name"`
@@ -31,24 +37,27 @@ type Pg_R_TypeFood struct {
 type Pg_Category struct {
 	IDCarta          int    `json:"idcarta"`
 	IDCategory       int    `json:"idcategory"`
+	Availableorders  int    `json:"availableorders"`
 	Name             string `json:"namecategory"`
 	UrlPhoto         string `json:"urlphotocategory"`
 	AmountOfElements int    `json:"elements"`
 }
 
 type Pg_Element_With_Stock struct {
-	IDElement        int     `json:"id"`
-	IDBusiness       int     `json:"idbusiness"`
-	IDCategory       int     `json:"idcategory"`
-	NameCategory     string  `json:"namecategory"`
-	TypeFood         string  `json:"typefood"`
-	UrlPhotoCategory string  `json:"urlphotocategory"`
-	Name             string  `json:"name"`
-	Price            float32 `json:"price"`
-	Description      string  `json:"description"`
-	TypeMoney        int     `json:"typemoney"`
-	Stock            int     `json:"stock"`
-	UrlPhoto         string  `json:"url"`
+	IDElement        int         `json:"id"`
+	IDBusiness       int         `json:"idbusiness"`
+	IDCategory       int         `json:"idcategory"`
+	NameCategory     string      `json:"namecategory"`
+	TypeFood         string      `json:"typefood"`
+	UrlPhotoCategory string      `json:"urlphotocategory"`
+	Name             string      `json:"name"`
+	Price            float32     `json:"price"`
+	Description      string      `json:"description"`
+	TypeMoney        int         `json:"typemoney"`
+	Stock            int         `json:"stock"`
+	UrlPhoto         string      `json:"url"`
+	Insumos          []Pg_Insumo `json:"insumos"`
+	AvailableOrders  bool        `json:"availableorders"`
 }
 
 type Pg_ScheduleList struct {
@@ -77,4 +86,30 @@ type Pg_ToSchedule_Mqtt struct {
 	IDSchedule int64 `json:"idSchedule"`
 	IDCarta    int   `json:"idCarta"`
 	Quantity   int   `json:"Quantity"`
+}
+
+type Pg_Insumo struct {
+	Insumo   Mo_Insumo_Response `json:"insumo"`
+	Quantity int                `json:"quantity"`
+}
+
+type Mo_Insumo_Response struct {
+	ID             primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
+	Name           string             `json:"name"`
+	Measure        string             `json:"measure"`
+	IDStoreHouse   string             `json:"idstorehouse"`
+	NameStoreHouse string             `json:"namestorehouse"`
+	Description    string             `json:"description"`
+	Stock          []*Mo_Stock        `json:"stock"`
+	Available      bool               `json:"available"`
+	SendToDelete   time.Time          `json:"sendtodelete"`
+}
+
+type Mo_Stock struct {
+	Price        float64   `json:"price"`
+	IdProvider   string    `json:"idprovider"`
+	TimeZone     string    `json:"timezone"`
+	CreatedDate  time.Time `json:"createdDate"`
+	Quantity     int       `json:"quantity"`
+	ProviderName string    `json:"providername"`
 }
