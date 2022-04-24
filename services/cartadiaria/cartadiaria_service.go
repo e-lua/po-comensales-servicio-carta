@@ -84,6 +84,18 @@ func SearchByNameAndDescription_Service(date string, idbusiness int, text string
 	return 201, false, "", carta_elements
 }
 
+func SearchByName_Anfitrion_Service(date string, idbusiness int, text string, limit int, offset int) (int, bool, string, []*models.Mo_Element_With_Stock_Response) {
+
+	//Version MO
+
+	carta_elements, error_find := element_repository.Mo_Search_Name_Anfitriones(date, idbusiness, text, int64(limit), int64(offset))
+	if error_find != nil {
+		return 500, true, "Error en el servidor interno al intentar encontrar llos elementos, detalles: " + error_find.Error(), carta_elements
+	}
+
+	return 201, false, "", carta_elements
+}
+
 func GetBusinessSchedule_Service(date string, idbusiness int) (int, bool, string, []models.Pg_ScheduleList) {
 
 	//Obtenemos las categorias
@@ -106,4 +118,15 @@ func UpdateCarta_ElementsWithStock_Service(input_mqtt_elements models.Mqtt_Eleme
 	}
 
 	return nil
+}
+
+func GetElementsByInsumo_Service(date string, idbusiness int, idinsumo string) (int, bool, string, []*models.Mo_Element_With_Stock_Response) {
+
+	//Obtenemos los elementos
+	elementos, error_update := element_repository.Mo_Find_ByInsumo(date, idbusiness, idinsumo)
+	if error_update != nil {
+		return 500, true, "Error en el servidor interno al intentar encontrar los elementos por el insumo indicado, detalles: " + error_update.Error(), elementos
+	}
+
+	return 201, false, "", elementos
 }

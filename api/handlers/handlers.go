@@ -40,6 +40,11 @@ func Manejadores() {
 	router_business.GET("/:idbusiness/menu/:date/scheduleranges", cartadiaria.CartaDiariaRouter_pg.GetBusinessSchedule)
 	router_business.GET("/:idbusiness/menu/:date/search/:text/:limit/:offset", cartadiaria.CartaDiariaRouter_pg.SearchByNameAndDescription)
 
+	/*to create an order - ANFITRION*/
+	router_anfitrion := version_1.Group("/anfitrion")
+	router_anfitrion.GET("/createorder/:date/search/:text/:limit/:offset", cartadiaria.CartaDiariaRouter_pg.SearchByName_Anfitrion)
+	router_anfitrion.GET("/menu/:date/insumo/:idinsumo/elements", cartadiaria.CartaDiariaRouter_pg.GetElementsByInsumo)
+
 	//V1 FROM V1 TO ...TO VIEW
 	router_view := version_1.Group("/view")
 	router_view.POST("/:idelement", cartadiaria.CartaDiariaRouter_pg.AddViewElement)

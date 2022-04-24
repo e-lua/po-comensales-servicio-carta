@@ -9,12 +9,12 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func Mo_Find_ByCategory(date string, idbusiness int, idcategory int) ([]*models.Mo_Element_With_Stock_Response, error) {
+func Mo_Find_ByInsumo(date string, idbusiness int, idinsumo string) ([]*models.Mo_Element_With_Stock_Response, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*8)
 	defer cancel()
 
 	db := models.MongoCN.Database("restoner_inventory")
-	col := db.Collection("storehouse")
+	col := db.Collection("elements")
 
 	/*Aca pude haber hecho un make, es decir, resultado:=make([]...)*/
 	var resultado []*models.Mo_Element_With_Stock_Response
@@ -22,12 +22,14 @@ func Mo_Find_ByCategory(date string, idbusiness int, idcategory int) ([]*models.
 	condicion := bson.M{
 		"idbusiness": idbusiness,
 		"date":       date,
-		"idcategory": idcategory,
+		"insumos": bson.M{
+			"$elemMatch": bson.M{"_id": idinsumo},
+		},
 	}
 
 	opciones := options.Find()
 	/*Indicar como ira ordenado*/
-	opciones.SetSort(bson.D{{Key: "namecategory", Value: 1}})
+	opciones.SetSort(bson.D{{Key: "name", Value: 1}})
 
 	/*Cursor es como una tabla de base de datos donde se van a grabar los resultados
 	y podre ir recorriendo 1 a la vez*/

@@ -54,8 +54,27 @@ type ResponseCartaElements_Searched struct {
 	Data      []models.Pg_Element_With_Stock `json:"data"`
 }
 
+type ResponseCartaElements_Searched_Mo struct {
+	Error     bool                                     `json:"error"`
+	DataError string                                   `json:"dataError"`
+	Data      []*models.Mo_Element_With_Stock_Response `json:"data"`
+}
+
 type ResponseCartaSchedule struct {
 	Error     bool                     `json:"error"`
 	DataError string                   `json:"dataError"`
 	Data      []models.Pg_ScheduleList `json:"data"`
+}
+
+type JWT_Anfitrion struct {
+	IdBusiness int `json:"idBusiness"`
+	IdWorker   int `json:"idWorker"`
+	IdCountry  int `json:"country"`
+	IdRol      int `json:"rol"`
+}
+
+type ResponseJWT_Anfitrion struct {
+	Error     bool          `json:"error"`
+	DataError string        `json:"dataError"`
+	Data      JWT_Anfitrion `json:"data"`
 }

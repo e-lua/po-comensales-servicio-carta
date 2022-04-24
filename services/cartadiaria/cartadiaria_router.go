@@ -48,6 +48,17 @@ func GetJWT(jwt string) (int, bool, string, int) {
 	return 200, false, "", get_respuesta.Data.IDComensal
 }
 
+func GetJWT_Anfitrion(jwt string) (int, bool, string, int) {
+	//Obtenemos los datos del auth
+	respuesta, _ := http.Get("http://a-registro-authenticacion.restoner-api.fun:5000/v1/trylogin?jwt=" + jwt)
+	var get_respuesta ResponseJWT_Anfitrion
+	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
+	if error_decode_respuesta != nil {
+		return 500, true, "Error en el sevidor interno al intentar decodificar la autenticacion, detalles: " + error_decode_respuesta.Error(), 0
+	}
+	return 200, false, "", get_respuesta.Data.IdBusiness
+}
+
 /*----------------------EXTERNAL DATA----------------------*/
 
 func (cr *cartaDiariaRouter_pg) GetBusinessInformation(c echo.Context) error {
@@ -179,6 +190,42 @@ func (cr *cartaDiariaRouter_pg) SearchByNameAndDescription(c echo.Context) error
 	return c.JSON(status, results)
 }
 
+func (cr *cartaDiariaRouter_pg) SearchByName_Anfitrion(c echo.Context) error {
+
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idbusiness := GetJWT_Anfitrion(c.Request().Header.Get("Authorization"))
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: dataerror}
+		return c.JSON(status, results)
+	}
+	if data_idbusiness <= 0 {
+		results := Response{Error: boolerror, DataError: "000" + "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Recibimos la fecha de la carta
+	date := c.Param("date")
+
+	//Recibimos el text
+	text := c.Param("text")
+
+	//Recibimos el limit
+	limit := c.Param("limit")
+	limit_int, _ := strconv.Atoi(limit)
+	//Recibimos el limit
+	offset := c.Param("offset")
+	offset_int, _ := strconv.Atoi(offset)
+
+	if offset_int == 0 {
+		offset_int = 1
+	}
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := SearchByName_Anfitrion_Service(date, data_idbusiness, text, limit_int, offset_int)
+	results := ResponseCartaElements_Searched_Mo{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+}
+
 func (cr *cartaDiariaRouter_pg) GetBusinessSchedule(c echo.Context) error {
 
 	//Obtenemos los datos del auth
@@ -280,4 +327,27 @@ func (cr *cartaDiariaRouter_pg) UpdateCarta_ElementsWithStock(inputserialize_ele
 	if error_r != nil {
 		log.Fatal(error_r)
 	}
+}
+
+func (cr *cartaDiariaRouter_pg) GetElementsByInsumo(c echo.Context) error {
+
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idbusiness := GetJWT_Anfitrion(c.Request().Header.Get("Authorization"))
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: dataerror}
+		return c.JSON(status, results)
+	}
+	if data_idbusiness <= 0 {
+		results := Response{Error: boolerror, DataError: "000" + "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Recibimos los parametros de filtro
+	date := c.Param("date")
+	idinsumo := c.Param("idinsumo")
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := GetElementsByInsumo_Service(date, data_idbusiness, idinsumo)
+	results := ResponseCartaElements_Searched_Mo{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
 }
