@@ -78,3 +78,21 @@ type ResponseJWT_Anfitrion struct {
 	DataError string        `json:"dataError"`
 	Data      JWT_Anfitrion `json:"data"`
 }
+
+type ResponseCartaCategory_ToCreate struct {
+	Error     bool                          `json:"error"`
+	DataError string                        `json:"dataError"`
+	Data      []models.Pg_Category_ToCreate `json:"data"`
+}
+
+type ResponseCartaElements_ToCreate struct {
+	Error     bool                         `json:"error"`
+	DataError string                       `json:"dataError"`
+	Data      []models.Pg_Element_ToCreate `json:"data"`
+}
+
+type ResponseCartaSchedule_ToCreate struct {
+	Error     bool                          `json:"error"`
+	DataError string                        `json:"dataError"`
+	Data      []models.Pg_Schedule_ToCreate `json:"data"`
+}

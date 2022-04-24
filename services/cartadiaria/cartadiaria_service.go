@@ -7,6 +7,7 @@ import (
 
 	models "github.com/Aphofisis/po-comensales-servicio-carta/models"
 	cartadiaria_repository "github.com/Aphofisis/po-comensales-servicio-carta/repositories/cartadiaria"
+	cartadiaria_anfitrion_repository "github.com/Aphofisis/po-comensales-servicio-carta/repositories/cartadiaria_anfitrion"
 	element_repository "github.com/Aphofisis/po-comensales-servicio-carta/repositories/element"
 	schedule_repository "github.com/Aphofisis/po-comensales-servicio-carta/repositories/schedule"
 )
@@ -129,4 +130,39 @@ func GetElementsByInsumo_Service(date string, idbusiness int, idinsumo string) (
 	}
 
 	return 201, false, "", elementos
+}
+
+/*-------------------------------------CARTA DIARIA ANFITRIONES-------------------------------------*/
+
+func GetCategories_ToCreateOrder_Service(date string, idbusiness int) (int, bool, string, []models.Pg_Category_ToCreate) {
+
+	//Obtenemos las categorias
+	category_tocreate, error_update := cartadiaria_anfitrion_repository.Pg_Find_Category_ToCreate(date, idbusiness)
+	if error_update != nil {
+		return 500, true, "Error en el servidor interno al intentar encontrar las categorias de la carta, detalles: " + error_update.Error(), category_tocreate
+	}
+
+	return 201, false, "", category_tocreate
+}
+
+func GetElements_ToCreateOrder_Service(date string, idbusiness int, idcategory int) (int, bool, string, []models.Pg_Element_ToCreate) {
+
+	//Obtenemos las categorias
+	elements_tocreate, error_update := cartadiaria_anfitrion_repository.Pg_Find_Elements_ToCreate(date, idbusiness, idcategory)
+	if error_update != nil {
+		return 500, true, "Error en el servidor interno al intentar encontrar los elementos de la carta, detalles: " + error_update.Error(), elements_tocreate
+	}
+
+	return 201, false, "", elements_tocreate
+}
+
+func GetSchedule_ToCreateOrder_Service(date string, idbusiness int) (int, bool, string, []models.Pg_Schedule_ToCreate) {
+
+	//Obtenemos las categorias
+	schedule_tocreate, error_update := cartadiaria_anfitrion_repository.Pg_Find_ScheduleRange_ToCreate(date, idbusiness)
+	if error_update != nil {
+		return 500, true, "Error en el servidor interno al intentar encontrar las categorias de la carta, detalles: " + error_update.Error(), schedule_tocreate
+	}
+
+	return 201, false, "", schedule_tocreate
 }
