@@ -56,6 +56,7 @@ type Pg_Element_With_Stock struct {
 	Stock            int         `json:"stock"`
 	UrlPhoto         string      `json:"url"`
 	Insumos          []Pg_Insumo `json:"insumos"`
+	Costo            float64     `json:"costo"`
 	AvailableOrders  bool        `json:"availableorders"`
 }
 

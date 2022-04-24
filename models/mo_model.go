@@ -135,4 +135,5 @@ type Mo_Element_With_Stock_Response struct {
 	UrlPhoto         string      `bson:"url" json:"url"`
 	Insumos          []Pg_Insumo `bson:"insumos"  json:"insumos"`
 	AvailableOrders  bool        `bson:"availableorders" json:"availableorders"`
+	Costo            float64     `bson:"costo" json:"costo"`
 }
