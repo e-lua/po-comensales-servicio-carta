@@ -5,7 +5,6 @@ import (
 
 	"bytes"
 	"encoding/json"
-	"log"
 	"net/http"
 	"time"
 
@@ -98,19 +97,6 @@ func GetBusinessSchedule_Service(date string, idbusiness int) (int, bool, string
 	}
 
 	return 201, false, "", carta_schedule
-}
-
-/*-------------------------------------ELEMENTS-------------------------------------*/
-
-func UpdateCarta_ElementsWithStock_Service(input_mqtt_elements models.Mqtt_Element_With_Stock_Import) error {
-
-	//Insertamos los datos en PG
-	error_adelete_update := element_repository.Mo_Delete_Update(input_mqtt_elements)
-	if error_adelete_update != nil {
-		log.Fatal(error_adelete_update)
-	}
-
-	return nil
 }
 
 /*---------------------------------------------------------------------------------------*/
@@ -221,6 +207,11 @@ func UpdateCartaElements_Service(carta_elements CartaElements_WithAction, idbusi
 	if error_update != nil {
 		return 500, true, "Error en el servidor interno al intentar actualizar los elementos, detalles: " + error_update.Error(), ""
 	}
+
+	//Registramos los datos en Mongo DB
+	go func() {
+		cartadiaria_anfitrion_repository.Mo_Delete_Update_Elements(carta_elements.ElementsWithAction, carta_elements.IDCarta, idbusiness)
+	}()
 
 	return 201, false, "", "Los elementos se actualizaron correctamente"
 }

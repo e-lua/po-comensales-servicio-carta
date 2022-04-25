@@ -294,16 +294,6 @@ func (cr *cartaDiariaRouter_pg) GetBusinessInformation_V2(c echo.Context) error 
 	return c.JSON(200, get_respuesta)
 }
 
-/*-------------------------------------ELEMENTS-------------------------------------*/
-
-func (cr *cartaDiariaRouter_pg) UpdateCarta_ElementsWithStock(inputserialize_elements models.Mqtt_Element_With_Stock_Import) {
-	//Enviamos los datos al servicio
-	error_r := UpdateCarta_ElementsWithStock_Service(inputserialize_elements)
-	if error_r != nil {
-		log.Fatal(error_r)
-	}
-}
-
 /*---------------------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------------------*/

@@ -25,7 +25,6 @@ func Manejadores() {
 	//Consumidor-MQTT
 	go Consumer_Element_Stock()
 	go Consumer_Schedule_Stock()
-	go Consumer_Elements_With_Stock()
 
 	e.GET("/", index)
 	//VERSION
@@ -156,34 +155,4 @@ func Consumer_Schedule_Stock() {
 
 	<-noStop2
 
-}
-
-func Consumer_Elements_With_Stock() {
-
-	ch, error_conection := models.MqttCN.Channel()
-	if error_conection != nil {
-		log.Fatal("Error connection canal " + error_conection.Error())
-	}
-
-	msgs, err_consume := ch.Consume("anfitrion/cartadiaria_elements", "", true, false, false, false, nil)
-	if err_consume != nil {
-		log.Fatal("Error connection cola " + err_consume.Error())
-	}
-
-	noStopElementsWithStock := make(chan bool)
-
-	go func() {
-		for d := range msgs {
-			var elements_stock models.Mqtt_Element_With_Stock_Import
-			buf := bytes.NewBuffer(d.Body)
-			decoder := json.NewDecoder(buf)
-			err_consume := decoder.Decode(&elements_stock)
-			if err_consume != nil {
-				log.Fatal("Error decoding")
-			}
-			cartadiaria.CartaDiariaRouter_pg.UpdateCarta_ElementsWithStock(elements_stock)
-		}
-	}()
-
-	<-noStopElementsWithStock
 }
