@@ -41,12 +41,27 @@ func Manejadores() {
 	router_business.GET("/:idbusiness/menu/:date/search/:text/:limit/:offset", cartadiaria.CartaDiariaRouter_pg.SearchByNameAndDescription)
 
 	/*to create an order - ANFITRION*/
-	router_anfitrion := version_1.Group("/anfitrion")
-	router_anfitrion.GET("/menu/createorder/:date/category", cartadiaria.CartaDiariaRouter_pg.GetCategories_ToCreateOrder)
-	router_anfitrion.GET("/menu/createorder/:date/category/:idcategory/elements", cartadiaria.CartaDiariaRouter_pg.GetElements_ToCreateOrder)
-	router_anfitrion.GET("/menu/createorder/:date/scheduleranges", cartadiaria.CartaDiariaRouter_pg.GetSchedule_ToCreateOrder)
-	router_anfitrion.GET("/menu/createorder/:date/search/:text/:limit/:offset", cartadiaria.CartaDiariaRouter_pg.SearchByName_Anfitrion)
-	router_anfitrion.GET("/menu/carta/:date/insumo/:idinsumo/elements", cartadiaria.CartaDiariaRouter_pg.GetElementsByInsumo)
+	router_anfitrion_menu := version_1.Group("/anfitrion/menu")
+	router_anfitrion_menu.POST("", cartadiaria.CartaDiariaRouter_pg.AddCarta)
+	router_anfitrion_menu.PUT("", cartadiaria.CartaDiariaRouter_pg.UpdateCartaStatus)
+	router_anfitrion_menu.GET("", cartadiaria.CartaDiariaRouter_pg.GetCartas)
+	router_anfitrion_menu.DELETE("", cartadiaria.CartaDiariaRouter_pg.DeleteCarta)
+	router_anfitrion_menu.GET("/:date", cartadiaria.CartaDiariaRouter_pg.GetCartaBasicData)
+	router_anfitrion_menu.GET("/:idcarta/category", cartadiaria.CartaDiariaRouter_pg.GetCartaCategory)
+	router_anfitrion_menu.GET("/:idcarta/category/:idcategory/elements", cartadiaria.CartaDiariaRouter_pg.GetCartaElementsByCarta)
+	router_anfitrion_menu.PUT("/elements", cartadiaria.CartaDiariaRouter_pg.UpdateCartaElements)
+	router_anfitrion_menu.GET("/:idcarta/elements", cartadiaria.CartaDiariaRouter_pg.GetCartaElements)
+	router_anfitrion_menu.PUT("/onelement", cartadiaria.CartaDiariaRouter_pg.UpdateCartaOneElement)
+	router_anfitrion_menu.PUT("/scheduleranges", cartadiaria.CartaDiariaRouter_pg.UpdateCartaScheduleRanges)
+	router_anfitrion_menu.GET("/:idcarta/scheduleranges", cartadiaria.CartaDiariaRouter_pg.GetCartaScheduleRanges)
+	router_anfitrion_menu.GET("/carta/:date/insumo/:idinsumo/elements", cartadiaria.CartaDiariaRouter_pg.GetElementsByInsumo)
+
+	/*Create order*/
+	router_anfitrion_menu_createorder := version_1.Group("/anfitrion/menu/createorder")
+	router_anfitrion_menu_createorder.GET("/:date/category", cartadiaria.CartaDiariaRouter_pg.GetCategories_ToCreateOrder)
+	router_anfitrion_menu_createorder.GET("/:date/category/:idcategory/elements", cartadiaria.CartaDiariaRouter_pg.GetElements_ToCreateOrder)
+	router_anfitrion_menu_createorder.GET("/:date/scheduleranges", cartadiaria.CartaDiariaRouter_pg.GetSchedule_ToCreateOrder)
+	router_anfitrion_menu_createorder.GET("/:date/search/:text/:limit/:offset", cartadiaria.CartaDiariaRouter_pg.SearchByName_Anfitrion)
 
 	//V1 FROM V1 TO ...TO VIEW
 	router_view := version_1.Group("/view")
