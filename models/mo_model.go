@@ -120,20 +120,20 @@ type Mo_Category struct {
 }
 
 type Mo_Element_With_Stock_Response struct {
-	IDElement        int         `bson:"id" json:"id"`
-	IDCarta          int         `bson:"idcarta" json:"idcarta"`
-	IDBusiness       int         `bson:"idbusiness" json:"idbusiness"`
-	IDCategory       int         `bson:"idcategory" json:"idcategory"`
-	Typefood         string      `bson:"typefood" json:"typefood"`
-	NameCategory     string      `bson:"namecategory" json:"namecategory"`
-	UrlPhotoCategory string      `bson:"urlphotocategory" json:"urlphotocategory"`
-	Name             string      `bson:"name" json:"name"`
-	Price            float32     `bson:"price" json:"price"`
-	Description      string      `bson:"description" json:"description"`
-	TypeMoney        int         `bson:"typemoney" json:"typemoney"`
-	Stock            int         `bson:"stock" json:"stock"`
-	UrlPhoto         string      `bson:"url" json:"url"`
-	Insumos          []Pg_Insumo `bson:"insumos"  json:"insumos"`
-	AvailableOrders  bool        `bson:"availableorders" json:"availableorders"`
-	Costo            float64     `bson:"costo" json:"costo"`
+	IDElement        int                     `bson:"id" json:"id"`
+	IDCarta          int                     `bson:"idcarta" json:"idcarta"`
+	IDBusiness       int                     `bson:"idbusiness" json:"idbusiness"`
+	IDCategory       int                     `bson:"idcategory" json:"idcategory"`
+	Typefood         string                  `bson:"typefood" json:"typefood"`
+	NameCategory     string                  `bson:"namecategory" json:"namecategory"`
+	UrlPhotoCategory string                  `bson:"urlphotocategory" json:"urlphotocategory"`
+	Name             string                  `bson:"name" json:"name"`
+	Price            float32                 `bson:"price" json:"price"`
+	Description      string                  `bson:"description" json:"description"`
+	TypeMoney        int                     `bson:"typemoney" json:"typemoney"`
+	Stock            int                     `bson:"stock" json:"stock"`
+	UrlPhoto         string                  `bson:"url" json:"url"`
+	Insumos          []Pg_Mo_Insumo_Elements `bson:"insumos"  json:"insumos"`
+	AvailableOrders  bool                    `bson:"availableorders" json:"availableorders"`
+	Costo            float64                 `bson:"costo" json:"costo"`
 }
