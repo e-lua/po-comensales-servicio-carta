@@ -209,9 +209,10 @@ func UpdateCartaElements_Service(carta_elements CartaElements_WithAction, idbusi
 	}
 
 	//Registramos los datos en Mongo DB
-	go func() {
-		cartadiaria_anfitrion_repository.Mo_Delete_Update_Elements(carta_elements.ElementsWithAction, carta_elements.IDCarta, idbusiness)
-	}()
+	error_update_mo := cartadiaria_anfitrion_repository.Mo_Delete_Update_Elements(carta_elements.ElementsWithAction, carta_elements.IDCarta, idbusiness)
+	if error_update_mo != nil {
+		return 500, true, "Error en el servidor interno al intentar actualizar los elementos, detalles: " + error_update_mo.Error(), ""
+	}
 
 	return 201, false, "", "Los elementos se actualizaron correctamente"
 }
