@@ -222,3 +222,37 @@ type Pg_Carta_External struct {
 	Elements           int       `json:"elements"`
 	ScheduleRanges     int       `json:"scheduleranges"`
 }
+
+/*IMPORT DATA*/
+
+type Pg_Schedule struct {
+	IDSchedule        int    `json:"idschedule"`
+	IDCarta           int    `json:"idcarta"`
+	DateRequired      string `json:"daterequired"`
+	TimeStartRequired string `json:"starttime"`
+	TimeEndRequired   string `json:"endtime"`
+	TimeZone          string `json:"timezone"`
+}
+
+type V2_Pg_Element struct {
+	IDElement   int                     `json:"idelement"`
+	IDBusiness  int                     `json:"idbusiness"`
+	IDCarta     int                     `json:"idcarta"`
+	NameE       string                  `json:"name"`
+	IdCategory  int                     `json:"idcategory"`
+	Category    string                  `json:"category"`
+	TypeFood    string                  `json:"typefood"`
+	URLPhoto    string                  `json:"url"`
+	Description string                  `json:"description"`
+	TypeMoney   int                     `json:"typemoney"`
+	UnitPrice   float64                 `json:"unitprice"`
+	Quantity    int                     `json:"quantity"`
+	Discount    float32                 `json:"discount"`
+	Insumos     []Pg_Mo_Insumo_Elements `json:"insumos"`
+	Costo       float64                 `json:"costo"`
+}
+
+type Import_Data struct {
+	Schedule []Pg_Schedule     `json:"schedule"`
+	Elements [][]V2_Pg_Element `json:"elements"`
+}

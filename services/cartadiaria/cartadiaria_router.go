@@ -377,7 +377,7 @@ func (cdr *cartaDiariaRouter_pg) AddCarta(c echo.Context) error {
 		return c.JSON(400, results)
 	}
 
-	//Instanciamos una variable del modelo Category
+	//Instanciamos una variable del modelo Carta
 	var carta Carta
 
 	//Agregamos los valores enviados a la variable creada

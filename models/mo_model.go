@@ -137,3 +137,13 @@ type Mo_Element_With_Stock_Response struct {
 	AvailableOrders  bool                    `bson:"availableorders" json:"availableorders"`
 	Costo            float64                 `bson:"costo" json:"costo"`
 }
+
+type Mo_ListoSchedule_With_Stock struct {
+	IDSchedule int64  `bson:"id" json:"id"`
+	IDCarta    int    `bson:"idcarta" json:"idcarta"`
+	IDBusiness int    `bson:"idbusiness" json:"idbusiness"`
+	Starttime  string `bson:"starttime" json:"starttime"`
+	Endtime    string `bson:"endtime" json:"endtime"`
+	MaxOrders  int    `bson:"maxoders" json:"maxoders"`
+	Timezone   string `bson:"timezone" json:"timezone"`
+}

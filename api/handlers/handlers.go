@@ -13,6 +13,7 @@ import (
 
 	"github.com/Aphofisis/po-comensales-servicio-carta/models"
 	cartadiaria "github.com/Aphofisis/po-comensales-servicio-carta/services/cartadiaria"
+	imports "github.com/Aphofisis/po-comensales-servicio-carta/services/imports"
 )
 
 func Manejadores() {
@@ -49,6 +50,12 @@ func Manejadores() {
 	router_anfitrion_menu.GET("/:idcarta/category", cartadiaria.CartaDiariaRouter_pg.GetCartaCategory)
 	router_anfitrion_menu.GET("/:idcarta/category/:idcategory/elements", cartadiaria.CartaDiariaRouter_pg.GetCartaElementsByCarta)
 	router_anfitrion_menu.PUT("/elements", cartadiaria.CartaDiariaRouter_pg.UpdateCartaElements)
+
+	/*------------ TEST -> CONVERTIR A MQTT -------------*/
+	router_anfitrion_menu.PUT("/elements/udpate_element_stock", imports.ImportsRouter_pg.UpdateElementStock)
+	router_anfitrion_menu.PUT("/elements/udpate_schedule_stock", imports.ImportsRouter_pg.UpdateScheduleStock)
+	/*---------------------------------------------------*/
+
 	router_anfitrion_menu.GET("/:idcarta/elements", cartadiaria.CartaDiariaRouter_pg.GetCartaElements)
 	router_anfitrion_menu.PUT("/onelement", cartadiaria.CartaDiariaRouter_pg.UpdateCartaOneElement)
 	router_anfitrion_menu.PUT("/scheduleranges", cartadiaria.CartaDiariaRouter_pg.UpdateCartaScheduleRanges)
