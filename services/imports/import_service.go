@@ -3,8 +3,6 @@ package imports
 import (
 	//REPOSITORIES
 
-	"log"
-
 	models "github.com/Aphofisis/po-comensales-servicio-carta/models"
 	imports_repository "github.com/Aphofisis/po-comensales-servicio-carta/repositories/imports"
 )
@@ -16,13 +14,11 @@ func UpdateElementStock_Service(input_elements []models.Mqtt_Import_ElementStock
 		return 500, true, "Error en el servidor interno al intentar actualizar el stock" + error_update.Error(), ""
 	}
 
-	go func() {
-		error_update := imports_repository.Mo_Update_Many(input_elements)
-		if error_update != nil {
-			log.Println("Error en el servidor interno al intentar actualizar el stock" + error_update.Error())
-		}
+	error_update_mo := imports_repository.Mo_Update_Many(input_elements)
+	if error_update != nil {
+		return 500, true, "Error en el servidor interno al intentar actualizar el stock_mo" + error_update_mo.Error(), ""
+	}
 
-	}()
 	return 200, false, "", "Actualización correcta"
 }
 
