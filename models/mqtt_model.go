@@ -49,8 +49,7 @@ type Mqtt_Import_SheduleStock struct {
 }
 
 type Mqtt_Import_ElementStock struct {
-	IDElement int64                   `json:"idelement"`
-	IDCarta   int                     `json:"idcarta"`
-	Quantity  int                     `json:"quantity"`
-	Insumos   []Pg_Mo_Insumo_Elements `json:"insumos"`
+	IDElement int64 `json:"idelement"`
+	IDCarta   int   `json:"idcarta"`
+	Quantity  int   `json:"quantity"`
 }

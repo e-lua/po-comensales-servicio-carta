@@ -50,12 +50,6 @@ func Manejadores() {
 	router_anfitrion_menu.GET("/:idcarta/category", cartadiaria.CartaDiariaRouter_pg.GetCartaCategory)
 	router_anfitrion_menu.GET("/:idcarta/category/:idcategory/elements", cartadiaria.CartaDiariaRouter_pg.GetCartaElementsByCarta)
 	router_anfitrion_menu.PUT("/elements", cartadiaria.CartaDiariaRouter_pg.UpdateCartaElements)
-
-	/*------------ TEST -> CONVERTIR A MQTT -------------*/
-	router_anfitrion_menu.PUT("/elements/udpate_element_stock", imports.ImportsRouter_pg.UpdateElementStock)
-	router_anfitrion_menu.PUT("/elements/udpate_schedule_stock", imports.ImportsRouter_pg.UpdateScheduleStock)
-	/*---------------------------------------------------*/
-
 	router_anfitrion_menu.GET("/:idcarta/elements", cartadiaria.CartaDiariaRouter_pg.GetCartaElements)
 	router_anfitrion_menu.PUT("/onelement", cartadiaria.CartaDiariaRouter_pg.UpdateCartaOneElement)
 	router_anfitrion_menu.PUT("/scheduleranges", cartadiaria.CartaDiariaRouter_pg.UpdateCartaScheduleRanges)
@@ -109,7 +103,7 @@ func Consumer_Element_Stock() {
 		log.Fatal("Error connection canal " + error_conection.Error())
 	}
 
-	msgs, err_consume := ch.Consume("anfitrion/stock", "", true, false, false, false, nil)
+	msgs, err_consume := ch.Consume("anfitrion/stock_element_add", "", true, false, false, false, nil)
 	if err_consume != nil {
 		log.Fatal("Error connection cola " + err_consume.Error())
 	}
@@ -118,14 +112,14 @@ func Consumer_Element_Stock() {
 
 	go func() {
 		for d := range msgs {
-			var element_stock models.Pg_ToElement_Mqtt
+			var element_stock []models.Mqtt_Import_ElementStock
 			buf := bytes.NewBuffer(d.Body)
 			decoder := json.NewDecoder(buf)
 			err_consume := decoder.Decode(&element_stock)
 			if err_consume != nil {
 				log.Fatal("Error decoding")
 			}
-			cartadiaria.CartaDiariaRouter_pg.UpdateElementStock(element_stock)
+			imports.ImportsRouter_pg.UpdateElementStock(element_stock)
 		}
 	}()
 
@@ -140,7 +134,7 @@ func Consumer_Schedule_Stock() {
 		log.Fatal("Error connection canal " + error_conection.Error())
 	}
 
-	msgs, err_consume := ch.Consume("anfitrion/schedulestock", "", true, false, false, false, nil)
+	msgs, err_consume := ch.Consume("anfitrion/stock_schedule_add", "", true, false, false, false, nil)
 	if err_consume != nil {
 		log.Fatal("Error connection cola " + err_consume.Error())
 	}
@@ -149,14 +143,14 @@ func Consumer_Schedule_Stock() {
 
 	go func() {
 		for d := range msgs {
-			var schedule_stock models.Pg_ToSchedule_Mqtt
+			var schedule_stock []models.Mqtt_Import_SheduleStock
 			buf := bytes.NewBuffer(d.Body)
 			decoder := json.NewDecoder(buf)
 			err_consume := decoder.Decode(&schedule_stock)
 			if err_consume != nil {
 				log.Fatal("Error decoding")
 			}
-			cartadiaria.CartaDiariaRouter_pg.UpdateScheduleStock(schedule_stock)
+			imports.ImportsRouter_pg.UpdateScheduleStock(schedule_stock)
 		}
 	}()
 

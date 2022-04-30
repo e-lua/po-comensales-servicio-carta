@@ -18,8 +18,8 @@ func Mo_Update_Many(input_elements []models.Mqtt_Import_ElementStock) error {
 	//defer cancelara el contexto
 	defer cancel()
 
-	db := models.MongoCN.Database("comensal_by_anfitrion")
-	col := db.Collection("comensales")
+	db := models.MongoCN.Database("restoner_cartadiaria")
+	col := db.Collection("elements")
 
 	models := []mongo.WriteModel{}
 

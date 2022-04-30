@@ -13,7 +13,7 @@ func Mo_Find_ByInsumo(date string, idbusiness int, idinsumo string) ([]*models.M
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*8)
 	defer cancel()
 
-	db := models.MongoCN.Database("restoner_inventory")
+	db := models.MongoCN.Database("restoner_cartadiaria")
 	col := db.Collection("elements")
 
 	/*Aca pude haber hecho un make, es decir, resultado:=make([]...)*/
