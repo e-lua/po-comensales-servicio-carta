@@ -57,7 +57,7 @@ type ResponseCartaElements_Searched struct {
 type ResponseCartaElements_Searched_Mo struct {
 	Error     bool                                     `json:"error"`
 	DataError string                                   `json:"dataError"`
-	Data      []*models.Mo_Element_With_Stock_Response `json:"data"`
+	Data      []*models.Pg_Element_With_Stock_External `json:"data"`
 }
 
 type ResponseCartaSchedule struct {
