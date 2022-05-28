@@ -10,14 +10,14 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func Mo_Search_Name_Comensales(date string, idbusiness int, text string, limit int64, offset int64) ([]*models.Mo_Element_With_Stock_Response, error) {
+func Mo_Search_Name_Comensales(date string, idbusiness int, text string, limit int64, offset int64) ([]*models.Pg_Element_ToCreate, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*8)
 	defer cancel()
 
 	db := models.MongoCN.Database("restoner_cartadiaria")
 	col := db.Collection("elements")
 
-	var resultado []*models.Mo_Element_With_Stock_Response
+	var resultado []*models.Pg_Element_ToCreate
 
 	condicion := bson.M{
 		"idbusiness": idbusiness,
@@ -43,7 +43,7 @@ func Mo_Search_Name_Comensales(date string, idbusiness int, text string, limit i
 	//contexto, en este caso, me crea un contexto vacio
 	for cursor.Next(context.TODO()) {
 		/*Aca trabajare con cada Tweet. El resultado lo grabará en registro*/
-		var registro models.Mo_Element_With_Stock_Response
+		var registro models.Pg_Element_ToCreate
 		err := cursor.Decode(&registro)
 		if err != nil {
 			return resultado, err

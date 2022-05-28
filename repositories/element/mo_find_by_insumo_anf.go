@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func Mo_Find_ByInsumo(date string, idbusiness int, idinsumo string) ([]*models.Pg_Element_With_Stock_External, error) {
+func Mo_Find_ByInsumo(date string, idbusiness int, idinsumo string) ([]*models.Mqtt_Element_With_Stock, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*8)
 	defer cancel()
 
@@ -17,7 +17,7 @@ func Mo_Find_ByInsumo(date string, idbusiness int, idinsumo string) ([]*models.P
 	col := db.Collection("elements")
 
 	/*Aca pude haber hecho un make, es decir, resultado:=make([]...)*/
-	var resultado []*models.Pg_Element_With_Stock_External
+	var resultado []*models.Mqtt_Element_With_Stock
 
 	condicion := bson.M{
 		"idbusiness": idbusiness,
@@ -41,7 +41,7 @@ func Mo_Find_ByInsumo(date string, idbusiness int, idinsumo string) ([]*models.P
 	//contexto, en este caso, me crea un contexto vacio
 	for cursor.Next(context.TODO()) {
 		/*Aca trabajare con cada Tweet. El resultado lo grabará en registro*/
-		var registro models.Pg_Element_With_Stock_External
+		var registro models.Mqtt_Element_With_Stock
 		err := cursor.Decode(&registro)
 		if err != nil {
 			return resultado, err

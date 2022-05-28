@@ -55,9 +55,10 @@ type ResponseCartaElements_Searched struct {
 }
 
 type ResponseCartaElements_Searched_Mo struct {
-	Error     bool                                     `json:"error"`
-	DataError string                                   `json:"dataError"`
-	Data      []*models.Pg_Element_With_Stock_External `json:"data"`
+	Error     bool   `json:"error"`
+	DataError string `json:"dataError"`
+	//Data      []*models.Pg_Element_With_Stock_External `json:"data"`
+	Data []*models.Mqtt_Element_With_Stock `json:"data"`
 }
 
 type ResponseCartaSchedule struct {
@@ -86,9 +87,10 @@ type ResponseCartaCategory_ToCreate struct {
 }
 
 type ResponseCartaElements_ToCreate struct {
-	Error     bool                         `json:"error"`
-	DataError string                       `json:"dataError"`
-	Data      []models.Pg_Element_ToCreate `json:"data"`
+	Error     bool   `json:"error"`
+	DataError string `json:"dataError"`
+	//Data      []models.Pg_Element_ToCreate `json:"data"`
+	Data []models.Pg_Element_ToCreate `json:"data"`
 }
 
 type ResponseCartaSchedule_ToCreate struct {

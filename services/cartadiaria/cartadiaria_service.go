@@ -109,7 +109,7 @@ func GetBusinessSchedule_Service(date string, idbusiness int) (int, bool, string
 /*---------------------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------------------*/
 
-func SearchByName_Anfitrion_Service(date string, idbusiness int, text string, limit int, offset int) (int, bool, string, []*models.Pg_Element_With_Stock_External) {
+func SearchByName_Anfitrion_Service(date string, idbusiness int, text string, limit int, offset int) (int, bool, string, []*models.Mqtt_Element_With_Stock) {
 
 	//Version MO
 
@@ -121,7 +121,7 @@ func SearchByName_Anfitrion_Service(date string, idbusiness int, text string, li
 	return 201, false, "", carta_elements
 }
 
-func GetElementsByInsumo_Service(date string, idbusiness int, idinsumo string) (int, bool, string, []*models.Pg_Element_With_Stock_External) {
+func GetElementsByInsumo_Service(date string, idbusiness int, idinsumo string) (int, bool, string, []*models.Mqtt_Element_With_Stock) {
 
 	//Obtenemos los elementos
 	elementos, error_update := element_repository.Mo_Find_ByInsumo(date, idbusiness, idinsumo)
