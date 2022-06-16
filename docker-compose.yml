@@ -70,6 +70,7 @@ services:
 networks:
   traefik_network:
     name: traefik_net
+    driver: bridge
     ipam: 
       driver: default 
 
