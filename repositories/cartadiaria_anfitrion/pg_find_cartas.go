@@ -16,7 +16,7 @@ func Pg_Find_Cartas(idbusiness int) ([]models.Pg_Carta_Found, error) {
 
 	db := models.Conectar_Pg_DB()
 
-	q := "SELECT c.date::date,COUNT(e.idelement) FROM carta AS c JOIN element AS e ON c.idcarta=e.idcarta WHERE c.idbusiness=$1 AND c.date>=now()::date-INTERVAL '1 DAY' GROUP BY c.date::date"
+	q := "SELECT c.date::date,COUNT(e.idelement) FROM carta AS c JOIN element AS e ON c.idcarta=e.idcarta WHERE c.idbusiness=$1 AND c.date>=now()::date-INTERVAL '4 DAY' GROUP BY c.date::date"
 	rows, error_shown := db.Query(ctx, q, idbusiness)
 
 	//Instanciamos una variable del modelo Pg_TypeFoodXBusiness

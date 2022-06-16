@@ -1,13 +1,11 @@
 version: "3.3"
 
 services: 
-  app:
-    container_name: restoneranfitrion_app_servicio_inventario
+  c-carta:
+    labels: 
+      - "traefik.http.routers.c-carta.rule=Host(`c-carta.restoner-api.fun`)"
     restart: always 
     build: .
-    labels: 
-      - "traefik.enable=true"
-      - "traefik.http.routers.app.rule=Host(`localhost`)"
     networks:
       - backend
     ports:
@@ -39,14 +37,10 @@ services:
       PGADMIN_DEFAULT_PASSWORD: asd34Fg2Dsaf53543Fgge65sGGS45
     depends_on:
       - postgres
-  traefik: # apache.app.test - nginx.app.test
+  traefik:
     image: traefik:v2.3.6
-    labels: 
-      - "traefik.http.routers.api.rule=Host(`localhost`)"
     ports: 
-      - 100:80
-      - 8897:8080
-      - 443:443
+      - 80:80
     volumes: 
       - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik.yml:/traefik.yml
