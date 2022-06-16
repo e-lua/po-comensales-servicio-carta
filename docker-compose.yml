@@ -7,7 +7,7 @@ services:
     restart: always 
     build: .
     networks:
-      - traefik_network
+      - traefik_net
     links:
       - postgres
   postgres:
@@ -15,7 +15,7 @@ services:
     restart: always
     image: "postgres:13"
     networks:
-      - traefik_network
+      - traefik_net
     ports:
       - "7000:5432"
     environment:
@@ -27,7 +27,7 @@ services:
     restart: always
     image: "dpage/pgadmin4"
     networks:
-      - traefik_network
+      - traefik_net
     ports:
       - "90:80"
     environment:
@@ -39,6 +39,8 @@ services:
     image: traefik:v2.3.6
     ports: 
       - 80:80
+    networks:
+      - traefik_net
     volumes: 
       - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik.yml:/traefik.yml
@@ -47,7 +49,7 @@ services:
     image: mongo
     restart: always
     networks:
-      - traefik_network
+      - traefik_net
     ports:
       - "27017:27017"
     environment:
@@ -59,7 +61,7 @@ services:
     ports:
       - "91:8081"
     networks:
-      - traefik_network
+      - traefik_net
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: mo5345ngodbinvenhs56752
       ME_CONFIG_MONGODB_ADMINPASSWORD: adgadsfg234GWe5Ggwf34G52fag3
@@ -68,8 +70,8 @@ services:
       ME_CONFIG_OPTIONS_EDITORTHEME: "ambiance"
       ME_CONFIG_MONGODB_URL: mongodb://mo5345ngodbinvenhs56752:mongwet2354rghs25oty41@mongo:27017/
 networks:
-  traefik_network:
-    name: traefik_net
+  traefik_net:
+    name: traefik_n
     driver: bridge
     ipam: 
       driver: default 
