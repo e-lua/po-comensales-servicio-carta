@@ -71,7 +71,7 @@ func Pg_Delete_Update_ScheduleRange(pg_schedule []models.Pg_ScheduleRange_Extern
 				//Validamos que no sobrepase los 60 minutos
 				var minutos_string string
 				if minutos > 59 {
-					minutos = 60 - minutos
+					minutos = minutos - 60
 					if minutos < 10 {
 						minutos_string = "0" + strconv.Itoa(minutos)
 					} else {
@@ -81,7 +81,18 @@ func Pg_Delete_Update_ScheduleRange(pg_schedule []models.Pg_ScheduleRange_Extern
 				} else {
 					minutos_string = hora_pre_fin[index_pre_fin:]
 				}
-				hora_finaliza := strconv.Itoa(horas) + minutos_string
+
+				//Validamos que no sobrepase las 24 horas
+				var horas_string string
+				if horas > 23 {
+					horas = horas - 24
+					horas_string = "0" + strconv.Itoa(horas)
+				} else {
+					horas_string = hora_pre_fin[:index_pre_fin]
+				}
+
+				//Hora que finaliza
+				hora_finaliza := horas_string + minutos_string
 
 				//TODO SOBRE LA HORA FIN
 				var index_fin int
