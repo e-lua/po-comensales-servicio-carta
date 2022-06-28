@@ -39,7 +39,7 @@ func (cr *cartaDiariaRouter_pg) UpdateScheduleStock(schedule_stock models.Pg_ToS
 
 func GetJWT_Comensal(jwt string) (int, bool, string, int) {
 	//Obtenemos los datos del auth
-	respuesta, _ := http.Get("http://c-registro-authenticacion.restoner-api.fun:3000/v1/trylogin?jwt=" + jwt)
+	respuesta, _ := http.Get("http://c-registro-authenticacion.restoner-api.fun:80/v1/trylogin?jwt=" + jwt)
 	var get_respuesta ResponseJWT
 	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
 	if error_decode_respuesta != nil {
