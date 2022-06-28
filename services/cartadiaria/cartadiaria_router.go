@@ -50,24 +50,13 @@ func GetJWT_Comensal(jwt string) (int, bool, string, int) {
 
 func GetJWT_Anfitrion(jwt string) (int, bool, string, int) {
 	//Obtenemos los datos del auth
-	respuesta, _ := http.Get("http://a-registro-authenticacion.restoner-api.fun:5000/v1/trylogin?jwt=" + jwt)
+	respuesta, _ := http.Get("http://a-registro-authenticacion.restoner-api.fun:80/v1/trylogin?jwt=" + jwt)
 	var get_respuesta ResponseJWT_Anfitrion
 	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
 	if error_decode_respuesta != nil {
 		return 500, true, "Error en el sevidor interno al intentar decodificar la autenticacion, detalles: " + error_decode_respuesta.Error(), 0
 	}
 	return 200, false, "", get_respuesta.Data.IdBusiness
-}
-
-func GetAddress(idbusiness string) (int, bool, string, B_Address) {
-	//Obtenemos los datos del auth
-	respuesta_2, _ := http.Get("http://c-busqueda.restoner-api.fun:6850/v1/business/address?idbusiness=" + idbusiness)
-	var get_respuesta_2 ResponseAddress
-	error_decode_respuesta_2 := json.NewDecoder(respuesta_2.Body).Decode(&get_respuesta_2)
-	if error_decode_respuesta_2 != nil {
-		return 500, true, "Error en el sevidor interno al intentar decodificar la dirección, detalles: " + error_decode_respuesta_2.Error(), get_respuesta_2.Data
-	}
-	return 200, false, "", get_respuesta_2.Data
 }
 
 /*----------------------EXTERNAL DATA----------------------*/
@@ -90,7 +79,7 @@ func (cr *cartaDiariaRouter_pg) GetBusinessInformation(c echo.Context) error {
 	//idbusiness_int, _ := strconv.Atoi(idbusiness)
 
 	//Enviamos los datos al servicio de anfitriones para obtener los datos completos
-	respuesta, _ := http.Get("http://a-informacion.restoner-api.fun:5800/v1/business/comensal/bnss/" + idbusiness)
+	respuesta, _ := http.Get("http://a-informacion.restoner-api.fun:80/v1/business/comensal/bnss/" + idbusiness)
 	var get_respuesta ResponseBusiness
 	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
 	if error_decode_respuesta != nil {
@@ -443,13 +432,6 @@ func (cdr *cartaDiariaRouter_pg) UpdateCartaElements(c echo.Context) error {
 		return c.JSON(400, results)
 	}
 
-	//Obtenemos los datos de latitud y longitud
-	status, boolerror, dataerror, data_address := GetAddress(strconv.Itoa(data_idbusiness))
-	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
-		return c.JSON(status, results)
-	}
-
 	//Instanciamos una variable del modelo CartaElements
 	var carta_elements CartaElements_WithAction
 
@@ -461,7 +443,7 @@ func (cdr *cartaDiariaRouter_pg) UpdateCartaElements(c echo.Context) error {
 	}
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := UpdateCartaElements_Service(carta_elements, data_idbusiness, data_address.Latitude, data_address.Longitude)
+	status, boolerror, dataerror, data := UpdateCartaElements_Service(carta_elements, data_idbusiness, 0, 0)
 	results := Response{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 }
