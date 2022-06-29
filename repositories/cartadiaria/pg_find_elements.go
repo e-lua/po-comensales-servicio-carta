@@ -38,7 +38,7 @@ func Pg_Find_Elements(date string, idbusiness int, idcategory int) ([]models.Pg_
 	return oListElementsWithStock, nil
 }
 
-func Pg_Find_Elements_SearchByText(date string, idbusiness int, text string, limit int, offset int) ([]models.Pg_Element_With_Stock, error) {
+func Pg_Find_Elements_SearchByText(date string, idbusiness int, text string, limit int, offset int) ([]models.Mo_Element_With_Stock_Response, error) {
 
 	//Tiempo limite al contexto
 	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
@@ -51,7 +51,7 @@ func Pg_Find_Elements_SearchByText(date string, idbusiness int, text string, lim
 	rows, error_shown := db.Query(ctx, q, date, idbusiness, text, limit, offset)
 
 	//Instanciamos una variable del modelo Pg_TypeFoodXBusiness
-	var oListElementsWithStock []models.Pg_Element_With_Stock
+	var oListElementsWithStock []models.Mo_Element_With_Stock_Response
 
 	if error_shown != nil {
 
@@ -60,8 +60,8 @@ func Pg_Find_Elements_SearchByText(date string, idbusiness int, text string, lim
 
 	//Scaneamos l resultado y lo asignamos a la variable instanciada
 	for rows.Next() {
-		var oElement models.Pg_Element_With_Stock
-		rows.Scan(&oElement.IDElement, &oElement.IDBusiness, &oElement.IDCategory, &oElement.NameCategory, &oElement.UrlPhotoCategory, &oElement.Name, &oElement.Price, &oElement.Description, &oElement.UrlPhoto, &oElement.TypeMoney, &oElement.Stock, &oElement.TypeFood, &oElement.Insumos, &oElement.AvailableOrders, &oElement.Costo)
+		var oElement models.Mo_Element_With_Stock_Response
+		rows.Scan(&oElement.IDElement, &oElement.IDBusiness, &oElement.IDCategory, &oElement.NameCategory, &oElement.UrlPhotoCategory, &oElement.Name, &oElement.Price, &oElement.Description, &oElement.UrlPhoto, &oElement.TypeMoney, &oElement.Stock, &oElement.Typefood, &oElement.Insumos, &oElement.AvailableOrders, &oElement.Costo)
 		oListElementsWithStock = append(oListElementsWithStock, oElement)
 	}
 

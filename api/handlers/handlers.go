@@ -24,7 +24,7 @@ func Manejadores() {
 	e.Use(middleware.Recover())
 
 	//Consumidor-MQTT
-	go Consumer_Element_Stock()
+	//go Consumer_Element_Stock()
 	go Consumer_Schedule_Stock()
 
 	e.GET("/", index)

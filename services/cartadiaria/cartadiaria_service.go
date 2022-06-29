@@ -69,7 +69,7 @@ func GetBusinessElement_Service(date string, idbusiness int, idcategory int) (in
 	return 201, false, "", carta_elements
 }
 
-func SearchByNameAndDescription_Service(date string, idbusiness int, text string, limit int, offset int) (int, bool, string, []models.Pg_Element_With_Stock) {
+func SearchByNameAndDescription_Service(date string, idbusiness int, text string, limit int, offset int) (int, bool, string, []models.Mo_Element_With_Stock_Response) {
 
 	//Version PG
 
