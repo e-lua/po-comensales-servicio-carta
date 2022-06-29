@@ -136,6 +136,7 @@ type Pg_Mo_Insumo_Elements struct {
 type Pg_Element_ToCreate struct {
 	IDElement        int                     `json:"id"`
 	IDBusiness       int                     `json:"idbusiness"`
+	IDCarta          int                     `json:"idcarta"`
 	IDCategory       int                     `json:"idcategory"`
 	NameCategory     string                  `json:"namecategory"`
 	TypeFood         string                  `json:"typefood"`
