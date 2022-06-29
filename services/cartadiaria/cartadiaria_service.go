@@ -109,7 +109,7 @@ func GetBusinessSchedule_Service(date string, idbusiness int) (int, bool, string
 /*---------------------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------------------*/
 
-func SearchByName_Anfitrion_Service(date string, idbusiness int, text string, limit int, offset int) (int, bool, string, []*models.Mqtt_Element_With_Stock) {
+func SearchByName_Anfitrion_Service(date string, idbusiness int, text string, limit int, offset int) (int, bool, string, []*models.Pg_Element_ToCreate) {
 
 	//Version MO
 

@@ -348,7 +348,7 @@ func (cr *cartaDiariaRouter_pg) SearchByName_Anfitrion(c echo.Context) error {
 
 	//Enviamos los datos al servicio
 	status, boolerror, dataerror, data := SearchByName_Anfitrion_Service(date, data_idbusiness, text, limit_int, offset_int)
-	results := ResponseCartaElements_Searched_Mo{Error: boolerror, DataError: dataerror, Data: data}
+	results := ResponseCartaElements_Searched_Pg{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 }
 

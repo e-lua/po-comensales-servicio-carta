@@ -61,6 +61,13 @@ type ResponseCartaElements_Searched_Mo struct {
 	Data []*models.Mqtt_Element_With_Stock `json:"data"`
 }
 
+type ResponseCartaElements_Searched_Pg struct {
+	Error     bool   `json:"error"`
+	DataError string `json:"dataError"`
+	//Data      []*models.Pg_Element_With_Stock_External `json:"data"`
+	Data []*models.Pg_Element_ToCreate `json:"data"`
+}
+
 type ResponseCartaSchedule struct {
 	Error     bool                     `json:"error"`
 	DataError string                   `json:"dataError"`
