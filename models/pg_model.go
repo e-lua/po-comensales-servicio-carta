@@ -134,21 +134,21 @@ type Pg_Mo_Insumo_Elements struct {
 }
 
 type Pg_Element_ToCreate struct {
-	IDElement        int                     `json:"id"`
-	IDBusiness       int                     `json:"idbusiness"`
-	IDCarta          int                     `json:"idcarta"`
-	IDCategory       int                     `json:"idcategory"`
-	NameCategory     string                  `json:"namecategory"`
-	TypeFood         string                  `json:"typefood"`
-	UrlPhotoCategory string                  `json:"urlphotocategory"`
-	Name             string                  `json:"name"`
-	Price            float32                 `json:"price"`
-	Description      string                  `json:"description"`
-	TypeMoney        int                     `json:"typemoney"`
-	Stock            int                     `json:"stock"`
-	UrlPhoto         string                  `json:"url"`
-	Insumos          []Pg_Mo_Insumo_Elements `json:"insumos"`
-	Costo            float64                 `json:"costo"`
+	IDElement        int                     `bson:"id" json:"id"`
+	IDBusiness       int                     `bson:"idbusiness" json:"idbusiness"`
+	IDCarta          int                     `bson:"idcarta" json:"idcarta"`
+	IDCategory       int                     `bson:"idcategory" json:"idcategory"`
+	NameCategory     string                  `bson:"namecategory" json:"namecategory"`
+	TypeFood         string                  `bson:"typefood" json:"typefood"`
+	UrlPhotoCategory string                  `bson:"urlphotocategory" json:"urlphotocategory"`
+	Name             string                  `bson:"name" json:"name"`
+	Price            float32                 `bson:"price" json:"price"`
+	Description      string                  `bson:"description" json:"description"`
+	TypeMoney        int                     `bson:"typemoney" json:"typemoney"`
+	Stock            int                     `bson:"stock" json:"stock"`
+	UrlPhoto         string                  `bson:"url" json:"url"`
+	Insumos          []Pg_Mo_Insumo_Elements `bson:"insumos" json:"insumos"`
+	Costo            float64                 `bson:"costo" json:"costo"`
 }
 
 type Pg_Schedule_ToCreate struct {
