@@ -9,20 +9,40 @@ services:
     networks:
       - traefik_net
     links:
-      - postgres
-  postgres:
+      - postgres-master
+  postgres-master:
     container_name: postgres_db
     restart: always
-    image: "postgres:13"
+    image: "bitnami/postgresql:14"
     networks:
       - traefik_net
+    volumes:
+      - 'postgresql_master_data:/bitnami/postgresql'
     ports:
-      - "7000:5432"
+      - "5432"
     environment:
+      - POSTGRESQL_REPLICATION_MODE=master
       - DATABASE_HOST=127.0.0.1
-      - POSTGRES_USER=postgresx4y
-      - POSTGRES_PASSWORD=asd34Fg2DDFfd3saF3Fgge65sGGS45
-      - POSTGRES_DB=postgresx4y
+      - POSTGRESQL_REPLICATION_USER=replicacion_wdsg346wefwerfusuario_123
+      - POSTGRESQL_REPLICATION_PASSWORD=replicacion_contrasengq234qdia_123
+      - POSTGRESQL_USERNAME=postgresx4y
+      - POSTGRESQL_PASSWORD=asd34Fg2DDFfd3saF3Fgge65sGGS45
+      - POSTGRESQL_DATABASE=postgresx4y
+  postgresql-slave:
+    image: 'bitnami/postgresql:14'
+    ports:
+      - "6432:5432"
+    networks:
+      - traefik_net
+    depends_on:
+      - postgres-master
+    environment:
+      - POSTGRESQL_REPLICATION_MODE=slave
+      - POSTGRESQL_REPLICATION_USER=replicacion_wdsg346wefwerfusuario_123
+      - POSTGRESQL_REPLICATION_PASSWORD=replicacion_contrasengq234qdia_123
+      - POSTGRESQL_MASTER_HOST=postgres-master
+      - POSTGRESQL_PASSWORD=asd34Fg2DDFfd3saF3Fgge65sGGS45
+      - POSTGRESQL_MASTER_PORT_NUMBER=5432
   pgadmin:
     restart: always
     image: "dpage/pgadmin4"
@@ -34,7 +54,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: adminxd4@adminxd4.com
       PGADMIN_DEFAULT_PASSWORD: asd34Fg2Dsaf53543Fgge65sGGS45
     depends_on:
-      - postgres
+      - postgres-master
   traefik:
     image: traefik:v2.3.6
     ports: 
@@ -52,6 +72,8 @@ services:
       - traefik_net
     ports:
       - "27017:27017"
+    volumes: 
+      - shared_database:/data/db
     environment:
       MONGO_INITDB_ROOT_USERNAME: mo5345ngodbinvenhs56752
       MONGO_INITDB_ROOT_PASSWORD: mongwet2354rghs25oty41
@@ -75,8 +97,9 @@ networks:
     driver: bridge
     ipam: 
       driver: default 
-
-
+volumes:
+  postgresql_master_data:
+  shared_database:
 
 
 
