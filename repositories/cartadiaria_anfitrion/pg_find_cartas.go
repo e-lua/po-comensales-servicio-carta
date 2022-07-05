@@ -2,9 +2,11 @@ package cartadiaria_anfitrion
 
 import (
 	"context"
+	"math/rand"
 	"time"
 
 	models "github.com/Aphofisis/po-comensales-servicio-carta/models"
+	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 func Pg_Find_Cartas(idbusiness int) ([]models.Pg_Carta_Found, error) {
@@ -14,7 +16,14 @@ func Pg_Find_Cartas(idbusiness int) ([]models.Pg_Carta_Found, error) {
 	//defer cancelara el contexto
 	defer cancel()
 
-	db := models.Conectar_Pg_DB()
+	var db *pgxpool.Pool
+
+	random := rand.Intn(4)
+	if random%2 == 0 {
+		db = models.Conectar_Pg_DB()
+	} else {
+		db = models.Conectar_Pg_DB_Slave()
+	}
 
 	q := "SELECT c.date::date,COUNT(e.idelement) FROM carta AS c JOIN element AS e ON c.idcarta=e.idcarta WHERE c.idbusiness=$1 AND c.date>=now()::date-INTERVAL '4 DAY' GROUP BY c.date::date"
 	rows, error_shown := db.Query(ctx, q, idbusiness)

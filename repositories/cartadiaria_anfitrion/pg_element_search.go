@@ -2,9 +2,11 @@ package cartadiaria_anfitrion
 
 import (
 	"context"
+	"math/rand"
 	"time"
 
 	models "github.com/Aphofisis/po-comensales-servicio-carta/models"
+	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 func Pg_Find_Elements_SearchByText(date string, idbusiness int, text string, limit int, offset int) ([]models.Pg_Element_With_Stock_External, error) {
@@ -14,7 +16,14 @@ func Pg_Find_Elements_SearchByText(date string, idbusiness int, text string, lim
 	//defer cancelara el contexto
 	defer cancel()
 
-	db := models.Conectar_Pg_DB()
+	var db *pgxpool.Pool
+
+	random := rand.Intn(4)
+	if random%2 == 0 {
+		db = models.Conectar_Pg_DB()
+	} else {
+		db = models.Conectar_Pg_DB_Slave()
+	}
 
 	q := "SELECT e.idelement,e.idbusiness,e.idcategory,e.namecategory,e.urlphotcategory,e.name,e.price,e.description,e.urlphoto,e.typemoney,e.stock,e.typefood,e.insumos,e.availableorders,e.costo FROM element e LEFT JOIN carta c ON e.idcarta=c.idcarta WHERE c.date=$1 AND e.idbusiness=$2 AND (lower(e.name) ~ $3 OR lower(e.description) ~ $3) ORDER BY e.name ASC LIMIT $4 OFFSET $5"
 	rows, error_shown := db.Query(ctx, q, date, idbusiness, text, limit, offset)

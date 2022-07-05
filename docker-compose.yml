@@ -10,6 +10,7 @@ services:
       - traefik_net
     links:
       - postgres-master
+      - postgresql-slave
   postgres-master:
     container_name: postgres_db
     restart: always
