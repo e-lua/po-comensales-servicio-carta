@@ -2,11 +2,9 @@ package cartadiaria_anfitrion
 
 import (
 	"context"
-	"math/rand"
 	"time"
 
 	models "github.com/Aphofisis/po-comensales-servicio-carta/models"
-	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 func Pg_Find_Elements_ByCategory(idcarta int, idbusiness int, idcategory int) ([]models.Pg_Element_With_Stock_External, error) {
@@ -16,14 +14,7 @@ func Pg_Find_Elements_ByCategory(idcarta int, idbusiness int, idcategory int) ([
 	//defer cancelara el contexto
 	defer cancel()
 
-	var db *pgxpool.Pool
-
-	random := rand.Intn(4)
-	if random%2 == 0 {
-		db = models.Conectar_Pg_DB()
-	} else {
-		db = models.Conectar_Pg_DB_Slave()
-	}
+	db := models.Conectar_Pg_DB()
 
 	q := "SELECT idelement,idcarta,idbusiness,idcategory,namecategory,urlphotcategory,name,price,description,urlphoto,typemoney,stock,typefood,insumos,availableorders,costo FROM element WHERE idcarta=$1 AND idbusiness=$2 AND idcategory=$3 ORDER BY stock ASC"
 	rows, error_shown := db.Query(ctx, q, idcarta, idbusiness, idcategory)

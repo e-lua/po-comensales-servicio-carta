@@ -2,11 +2,9 @@ package cartadiaria_anfitrion
 
 import (
 	"context"
-	"math/rand"
 	"time"
 
 	models "github.com/Aphofisis/po-comensales-servicio-carta/models"
-	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 func Pg_Find_ScheduleRange_ToCreate(date string, idbusiness int) ([]models.Pg_Schedule_ToCreate, error) {
@@ -16,14 +14,7 @@ func Pg_Find_ScheduleRange_ToCreate(date string, idbusiness int) ([]models.Pg_Sc
 	//defer cancelara el contexto
 	defer cancel()
 
-	var db *pgxpool.Pool
-
-	random := rand.Intn(4)
-	if random%2 == 0 {
-		db = models.Conectar_Pg_DB()
-	} else {
-		db = models.Conectar_Pg_DB_Slave()
-	}
+	db := models.Conectar_Pg_DB()
 
 	q := "SELECT ls.idschedule,c.date::date::varchar(12),ls.starttime::time::varchar(5),ls.endtime::time::varchar(5),ls.timezone,ls.maxorders,CONCAT(ls.starttime,' - ',ls.endtime) FROM listschedulerange ls LEFT JOIN carta c ON ls.idcarta=c.idcarta WHERE c.date::date=$1::date AND ls.idbusiness=$2 AND ls.maxorders>0 AND concat(ls.starttime,'-',(ls.timezone::integer*-1)::varchar(3))::time with time zone > NOW()::time at time zone CONCAT('UTC',(ls.timezone::integer*-1)::varchar(3)) ORDER BY REPLACE(ls.starttime,':','')::int  ASC"
 	rows, error_shown := db.Query(ctx, q, date, idbusiness)
