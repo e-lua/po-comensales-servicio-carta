@@ -153,7 +153,7 @@ func Pg_Copy_Carta(pg_schedule []models.Pg_ScheduleRange_External, pg_element_ex
 			idbusiness_pg_3 = append(idbusiness_pg_3, idbusiness)
 			startime_pg_3 = append(startime_pg_3, hora_ini_string)
 			endtime_pg_3 = append(endtime_pg_3, hora_fin_toinsert)
-			max_orders_3 = append(max_orders_3, sch.MaxOrders)
+			max_orders_3 = append(max_orders_3, 20)
 			timezone_pg_3 = append(timezone_pg_3, sch.TimeZone)
 
 			//Nuevo valor de hora de inicio
