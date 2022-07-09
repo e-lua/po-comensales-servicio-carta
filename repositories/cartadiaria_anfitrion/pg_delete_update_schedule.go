@@ -87,6 +87,7 @@ func Pg_Delete_Update_ScheduleRange(pg_schedule []models.Pg_ScheduleRange_Extern
 						minutos_string = strconv.Itoa(minutos)
 					}
 					horas = horas + 1
+					println("----------------------------->SE ESTA APLICANDO EL HORAS + 1 -->", horas)
 				} else {
 					minutos_string = hora_pre_fin[index_pre_fin:]
 				}
@@ -100,7 +101,7 @@ func Pg_Delete_Update_ScheduleRange(pg_schedule []models.Pg_ScheduleRange_Extern
 					if horas == 0 {
 						horas_string = "00"
 					} else {
-						horas_string = hora_pre_fin[:index_pre_fin]
+						horas_string = strconv.Itoa(horas)
 					}
 				}
 
@@ -118,9 +119,9 @@ func Pg_Delete_Update_ScheduleRange(pg_schedule []models.Pg_ScheduleRange_Extern
 				//Le pondremos un 0 al comienzo de un numero si es necesario
 				var hora_fin_toinsert string
 				if len(hora_finaliza[:index_fin]) == 1 {
-					hora_fin_toinsert = "0" + hora_finaliza[:index_fin] + ":" + hora_finaliza[index_fin:]
+					hora_fin_toinsert = "0" + strconv.Itoa(horas) + ":" + hora_finaliza[index_fin:]
 				} else {
-					hora_fin_toinsert = hora_finaliza[:index_fin] + ":" + hora_finaliza[index_fin:]
+					hora_fin_toinsert = strconv.Itoa(horas) + ":" + hora_finaliza[index_fin:]
 				}
 
 				//Insertamos los datos en el modelo
@@ -133,7 +134,7 @@ func Pg_Delete_Update_ScheduleRange(pg_schedule []models.Pg_ScheduleRange_Extern
 				timezone_2 = append(timezone_2, "-5")
 
 				//Nuevo valor de hora de inicio
-				new_hora_ini, _ := strconv.Atoi(hora_finaliza[:index_fin] + hora_finaliza[index_fin:])
+				new_hora_ini, _ := strconv.Atoi(strconv.Itoa(horas) + hora_finaliza[index_fin:])
 				hora_ini = new_hora_ini
 				hora_ini_string = hora_fin_toinsert
 			}
