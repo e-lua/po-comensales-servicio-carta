@@ -57,21 +57,30 @@ func Pg_Delete_Update_ScheduleRange(pg_schedule []models.Pg_ScheduleRange_Extern
 				//TODO SOBRE LA HORA PRE FIN
 				hora_pre_fin := strconv.Itoa(hora_ini + sch.MinutePerFraction)
 
-				var index_pre_fin int
-				if len(hora_pre_fin) > 3 {
+				//Definimos los minutos y horas
+				var index_pre_fin, minutos, horas int
+				switch len(hora_pre_fin) {
+				case 3:
 					index_pre_fin = 2
-				} else {
+					//Minutos y Horas
+					minutos, _ = strconv.Atoi(hora_pre_fin[index_pre_fin:])
+					horas, _ = strconv.Atoi(hora_pre_fin[:index_pre_fin])
+				case 4:
 					index_pre_fin = 1
+					//Minutos y Horas
+					minutos, _ = strconv.Atoi(hora_pre_fin[index_pre_fin:])
+					horas, _ = strconv.Atoi(hora_pre_fin[:index_pre_fin])
+				default:
+					index_pre_fin = 0
+					//Minutos y Horas
+					minutos, _ = strconv.Atoi(hora_pre_fin[index_pre_fin:])
+					horas = 0
 				}
-
-				//Minutos y Horas
-				minutos, _ := strconv.Atoi(hora_pre_fin[index_pre_fin:])
-				horas, _ := strconv.Atoi(hora_pre_fin[:index_pre_fin])
 
 				//Validamos que no sobrepase los 60 minutos
 				var minutos_string string
 				if minutos > 59 {
-					minutos = minutos - 60
+					minutos = 60 - minutos
 					if minutos < 10 {
 						minutos_string = "0" + strconv.Itoa(minutos)
 					} else {
@@ -85,8 +94,12 @@ func Pg_Delete_Update_ScheduleRange(pg_schedule []models.Pg_ScheduleRange_Extern
 				//Validamos que no sobrepase las 24 horas
 				var horas_string string
 				if horas > 23 {
-					horas = horas - 24
-					horas_string = "0" + strconv.Itoa(horas)
+					if horas == 0 {
+						horas_string = "00"
+					} else {
+						horas = 24 - horas
+						horas_string = "0" + strconv.Itoa(horas)
+					}
 				} else {
 					horas_string = hora_pre_fin[:index_pre_fin]
 				}
