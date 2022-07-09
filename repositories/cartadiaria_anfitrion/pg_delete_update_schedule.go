@@ -61,12 +61,12 @@ func Pg_Delete_Update_ScheduleRange(pg_schedule []models.Pg_ScheduleRange_Extern
 				var index_pre_fin, minutos, horas int
 				switch len(hora_pre_fin) {
 				case 3:
-					index_pre_fin = 2
+					index_pre_fin = 1
 					//Minutos y Horas
 					minutos, _ = strconv.Atoi(hora_pre_fin[index_pre_fin:])
 					horas, _ = strconv.Atoi(hora_pre_fin[:index_pre_fin])
 				case 4:
-					index_pre_fin = 1
+					index_pre_fin = 2
 					//Minutos y Horas
 					minutos, _ = strconv.Atoi(hora_pre_fin[index_pre_fin:])
 					horas, _ = strconv.Atoi(hora_pre_fin[:index_pre_fin])
