@@ -134,9 +134,14 @@ func Pg_Copy_Carta(pg_schedule []models.Pg_ScheduleRange_External, pg_element_ex
 			} else {
 				index_fin = 1
 			}
-			hora_fin_toinsert := hora_finaliza[:index_fin] + ":" + hora_finaliza[index_fin:]
 
-			//Fin de bucle para obtener la hora fin
+			//Le pondremos un 0 al comienzo de un numero si es necesario
+			var hora_fin_toinsert string
+			if len(hora_finaliza[:index_fin]) == 1 {
+				hora_fin_toinsert = "0" + strconv.Itoa(horas) + ":" + hora_finaliza[index_fin:]
+			} else {
+				hora_fin_toinsert = strconv.Itoa(horas) + ":" + hora_finaliza[index_fin:]
+			}
 
 			//Insertamos los datos en el modelo
 			idschedulerange_pg_3 = append(idschedulerange_pg_3, sch.IDSchedule)
@@ -146,10 +151,16 @@ func Pg_Copy_Carta(pg_schedule []models.Pg_ScheduleRange_External, pg_element_ex
 			endtime_pg_3 = append(endtime_pg_3, hora_fin_toinsert)
 			max_orders_3 = append(max_orders_3, sch.MaxOrders)
 			timezone_pg_3 = append(timezone_pg_3, sch.TimeZone)
+
 			//Nuevo valor de hora de inicio
-			new_hora_ini, _ := strconv.Atoi(strconv.Itoa(horas) + minutos_string)
+			new_hora_ini, _ := strconv.Atoi(strconv.Itoa(horas) + hora_finaliza[index_fin:])
 			hora_ini = new_hora_ini
 			hora_ini_string = hora_fin_toinsert
+
+			//Si supera la media noche se termina el bucle
+			if horas_string == "00" {
+				break
+			}
 		}
 	}
 

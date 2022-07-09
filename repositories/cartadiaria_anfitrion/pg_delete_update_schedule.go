@@ -41,104 +41,108 @@ func Pg_Delete_Update_ScheduleRange(pg_schedule []models.Pg_ScheduleRange_Extern
 
 	for _, sch := range pg_schedule {
 
-		if "-5" != "" {
-			arr := strings.Split(sch.StartTime, ":")
-			hora_ini := 0
-			hora_ini_string := sch.StartTime
+		arr := strings.Split(sch.StartTime, ":")
+		hora_ini := 0
+		hora_ini_string := sch.StartTime
 
-			for i := 0; i < sch.NumberOfFractions; i++ {
+		for i := 0; i < sch.NumberOfFractions; i++ {
 
-				if i == 0 {
-					//TODO SOBRE LA HORA DE INICIO
-					hora_ini_c, _ := strconv.Atoi(arr[0] + arr[1][:2])
-					hora_ini = hora_ini_c
-				}
+			if i == 0 {
+				//TODO SOBRE LA HORA DE INICIO
+				hora_ini_c, _ := strconv.Atoi(arr[0] + arr[1][:2])
+				hora_ini = hora_ini_c
+			}
 
-				//TODO SOBRE LA HORA PRE FIN
-				hora_pre_fin := strconv.Itoa(hora_ini + sch.MinutePerFraction)
+			//TODO SOBRE LA HORA PRE FIN
+			hora_pre_fin := strconv.Itoa(hora_ini + sch.MinutePerFraction)
 
-				//Definimos los minutos y horas
-				var index_pre_fin, minutos, horas int
-				switch len(hora_pre_fin) {
-				case 3:
-					index_pre_fin = 1
-					//Minutos y Horas
-					minutos, _ = strconv.Atoi(hora_pre_fin[index_pre_fin:])
-					horas, _ = strconv.Atoi(hora_pre_fin[:index_pre_fin])
-				case 4:
-					index_pre_fin = 2
-					//Minutos y Horas
-					minutos, _ = strconv.Atoi(hora_pre_fin[index_pre_fin:])
-					horas, _ = strconv.Atoi(hora_pre_fin[:index_pre_fin])
-				default:
-					index_pre_fin = 0
-					//Minutos y Horas
-					minutos, _ = strconv.Atoi(hora_pre_fin[index_pre_fin:])
-					horas = 0
-				}
+			//Definimos los minutos y horas
+			var index_pre_fin, minutos, horas int
+			switch len(hora_pre_fin) {
+			case 3:
+				index_pre_fin = 1
+				//Minutos y Horas
+				minutos, _ = strconv.Atoi(hora_pre_fin[index_pre_fin:])
+				horas, _ = strconv.Atoi(hora_pre_fin[:index_pre_fin])
+			case 4:
+				index_pre_fin = 2
+				//Minutos y Horas
+				minutos, _ = strconv.Atoi(hora_pre_fin[index_pre_fin:])
+				horas, _ = strconv.Atoi(hora_pre_fin[:index_pre_fin])
+			default:
+				index_pre_fin = 0
+				//Minutos y Horas
+				minutos, _ = strconv.Atoi(hora_pre_fin[index_pre_fin:])
+				horas = 0
+			}
 
-				//Validamos que no sobrepase los 60 minutos
-				var minutos_string string
-				if minutos > 59 {
-					minutos = 60 - minutos
-					if minutos < 10 {
-						minutos_string = "0" + strconv.Itoa(minutos)
-					} else {
-						minutos_string = strconv.Itoa(minutos)
-					}
-					horas = horas + 1
-					println("----------------------------->SE ESTA APLICANDO EL HORAS + 1 -->", horas)
+			//Validamos que no sobrepase los 60 minutos
+			var minutos_string string
+			if minutos > 59 {
+				minutos = 60 - minutos
+				if minutos < 10 {
+					minutos_string = "0" + strconv.Itoa(minutos)
 				} else {
-					minutos_string = hora_pre_fin[index_pre_fin:]
+					minutos_string = strconv.Itoa(minutos)
 				}
+				horas = horas + 1
+				println("----------------------------->SE ESTA APLICANDO EL HORAS + 1 -->", horas)
+			} else {
+				minutos_string = hora_pre_fin[index_pre_fin:]
+			}
 
-				//Validamos que no sobrepase las 24 horas
-				var horas_string string
-				if horas > 23 {
-					horas = 24 - horas
-					horas_string = "0" + strconv.Itoa(horas)
+			//Validamos que no sobrepase las 24 horas
+			var horas_string string
+			if horas > 23 {
+				horas = 24 - horas
+				horas_string = "0" + strconv.Itoa(horas)
+			} else {
+				if horas == 0 {
+					horas_string = "00"
 				} else {
-					if horas == 0 {
-						horas_string = "00"
-					} else {
-						horas_string = strconv.Itoa(horas)
-					}
+					horas_string = strconv.Itoa(horas)
 				}
+			}
 
-				//Hora que finaliza
-				hora_finaliza := horas_string + minutos_string
+			//Hora que finaliza
+			hora_finaliza := horas_string + minutos_string
 
-				//TODO SOBRE LA HORA FIN
-				var index_fin int
-				if len(hora_finaliza) > 3 {
-					index_fin = 2
-				} else {
-					index_fin = 1
-				}
+			//TODO SOBRE LA HORA FIN
+			var index_fin int
+			if len(hora_finaliza) > 3 {
+				index_fin = 2
+			} else {
+				index_fin = 1
+			}
 
-				//Le pondremos un 0 al comienzo de un numero si es necesario
-				var hora_fin_toinsert string
-				if len(hora_finaliza[:index_fin]) == 1 {
-					hora_fin_toinsert = "0" + strconv.Itoa(horas) + ":" + hora_finaliza[index_fin:]
-				} else {
-					hora_fin_toinsert = strconv.Itoa(horas) + ":" + hora_finaliza[index_fin:]
-				}
+			//Le pondremos un 0 al comienzo de un numero si es necesario
+			var hora_fin_toinsert string
+			if len(hora_finaliza[:index_fin]) == 1 {
+				hora_fin_toinsert = "0" + strconv.Itoa(horas) + ":" + hora_finaliza[index_fin:]
+			} else {
+				hora_fin_toinsert = strconv.Itoa(horas) + ":" + hora_finaliza[index_fin:]
+			}
 
-				//Insertamos los datos en el modelo
-				idschedulerange_pg_2 = append(idschedulerange_pg_2, sch.IDSchedule)
-				idcarta_pg_2 = append(idcarta_pg_2, idcarta)
-				idbusiness_pg_2 = append(idbusiness_pg_2, idbusiness)
-				startime_pg_2 = append(startime_pg_2, hora_ini_string)
-				endtime_pg_2 = append(endtime_pg_2, hora_fin_toinsert)
-				max_orders_2 = append(max_orders_2, sch.MaxOrders)
-				timezone_2 = append(timezone_2, "-5")
+			//Insertamos los datos en el modelo
+			idschedulerange_pg_2 = append(idschedulerange_pg_2, sch.IDSchedule)
+			idcarta_pg_2 = append(idcarta_pg_2, idcarta)
+			idbusiness_pg_2 = append(idbusiness_pg_2, idbusiness)
+			startime_pg_2 = append(startime_pg_2, hora_ini_string)
+			endtime_pg_2 = append(endtime_pg_2, hora_fin_toinsert)
+			max_orders_2 = append(max_orders_2, sch.MaxOrders)
+			timezone_2 = append(timezone_2, "-5")
 
-				//Nuevo valor de hora de inicio
-				new_hora_ini, _ := strconv.Atoi(strconv.Itoa(horas) + hora_finaliza[index_fin:])
-				hora_ini = new_hora_ini
-				hora_ini_string = hora_fin_toinsert
+			//Nuevo valor de hora de inicio
+			new_hora_ini, _ := strconv.Atoi(strconv.Itoa(horas) + hora_finaliza[index_fin:])
+			hora_ini = new_hora_ini
+			hora_ini_string = hora_fin_toinsert
+
+			//Si supera la media noche se termina el bucle
+			if horas_string == "00" {
+				break
 			}
 		}
+
 	}
 
 	//BEGIN
