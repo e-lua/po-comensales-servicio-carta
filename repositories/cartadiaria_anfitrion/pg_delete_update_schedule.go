@@ -94,14 +94,14 @@ func Pg_Delete_Update_ScheduleRange(pg_schedule []models.Pg_ScheduleRange_Extern
 				//Validamos que no sobrepase las 24 horas
 				var horas_string string
 				if horas > 23 {
+					horas = 24 - horas
+					horas_string = "0" + strconv.Itoa(horas)
+				} else {
 					if horas == 0 {
 						horas_string = "00"
 					} else {
-						horas = 24 - horas
-						horas_string = "0" + strconv.Itoa(horas)
+						horas_string = hora_pre_fin[:index_pre_fin]
 					}
-				} else {
-					horas_string = hora_pre_fin[:index_pre_fin]
 				}
 
 				//Hora que finaliza
