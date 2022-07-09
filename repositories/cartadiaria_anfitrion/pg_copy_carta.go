@@ -103,10 +103,8 @@ func Pg_Copy_Carta(pg_schedule []models.Pg_ScheduleRange_External, pg_element_ex
 				minutos = 60 - minutos
 				if minutos < 10 {
 					minutos_string = "0" + strconv.Itoa(minutos)
-					horas = horas + 1
 				} else {
 					minutos_string = strconv.Itoa(minutos)
-					horas = horas + 1
 				}
 				horas = horas + 1
 			} else {
