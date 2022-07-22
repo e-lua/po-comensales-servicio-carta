@@ -53,7 +53,7 @@ func Pg_Copy_Carta(pg_schedule []models.Pg_ScheduleRange_External, pg_element_ex
 		start_pg_2 = append(start_pg_2, sch.StartTime)
 		end_pg_2 = append(end_pg_2, sch.EndTime)
 		maxorders_pg_2 = append(maxorders_pg_2, sch.MaxOrders)
-		timezone_pg_2 = append(timezone_pg_2, sch.TimeZone)
+		timezone_pg_2 = append(timezone_pg_2, "-5")
 
 	}
 
@@ -154,7 +154,7 @@ func Pg_Copy_Carta(pg_schedule []models.Pg_ScheduleRange_External, pg_element_ex
 			startime_pg_3 = append(startime_pg_3, hora_ini_string)
 			endtime_pg_3 = append(endtime_pg_3, hora_fin_toinsert)
 			max_orders_3 = append(max_orders_3, 20)
-			timezone_pg_3 = append(timezone_pg_3, sch.TimeZone)
+			timezone_pg_3 = append(timezone_pg_3, "-5")
 
 			//Nuevo valor de hora de inicio
 			new_hora_ini, _ := strconv.Atoi(strconv.Itoa(horas) + hora_finaliza[index_fin:])
