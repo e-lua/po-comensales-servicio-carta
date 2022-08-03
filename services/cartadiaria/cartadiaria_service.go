@@ -58,7 +58,7 @@ func AddViewInformation_Service(idelement int, idcomensal int) (int, bool, strin
 	return 200, false, "", "Vista registrada"
 }
 
-func GetBusinessElement_Service(date string, idbusiness int, idcategory int) (int, bool, string, []models.Pg_Element_With_Stock) {
+func GetBusinessElement_Service(date string, idbusiness int, idcategory int) (int, bool, string, []models.Pg_Element_ToCreate) {
 
 	//Obtenemos las categorias
 	carta_elements, error_update := cartadiaria_repository.Pg_Find_Elements(date, idbusiness, idcategory)

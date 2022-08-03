@@ -149,6 +149,7 @@ type Pg_Element_ToCreate struct {
 	UrlPhoto         string                  `bson:"url" json:"url"`
 	Insumos          []Pg_Mo_Insumo_Elements `bson:"insumos" json:"insumos"`
 	Costo            float64                 `bson:"costo" json:"costo"`
+	AvailableOrders  bool                    `json:"availableorders"`
 }
 
 type Pg_Schedule_ToCreate struct {
