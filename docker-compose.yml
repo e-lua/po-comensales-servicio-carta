@@ -72,7 +72,7 @@ services:
     networks:
       - traefik_net
     ports:
-      - "27017:27017"
+      - "29520:27017"
     volumes: 
       - shared_database:/data/db
     environment:

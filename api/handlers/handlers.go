@@ -13,6 +13,7 @@ import (
 
 	"github.com/Aphofisis/po-comensales-servicio-carta/models"
 	cartadiaria "github.com/Aphofisis/po-comensales-servicio-carta/services/cartadiaria"
+	cartadiaria_web "github.com/Aphofisis/po-comensales-servicio-carta/services/cartadiaria_web"
 	imports "github.com/Aphofisis/po-comensales-servicio-carta/services/imports"
 )
 
@@ -28,6 +29,23 @@ func Manejadores() {
 	go Consumer_Schedule_Stock()
 
 	e.GET("/", index)
+
+	/*---------------------------------------------------------------------------------------------------------------------------------*/
+
+	//VERSION WEB
+	version_1_web := e.Group("/v1/web")
+
+	/*===========CARTA===========*/
+	//V1 FROM V1 TO ...TO ENTITY MENU
+	router_business_web := version_1_web.Group("/business/data")
+	router_business_web.GET("/:uniquename/information", cartadiaria_web.Web_CartaDiariaRouter_pg.Web_GetBusinessInformation)
+	router_business_web.GET("/:idbusiness/menu/:date/category", cartadiaria.CartaDiariaRouter_pg.GetBusinessCategory)
+	router_business_web.GET("/:idbusiness/menu/:date/category/:idcategory/elements", cartadiaria.CartaDiariaRouter_pg.GetBusinessElement)
+	router_business_web.GET("/:idbusiness/menu/:date/scheduleranges", cartadiaria.CartaDiariaRouter_pg.GetBusinessSchedule)
+	router_business_web.GET("/:idbusiness/menu/:date/search/:text/:limit/:offset", cartadiaria.CartaDiariaRouter_pg.SearchByNameAndDescription)
+
+	/*---------------------------------------------------------------------------------------------------------------------------------*/
+
 	//VERSION
 	version_1 := e.Group("/v1")
 
