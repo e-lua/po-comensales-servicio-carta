@@ -43,15 +43,15 @@ type ResponseCartaCategory struct {
 }
 
 type ResponseCartaElements struct {
-	Error     bool                          `json:"error"`
-	DataError string                        `json:"dataError"`
-	Data      []*models.Pg_Element_ToCreate `json:"data"`
+	Error     bool                         `json:"error"`
+	DataError string                       `json:"dataError"`
+	Data      []models.Pg_Element_ToCreate `json:"data"`
 }
 
 type ResponseCartaElements_Searched struct {
-	Error     bool                          `json:"error"`
-	DataError string                        `json:"dataError"`
-	Data      []*models.Pg_Element_ToCreate `json:"data"`
+	Error     bool                         `json:"error"`
+	DataError string                       `json:"dataError"`
+	Data      []models.Pg_Element_ToCreate `json:"data"`
 }
 
 type ResponseCartaElements_Searched_Mo struct {
