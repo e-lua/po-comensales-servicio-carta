@@ -5,13 +5,14 @@ import (
 	"encoding/json"
 	"log"
 
-	"net/http"
+	//"net/http"
 	"os"
 	"time"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/rs/cors"
+
+	//"github.com/rs/cors"
 
 	"github.com/Aphofisis/po-comensales-servicio-carta/models"
 	cartadiaria "github.com/Aphofisis/po-comensales-servicio-carta/services/cartadiaria"
@@ -26,8 +27,7 @@ func Manejadores() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"*"},
-		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+		AllowOrigins: []string{"http://localhost:6500"},
 	}))
 
 	//Consumidor-MQTT
@@ -108,10 +108,11 @@ func Manejadores() {
 		PORT = "6500"
 	}
 
+	e.Start(":6500")
 	//cors son los permisos que se le da a la API
 	//para que sea accesibl esde cualquier lugar
-	handler := cors.AllowAll().Handler(e)
-	log.Fatal(http.ListenAndServe(":"+PORT, handler))
+	//handler := cors.AllowAll().Handler(e)
+	//log.Fatal(http.ListenAndServe(":"+PORT, handler))
 }
 
 func index(c echo.Context) error {
