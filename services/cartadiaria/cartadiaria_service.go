@@ -327,6 +327,12 @@ func AddCartaFromOther_Service(input_carta Carta, idbusiness int) (int, bool, st
 		return 500, true, "Error en el servidor interno al intentar actualizar la lista de rangos horarios, detalles: " + error_update_schedulelist.Error(), 0
 	}
 
+	//Registramos los datos en Mongo DB
+	error_update_mo := cartadiaria_anfitrion_repository.Mo_Delete_Update_Elements(carta_elements, idcarta_int.IDCarta, idbusiness)
+	if error_update_mo != nil {
+		return 500, true, "Error en el servidor interno al intentar actualizar los elementos, detalles: " + error_update_mo.Error(), 0
+	}
+
 	/*--SENT NOTIFICATION--*/
 	var nameday string
 
