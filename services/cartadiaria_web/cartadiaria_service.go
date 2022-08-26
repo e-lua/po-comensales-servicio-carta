@@ -5,6 +5,7 @@ import (
 
 	models "github.com/Aphofisis/po-comensales-servicio-carta/models"
 	cartadiaria_repository "github.com/Aphofisis/po-comensales-servicio-carta/repositories/cartadiaria"
+	element_repository "github.com/Aphofisis/po-comensales-servicio-carta/repositories/element"
 )
 
 /*----------------------GET DATA ----------------------*/
@@ -20,10 +21,9 @@ func Web_GetBusinessCategory_Service(date string, idbusiness int) (int, bool, st
 	return 201, false, "", carta_category
 }
 
-func Web_GetBusinessElement_Service(date string, idbusiness int, idcategory int) (int, bool, string, []models.Pg_Element_ToCreate) {
+func Web_GetBusinessElement_Service(date string, idbusiness int, limit int) (int, bool, string, []*models.Pg_Element_ToCreate) {
 
-	//Obtenemos las categorias
-	carta_elements, error_update := cartadiaria_repository.Pg_Find_Elements(date, idbusiness, idcategory)
+	carta_elements, error_update := element_repository.Mo_Find_All(date, idbusiness, int64(limit))
 	if error_update != nil {
 		return 500, true, "Error en el servidor interno al intentar encontrar las categorias de la carta, detalles: " + error_update.Error(), carta_elements
 	}
@@ -40,4 +40,14 @@ func Web_GetBusinessSchedule_Service(date string, idbusiness int) (int, bool, st
 	}
 
 	return 201, false, "", carta_schedule
+}
+
+func Web_SearchByNameAndDescription_Service(date string, idbusiness int, name string, limit int) (int, bool, string, []*models.Pg_Element_ToCreate) {
+
+	carta_elements, error_find := element_repository.Mo_Search_Name_Comensales(date, idbusiness, name, int64(limit))
+	if error_find != nil {
+		return 500, true, "Error en el servidor interno al intentar encontrar llos elementos, detalles: " + error_find.Error(), carta_elements
+	}
+
+	return 201, false, "", carta_elements
 }

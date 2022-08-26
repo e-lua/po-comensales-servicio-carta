@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -39,11 +40,10 @@ func Manejadores() {
 	//V1 FROM V1 TO ...TO ENTITY MENU
 	router_business_web := version_1_web.Group("/business/data")
 	router_business_web.GET("/:uniquename/information", cartadiaria_web.Web_CartaDiariaRouter_pg.Web_GetBusinessInformation)
-	router_business_web.GET("/:idbusiness/menu/:date/category", cartadiaria.CartaDiariaRouter_pg.GetBusinessCategory)
-	router_business_web.GET("/:idbusiness/menu/:date/category/:idcategory/elements", cartadiaria.CartaDiariaRouter_pg.GetBusinessElement)
-	router_business_web.GET("/:idbusiness/menu/:date/scheduleranges", cartadiaria.CartaDiariaRouter_pg.GetBusinessSchedule)
-	router_business_web.GET("/:idbusiness/menu/:date/search/:text/:limit/:offset", cartadiaria.CartaDiariaRouter_pg.SearchByNameAndDescription)
-
+	router_business_web.GET("/:idbusiness/menu/:date/categories", cartadiaria_web.Web_CartaDiariaRouter_pg.Web_GetBusinessCategory)
+	router_business_web.GET("/:idbusiness/menu/:date/elements/:limit", cartadiaria_web.Web_CartaDiariaRouter_pg.Web_GetBusinessElement)
+	router_business_web.GET("/:idbusiness/menu/:date/scheduleranges", cartadiaria_web.Web_CartaDiariaRouter_pg.Web_GetBusinessSchedule)
+	router_business_web.GET("/:idbusiness/menu/:date/search/:limit", cartadiaria_web.Web_CartaDiariaRouter_pg.Web_SearchByNameAndDescription)
 	/*---------------------------------------------------------------------------------------------------------------------------------*/
 
 	//VERSION
@@ -174,4 +174,18 @@ func Consumer_Schedule_Stock() {
 
 	<-noStop2
 
+}
+
+func Delete_Vencidas() {
+
+	noStopDeleteV := make(chan bool)
+
+	go func() {
+		for {
+			time.Sleep(24 * time.Hour)
+			cartadiaria.CartaDiariaRouter_pg.Delete_Vencidas()
+		}
+	}()
+
+	<-noStopDeleteV
 }

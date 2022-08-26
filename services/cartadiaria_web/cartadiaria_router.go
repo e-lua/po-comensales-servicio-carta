@@ -61,12 +61,12 @@ func (cr *webCartaDiariaRouter_pg) Web_GetBusinessElement(c echo.Context) error 
 	idbusiness := c.Param("idbusiness")
 	idbusiness_int, _ := strconv.Atoi(idbusiness)
 
-	//Recibimos el id de la categoria
-	idcategory := c.Param("idcategory")
-	idcategory_int, _ := strconv.Atoi(idcategory)
+	//Recibimos el limit
+	limit := c.Param("limit")
+	limit_int, _ := strconv.Atoi(limit)
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := Web_GetBusinessElement_Service(date, idbusiness_int, idcategory_int)
+	status, boolerror, dataerror, data := Web_GetBusinessElement_Service(date, idbusiness_int, limit_int)
 	results := ResponseCartaElements{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 }
@@ -83,6 +83,28 @@ func (cr *webCartaDiariaRouter_pg) Web_GetBusinessSchedule(c echo.Context) error
 	//Enviamos los datos al servicio
 	status, boolerror, dataerror, data := Web_GetBusinessSchedule_Service(date, idbusiness_int)
 	results := ResponseCartaSchedule{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+}
+
+func (cr *webCartaDiariaRouter_pg) Web_SearchByNameAndDescription(c echo.Context) error {
+
+	//Recibimos la fecha de la carta
+	date := c.Param("date")
+
+	//Recibimos el id del negocio
+	idbusiness := c.Param("idbusiness")
+	idbusiness_int, _ := strconv.Atoi(idbusiness)
+
+	//Recibimos el limit
+	limit := c.Param("limit")
+	limit_int, _ := strconv.Atoi(limit)
+
+	//Recibimos el nombre
+	name := c.Request().URL.Query().Get("name")
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := Web_SearchByNameAndDescription_Service(date, idbusiness_int, name, limit_int)
+	results := ResponseCartaElements_Searched{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 }
 

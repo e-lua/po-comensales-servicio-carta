@@ -1,5 +1,18 @@
 package models
 
+import "go.mongodb.org/mongo-driver/bson/primitive"
+
+type Pg_V2_Mo_Insumo_Elements struct {
+	ID             primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
+	Name           string             `json:"name"`
+	Measure        string             `json:"measure"`
+	IDStoreHouse   string             `json:"idstorehouse"`
+	NameStoreHouse string             `json:"namestorehouse"`
+	Description    string             `json:"description"`
+	Stock          []*Mo_Stock        `json:"stock"`
+	Quantity       int                `json:"quantity"`
+}
+
 type Pg_V2_Element_With_Stock_External struct {
 	IDElement        int                     `json:"id"`
 	IDCarta          int                     `json:"idcarta"`

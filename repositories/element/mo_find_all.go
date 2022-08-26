@@ -6,31 +6,27 @@ import (
 
 	models "github.com/Aphofisis/po-comensales-servicio-carta/models"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func Mo_Search_Name_Comensales(date string, idbusiness int, text string, limit int64) ([]*models.Pg_Element_ToCreate, error) {
+func Mo_Find_All(date string, idbusiness int, limit int64) ([]*models.Pg_Element_ToCreate, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*8)
 	defer cancel()
 
 	db := models.MongoCN.Database("restoner_cartadiaria")
 	col := db.Collection("elements")
 
+	/*Aca pude haber hecho un make, es decir, resultado:=make([]...)*/
 	var resultado []*models.Pg_Element_ToCreate
 
 	condicion := bson.M{
 		"idbusiness": idbusiness,
 		"date":       date,
-		"name": primitive.Regex{
-			Pattern: text,
-			Options: "i",
-		},
 	}
 
 	opciones := options.Find()
 	/*Indicar como ira ordenado*/
-	opciones.SetSort(bson.D{{Key: "name", Value: 1}})
+	opciones.SetSort(bson.D{{Key: "namecategory", Value: 1}})
 	opciones.SetSkip(1 * limit)
 
 	/*Cursor es como una tabla de base de datos donde se van a grabar los resultados
