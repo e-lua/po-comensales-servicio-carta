@@ -113,7 +113,7 @@ func Manejadores() {
 	//cors son los permisos que se le da a la API
 	//para que sea accesibl esde cualquier lugar
 	//handler := cors.AllowAll().Handler(e)
-	//log.Fatal(http.ListenAndServe(":"+PORT, handler))
+	//log.Fatal(http.ListenAndServe(":"+PORT))
 }
 
 func index(c echo.Context) error {
