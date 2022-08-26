@@ -139,6 +139,7 @@ type Pg_Element_ToCreate struct {
 	IDCarta          int                     `bson:"idcarta" json:"idcarta"`
 	IDCategory       int                     `bson:"idcategory" json:"idcategory"`
 	NameCategory     string                  `bson:"namecategory" json:"namecategory"`
+	Date             string                  `bson:"date" json:"date"`
 	TypeFood         string                  `bson:"typefood" json:"typefood"`
 	UrlPhotoCategory string                  `bson:"urlphotocategory" json:"urlphotocategory"`
 	Name             string                  `bson:"name" json:"name"`
