@@ -11,9 +11,9 @@ type Response struct {
 }
 
 type ResponseBusiness struct {
-	Error     bool               `json:"error"`
-	DataError string             `json:"dataError"`
-	Data      models.Mo_Business `json:"data"`
+	Error     bool                  `json:"error"`
+	DataError string                `json:"dataError"`
+	Data      models.Mo_Business_V2 `json:"data"`
 }
 
 type ResponseBusiness_V2 struct {
