@@ -78,7 +78,7 @@ func Pg_Web_Find_Elements(date string, idbusiness int, limit int) ([]models.Pg_E
 	defer cancel()
 
 	db := models.Conectar_Pg_DB()
-	q := "SELECT e.idelement,e.idbusiness,e.idcategory,e.namecategory,e.urlphotcategory,e.name,e.price,e.description,e.urlphoto,e.typemoney,e.stock,e.typefood,e.insumos,e.costo,e.availableorders FROM element e LEFT JOIN carta c ON e.idcarta=c.idcarta WHERE c.date=$1 AND e.idbusiness=$2 ORDER BY e.name ASC LIMIT $3"
+	q := "SELECT e.idelement,e.idbusiness,e.idcategory,e.namecategory,e.urlphotcategory,e.name,e.price,e.description,e.urlphoto,e.typemoney,e.stock,e.typefood,e.insumos,e.costo,e.availableorders FROM element e LEFT JOIN carta c ON e.idcarta=c.idcarta WHERE c.date=$1 AND e.idbusiness=$2 ORDER BY e.idelement ASC LIMIT $3"
 	rows, error_shown := db.Query(ctx, q, date, idbusiness, limit)
 
 	//Instanciamos una variable del modelo Pg_TypeFoodXBusiness
