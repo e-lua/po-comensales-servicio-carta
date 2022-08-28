@@ -21,9 +21,9 @@ func Web_GetBusinessCategory_Service(date string, idbusiness int) (int, bool, st
 	return 201, false, "", carta_category
 }
 
-func Web_GetBusinessElement_Service(date string, idbusiness int, limit int) (int, bool, string, []models.Pg_Element_ToCreate) {
+func Web_GetBusinessElement_Service(date string, idbusiness int, limit int) (int, bool, string, []models.V2_Pg_Categories_Elements) {
 
-	carta_elements, error_update := cartadiaria_repository.Pg_Web_Find_Elements(date, idbusiness, limit)
+	carta_elements, error_update := cartadiaria_repository.V2_Pg_Web_Find_Elements(date, idbusiness, limit)
 	if error_update != nil {
 		return 500, true, "Error en el servidor interno al intentar encontrar las categorias de la carta, detalles: " + error_update.Error(), carta_elements
 	}
