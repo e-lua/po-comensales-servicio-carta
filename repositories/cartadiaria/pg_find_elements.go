@@ -100,6 +100,36 @@ func Pg_Web_Find_Elements(date string, idbusiness int, limit int) ([]models.Pg_E
 	return oListElementsWithStock, nil
 }
 
+func V2_Pg_Web_Find_Elements(date string, idbusiness int, limit int) ([]models.V2_Pg_Categories_Elements, error) {
+
+	//Tiempo limite al contexto
+	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
+	//defer cancelara el contexto
+	defer cancel()
+
+	db := models.Conectar_Pg_DB()
+	q := "SELECT json_build_object('category',json_build_object('idcategory',ele.idcategory,'namecategory',ele.namecategory),'elements',json_agg( DISTINCT ele.*)) FROM element AS ele LEFT JOIN carta c ON ele.idcarta=c.idcarta WHERE c.date=$1  AND ele.idbusiness=$2  GROUP BY namecategory,idcategory LIMIT $3"
+	rows, error_shown := db.Query(ctx, q, date, idbusiness, limit)
+
+	//Instanciamos una variable del modelo Pg_TypeFoodXBusiness
+	var oListCategoryElements []models.V2_Pg_Categories_Elements
+
+	if error_shown != nil {
+
+		return oListCategoryElements, error_shown
+	}
+
+	//Scaneamos l resultado y lo asignamos a la variable instanciada
+	for rows.Next() {
+		var oCategory_Element models.V2_Pg_Categories_Elements
+		rows.Scan(&oCategory_Element.Category, &oCategory_Element.Elements)
+		oListCategoryElements = append(oListCategoryElements, oCategory_Element)
+	}
+
+	//Si todo esta bien
+	return oListCategoryElements, nil
+}
+
 func Pg_Web_Find_Elements_SearchByText(date string, idbusiness int, name string, limit int) ([]models.Pg_Element_ToCreate, error) {
 
 	//Tiempo limite al contexto

@@ -32,3 +32,13 @@ type Pg_V2_Element_With_Stock_External struct {
 	Costo            float64                 `json:"costo"`
 	AvailableOrders  bool                    `json:"availableorders"`
 }
+
+type V2_Pg_Category struct {
+	IDCategory   int    `json:"idcategory"`
+	NameCategory string `json:"namecategory"`
+}
+
+type V2_Pg_Categories_Elements struct {
+	Category V2_Pg_Category                      `json:"category"`
+	Elements []Pg_V2_Element_With_Stock_External `json:"elements"`
+}

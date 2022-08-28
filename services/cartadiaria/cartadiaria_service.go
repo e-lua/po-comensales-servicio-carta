@@ -58,10 +58,10 @@ func AddViewInformation_Service(idelement int, idcomensal int) (int, bool, strin
 	return 200, false, "", "Vista registrada"
 }
 
-func GetBusinessElement_Service(date string, idbusiness int, idcategory int) (int, bool, string, []models.Pg_Element_ToCreate) {
+func GetBusinessElement_Service(date string, idbusiness int, idcategory int) (int, bool, string, []models.V2_Pg_Categories_Elements) {
 
 	//Obtenemos las categorias
-	carta_elements, error_update := cartadiaria_repository.Pg_Find_Elements(date, idbusiness, idcategory)
+	carta_elements, error_update := cartadiaria_repository.V2_Pg_Web_Find_Elements(date, idbusiness, idcategory)
 	if error_update != nil {
 		return 500, true, "Error en el servidor interno al intentar encontrar las categorias de la carta, detalles: " + error_update.Error(), carta_elements
 	}
