@@ -21,7 +21,7 @@ func Web_GetBusinessCategory_Service(date string, idbusiness int) (int, bool, st
 	return 201, false, "", carta_category
 }
 
-func Web_GetBusinessElement_Service(date string, idbusiness int, limit int) (int, bool, string, []models.V2_Pg_Categories_Elements) {
+func Web_GetBusinessElement_Service(date string, idbusiness int, limit int) (int, bool, string, []interface{}) {
 
 	carta_elements, error_update := cartadiaria_repository.V2_Pg_Web_Find_Elements(date, idbusiness, limit)
 	if error_update != nil {

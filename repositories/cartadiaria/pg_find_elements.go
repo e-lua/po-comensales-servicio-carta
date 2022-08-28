@@ -100,7 +100,7 @@ func Pg_Web_Find_Elements(date string, idbusiness int, limit int) ([]models.Pg_E
 	return oListElementsWithStock, nil
 }
 
-func V2_Pg_Web_Find_Elements(date string, idbusiness int, limit int) ([]models.V2_Pg_Categories_Elements, error) {
+func V2_Pg_Web_Find_Elements(date string, idbusiness int, limit int) ([]interface{}, error) {
 
 	//Tiempo limite al contexto
 	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
@@ -112,7 +112,7 @@ func V2_Pg_Web_Find_Elements(date string, idbusiness int, limit int) ([]models.V
 	rows, error_shown := db.Query(ctx, q, date, idbusiness, limit)
 
 	//Instanciamos una variable del modelo Pg_TypeFoodXBusiness
-	var oListCategoryElements []models.V2_Pg_Categories_Elements
+	var oListCategoryElements []interface{}
 
 	if error_shown != nil {
 
@@ -121,8 +121,8 @@ func V2_Pg_Web_Find_Elements(date string, idbusiness int, limit int) ([]models.V
 
 	//Scaneamos l resultado y lo asignamos a la variable instanciada
 	for rows.Next() {
-		var oCategory_Element models.V2_Pg_Categories_Elements
-		rows.Scan(&oCategory_Element.Category, &oCategory_Element.Elements)
+		var oCategory_Element interface{}
+		rows.Scan(&oCategory_Element)
 		oListCategoryElements = append(oListCategoryElements, oCategory_Element)
 	}
 
