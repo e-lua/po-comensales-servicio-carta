@@ -342,9 +342,9 @@ func (cr *cartaDiariaRouter_pg) SearchByName_Anfitrion(c echo.Context) error {
 	offset := c.Param("offset")
 	offset_int, _ := strconv.Atoi(offset)
 
-	if offset_int == 0 {
+	/*if offset_int == 0 {
 		offset_int = 1
-	}
+	}*/
 
 	//Enviamos los datos al servicio
 	status, boolerror, dataerror, data := SearchByName_Anfitrion_Service(date, data_idbusiness, text, limit_int, offset_int)
