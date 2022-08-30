@@ -109,14 +109,20 @@ func GetBusinessSchedule_Service(date string, idbusiness int) (int, bool, string
 /*---------------------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------------------*/
 
-func SearchByName_Anfitrion_Service(date string, idbusiness int, text string, limit int, offset int) (int, bool, string, []*models.Pg_Element_ToCreate) {
+func SearchByName_Anfitrion_Service(date string, idbusiness int, text string, limit int, offset int) (int, bool, string, []models.Pg_Element_ToCreate) {
+	//Version PG
 
-	//Version MO
-
-	carta_elements, error_find := element_repository.Mo_Search_Name_Anfitriones(date, idbusiness, text, int64(limit), int64(offset))
+	carta_elements, error_find := cartadiaria_repository.Pg_Find_Elements_SearchByText(date, idbusiness, text, limit, offset)
 	if error_find != nil {
 		return 500, true, "Error en el servidor interno al intentar encontrar llos elementos, detalles: " + error_find.Error(), carta_elements
 	}
+
+	//Version MO
+
+	/*carta_elements, error_find := element_repository.Mo_Search_Name(date, idbusiness, text, int64(limit), int64(offset))
+	  if error_find != nil {
+	  	return 500, true, "Error en el servidor interno al intentar encontrar llos elementos, detalles: " + error_find.Error(), carta_elements
+	  }*/
 
 	return 201, false, "", carta_elements
 }
