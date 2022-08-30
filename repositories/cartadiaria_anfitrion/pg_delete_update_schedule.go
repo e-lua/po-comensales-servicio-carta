@@ -101,7 +101,7 @@ func Pg_Delete_Update_ScheduleRange(pg_schedule []models.Pg_ScheduleRange_Extern
 				horas_string = "0" + strconv.Itoa(horas)
 			} else {
 				if horas == 0 {
-					horas_string = "00"
+					horas_string = "24"
 				} else {
 					horas_string = strconv.Itoa(horas)
 				}
@@ -141,7 +141,7 @@ func Pg_Delete_Update_ScheduleRange(pg_schedule []models.Pg_ScheduleRange_Extern
 			hora_ini_string = hora_fin_toinsert
 
 			//Si supera la media noche se termina el bucle
-			if horas_string == "00" {
+			if horas_string == "24" {
 				break
 			}
 		}
