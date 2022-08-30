@@ -98,7 +98,7 @@ func Pg_Delete_Update_ScheduleRange(pg_schedule []models.Pg_ScheduleRange_Extern
 			var horas_string string
 			if horas > 23 {
 				horas = 24 - horas
-				horas_string = "0" + strconv.Itoa(horas)
+				horas_string = "24"
 			} else {
 				if horas == 0 {
 					horas_string = "24"
