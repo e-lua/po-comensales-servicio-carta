@@ -34,6 +34,8 @@ func Manejadores() {
 	//Consumidor-MQTT
 	//go Consumer_Element_Stock()
 	go Consumer_Schedule_Stock()
+	go Delete_Vencidas()
+	go Notify_NoCarta()
 
 	e.GET("/", index)
 
