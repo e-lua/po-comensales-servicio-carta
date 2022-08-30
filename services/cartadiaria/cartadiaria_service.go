@@ -15,6 +15,35 @@ import (
 	schedule_repository "github.com/Aphofisis/po-comensales-servicio-carta/repositories/schedule"
 )
 
+/*----------------------AUTOMATIC NOTIFY----------------------*/
+
+func Find__Notify_NoCarta_Service() error {
+
+	//Obtenemos las categorias
+	list_idbusiness, quantity, error_nocarta := cartadiaria_repository.Pg_Find_NoCarta()
+	if error_nocarta != nil {
+		return error_nocarta
+	}
+
+	if quantity > 0 {
+		/*--SENT NOTIFICATION--*/
+		notification := map[string]interface{}{
+			"message":      "No olvide programar su carta diaria",
+			"multipleuser": list_idbusiness,
+			"typeuser":     6,
+			"priority":     1,
+			"title":        "Restoner anfitriones",
+		}
+		json_data, _ := json.Marshal(notification)
+		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
+		/*---------------------*/
+	}
+
+	return nil
+}
+
+/*---------------------------------------------------------------*/
+
 /*----------------------UDPATE DATA CONSUME----------------------*/
 
 func UpdateElementStock_Service(input_elements models.Pg_ToElement_Mqtt) error {

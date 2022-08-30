@@ -195,3 +195,17 @@ func Delete_Vencidas() {
 
 	<-noStopDeleteV
 }
+
+func Notify_NoCarta() {
+
+	noStopNotify_NoCarta := make(chan bool)
+
+	go func() {
+		for {
+			time.Sleep(8 * time.Hour)
+			cartadiaria.CartaDiariaRouter_pg.Find__Notify_NoCarta()
+		}
+	}()
+
+	<-noStopNotify_NoCarta
+}

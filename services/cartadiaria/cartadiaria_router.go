@@ -765,3 +765,16 @@ func (cdr *cartaDiariaRouter_pg) GetSchedule_ToCreateOrder(c echo.Context) error
 	results := ResponseCartaSchedule_ToCreate{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 }
+
+func (cdr *cartaDiariaRouter_pg) Find__Notify_NoCarta() {
+
+	//Enviamos los datos al servicio
+	error_notify := Find__Notify_NoCarta_Service()
+
+	if error_notify != nil {
+		log.Println(error_notify)
+
+	}
+
+	log.Println("Notificado con exito")
+}
