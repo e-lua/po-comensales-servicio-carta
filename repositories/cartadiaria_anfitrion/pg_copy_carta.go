@@ -116,7 +116,7 @@ func Pg_Copy_Carta(pg_schedule []models.Pg_ScheduleRange_External, pg_element_ex
 			}
 
 			//Validamos que no sobrepase las 24 horas
-			var horas_string string
+			/*var horas_string string
 			if horas > 23 {
 				horas = 24 - horas
 				horas_string = "0" + strconv.Itoa(horas)
@@ -125,6 +125,17 @@ func Pg_Copy_Carta(pg_schedule []models.Pg_ScheduleRange_External, pg_element_ex
 					horas_string = "00"
 				} else {
 					horas_string = hora_pre_fin[:index_pre_fin]
+				}
+			}*/
+			var horas_string string
+			if horas > 23 {
+				horas = 24
+				horas_string = "24"
+			} else {
+				if horas == 0 {
+					horas_string = "00"
+				} else {
+					horas_string = strconv.Itoa(horas)
 				}
 			}
 
@@ -139,7 +150,7 @@ func Pg_Copy_Carta(pg_schedule []models.Pg_ScheduleRange_External, pg_element_ex
 				index_fin = 1
 			}
 
-			//Le pondremos un 0 al comienzo de un numero si es necesario
+			//Le pondremos un 0 al comienzo de un numero si es necesario, para horas como las 3 de la mañana= 03
 			var hora_fin_toinsert string
 			if len(hora_finaliza[:index_fin]) == 1 {
 				hora_fin_toinsert = "0" + strconv.Itoa(horas) + ":" + hora_finaliza[index_fin:]
@@ -162,7 +173,7 @@ func Pg_Copy_Carta(pg_schedule []models.Pg_ScheduleRange_External, pg_element_ex
 			hora_ini_string = hora_fin_toinsert
 
 			//Si supera la media noche se termina el bucle
-			if horas_string == "00" {
+			if horas_string == "24" {
 				break
 			}
 		}

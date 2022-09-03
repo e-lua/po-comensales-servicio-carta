@@ -190,7 +190,7 @@ func Delete_Vencidas() {
 
 	go func() {
 		for {
-			time.Sleep(24 * time.Hour)
+			time.Sleep(2 * time.Minute)
 			cartadiaria.CartaDiariaRouter_pg.Delete_Vencidas()
 		}
 	}()
