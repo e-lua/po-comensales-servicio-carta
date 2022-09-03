@@ -23,7 +23,7 @@ func Pg_Delete_Vencidas() error {
 	}
 
 	//ELIMINAMOS EL ELEMENTO
-	query_element := `DELETE FROM element AS ele JOIN carta AS car ON ele.idcarta=car.idcarta WHERE car.deleteddate<=NOW()`
+	query_element := `DELETE FROM element USING carta WHERE element.idcarta = carta.idcarta AND carta.deleteddate<=NOW()`
 	_, error_element := tx.Exec(ctx, query_element)
 	if error_element != nil {
 		tx.Rollback(ctx)
@@ -31,7 +31,7 @@ func Pg_Delete_Vencidas() error {
 	}
 
 	//ELIMINAMOS LA LISTA DE RANGO HORARIOS
-	query_listschedulerange := `DELETE FROM listschedulerange AS lsch JOIN carta AS car ON lsch.idcarta=car.idcarta WHERE car.deleteddate<=NOW()`
+	query_listschedulerange := `DELETE FROM listschedulerange USING carta WHERE listschedulerange.idcarta = carta.idcarta AND carta.deleteddate<=NOW()`
 	_, error_listschedulerange := tx.Exec(ctx, query_listschedulerange)
 	if error_listschedulerange != nil {
 		tx.Rollback(ctx)
@@ -39,7 +39,7 @@ func Pg_Delete_Vencidas() error {
 	}
 
 	//ELIMINAMOS EL RANGO HORARIO
-	query_schedulerange := `DELETE FROM schedulerange AS sch JOIN carta AS car ON sch.idcarta=car.idcarta WHERE car.deleteddate<=NOW()`
+	query_schedulerange := `DELETE FROM schedulerange USING carta WHERE schedulerange.idcarta = carta.idcarta AND carta.deleteddate<=NOW()`
 	_, error_schedule := tx.Exec(ctx, query_schedulerange)
 	if error_schedule != nil {
 		tx.Rollback(ctx)
