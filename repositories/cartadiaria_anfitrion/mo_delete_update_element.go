@@ -9,10 +9,14 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func Mo_Delete_Update_Elements(pg_element_withaction_external []models.Pg_Element_With_Stock_External, idcarta int, idbusiness int) error {
+func Mo_Delete_Update_Elements(pg_element_withaction_external []models.Pg_Element_With_Stock_External, idbusiness int) error {
 
 	//Variables para el MQTT
 	var elements_mqtt []interface{}
+
+	//Obtener una fecha
+	one_date := ""
+	counter_to_skip := 0
 
 	//Repartiendo los datos
 	for _, e := range pg_element_withaction_external {
@@ -24,7 +28,7 @@ func Mo_Delete_Update_Elements(pg_element_withaction_external []models.Pg_Elemen
 		one_element_mqtt.DeletedDate = time.Now().AddDate(0, 0, 5)
 		one_element_mqtt.Description = e.Description
 		one_element_mqtt.IDBusiness = idbusiness
-		one_element_mqtt.IDCarta = idcarta
+		one_element_mqtt.IDCarta = e.IDCarta
 		one_element_mqtt.IDCategory = e.IDCategory
 		one_element_mqtt.IDElement = e.IDElement
 		one_element_mqtt.IsExported = false
@@ -38,6 +42,13 @@ func Mo_Delete_Update_Elements(pg_element_withaction_external []models.Pg_Elemen
 		one_element_mqtt.UrlPhotoCategory = e.UrlPhotoCategory
 		one_element_mqtt.Insumos = e.Insumos
 		one_element_mqtt.Costo = e.Costo
+
+		if counter_to_skip == 0 {
+			one_date = e.Date
+		}
+
+		counter_to_skip = counter_to_skip + 1
+
 		elements_mqtt = append(elements_mqtt, one_element_mqtt)
 	}
 
@@ -54,7 +65,7 @@ func Mo_Delete_Update_Elements(pg_element_withaction_external []models.Pg_Elemen
 			return err
 		}
 
-		_, err_delete := col.DeleteMany(ctx, bson.M{"idcarta": idcarta})
+		_, err_delete := col.DeleteMany(ctx, bson.M{"date": one_date})
 		if err_delete != nil {
 			return err_delete
 		}

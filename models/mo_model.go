@@ -148,6 +148,7 @@ type Mo_Element_With_Stock_Response struct {
 type Mo_ListoSchedule_With_Stock struct {
 	IDSchedule int64  `bson:"id" json:"id"`
 	IDCarta    int    `bson:"idcarta" json:"idcarta"`
+	Date       string `bson:"date" json:"date"`
 	IDBusiness int    `bson:"idbusiness" json:"idbusiness"`
 	Starttime  string `bson:"starttime" json:"starttime"`
 	Endtime    string `bson:"endtime" json:"endtime"`

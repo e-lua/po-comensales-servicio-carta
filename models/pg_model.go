@@ -175,6 +175,8 @@ type Pg_Schedule_ToCreate struct {
 
 type Pg_ScheduleRange_External struct {
 	IDSchedule        int64  `json:"id"`
+	IdCarta           int    `json:"idcarta"`
+	Date              string `json:"date"`
 	Name              string `json:"name"`
 	Description       string `json:"description"`
 	MinutePerFraction int    `json:"minutesperfraction"`

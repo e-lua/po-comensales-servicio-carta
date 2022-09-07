@@ -11,10 +11,14 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func Mo_Delete_Update_Schedule(pg_schedule []models.Pg_ScheduleRange_External, idcarta int, idbusiness int) error {
+func Mo_Delete_Update_Schedule(pg_schedule []models.Pg_ScheduleRange_External, idbusiness int) error {
 
 	//Variables para el MQTT
 	var lista_total_schedule []interface{}
+
+	//Obtener una fecha
+	one_date := ""
+	counter_to_skip := 0
 
 	for _, sch := range pg_schedule {
 
@@ -75,12 +79,19 @@ func Mo_Delete_Update_Schedule(pg_schedule []models.Pg_ScheduleRange_External, i
 
 				//Insertamos los datos en el modelo
 				list_schedule.IDSchedule = sch.IDSchedule
-				list_schedule.IDCarta = idcarta
+				list_schedule.IDCarta = sch.IdCarta
+				list_schedule.Date = sch.Date
 				list_schedule.IDBusiness = idbusiness
 				list_schedule.Starttime = hora_ini_string
 				list_schedule.Endtime = hora_fin_toinsert
 				list_schedule.MaxOrders = sch.MaxOrders
 				list_schedule.Timezone = "-5"
+
+				if counter_to_skip == 0 {
+					one_date = sch.Date
+				}
+
+				counter_to_skip = counter_to_skip + 1
 
 				lista_total_schedule = append(lista_total_schedule, list_schedule)
 
@@ -88,6 +99,7 @@ func Mo_Delete_Update_Schedule(pg_schedule []models.Pg_ScheduleRange_External, i
 				new_hora_ini, _ := strconv.Atoi(strconv.Itoa(horas) + minutos_string)
 				hora_ini = new_hora_ini
 				hora_ini_string = hora_fin_toinsert
+
 			}
 		}
 	}
@@ -105,7 +117,7 @@ func Mo_Delete_Update_Schedule(pg_schedule []models.Pg_ScheduleRange_External, i
 			return err
 		}
 
-		_, err_delete := col.DeleteMany(ctx, bson.M{"idcarta": idcarta})
+		_, err_delete := col.DeleteMany(ctx, bson.M{"date": one_date})
 		if err_delete != nil {
 			return err_delete
 		}
