@@ -36,6 +36,26 @@ func (wcr *webCartaDiariaRouter_pg) Web_GetBusinessInformation(c echo.Context) e
 	return c.JSON(200, get_respuesta)
 }
 
+func (wcr *webCartaDiariaRouter_pg) Web_GetBusinessPost(c echo.Context) error {
+
+	idbusiness := c.Param("idbusiness")
+	limit := c.Param("limit")
+
+	//Enviamos los datos al servicio de anfitriones para obtener los datos completos
+	respuesta, _ := http.Get("http://a-informacion.restoner-api.fun:80/v1/web/business/comensal/bnss/post/" + idbusiness + "/" + limit)
+	var get_respuesta ResponsePost
+	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
+	if error_decode_respuesta != nil {
+		results := Response{Error: true, DataError: "El valor ingresado no cumple con la regla de negocio", Data: ""}
+		return c.JSON(403, results)
+	}
+
+	//Agregamos la vista del comensal
+	//GetBusinessInformation_Service(data_idcomensal, idbusiness_int)
+
+	return c.JSON(200, get_respuesta)
+}
+
 /*----------------------GET DATA OF MENU----------------------*/
 
 func (cr *webCartaDiariaRouter_pg) Web_GetBusinessCategory(c echo.Context) error {

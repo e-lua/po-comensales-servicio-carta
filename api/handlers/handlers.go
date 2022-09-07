@@ -48,6 +48,7 @@ func Manejadores() {
 	//V1 FROM V1 TO ...TO ENTITY MENU
 	router_business_web := version_1_web.Group("/business/data")
 	router_business_web.GET("/:uniquename/information", cartadiaria_web.Web_CartaDiariaRouter_pg.Web_GetBusinessInformation)
+	router_business_web.GET("/:idbusiness/post/:limit", cartadiaria_web.Web_CartaDiariaRouter_pg.Web_GetBusinessPost)
 	router_business_web.GET("/:idbusiness/menu/:date/categories", cartadiaria_web.Web_CartaDiariaRouter_pg.Web_GetBusinessCategory)
 	router_business_web.GET("/:idbusiness/menu/:date/elements/:limit", cartadiaria_web.Web_CartaDiariaRouter_pg.Web_GetBusinessElement)
 	router_business_web.GET("/:idbusiness/menu/:date/scheduleranges", cartadiaria_web.Web_CartaDiariaRouter_pg.Web_GetBusinessSchedule)
@@ -61,6 +62,7 @@ func Manejadores() {
 	//V1 FROM V1 TO ...TO ENTITY MENU
 	router_business := version_1.Group("/business/data")
 	router_business.GET("/:idbusiness/information", cartadiaria.CartaDiariaRouter_pg.GetBusinessInformation)
+	router_business.GET("/:idbusiness/post/:limit", cartadiaria_web.Web_CartaDiariaRouter_pg.Web_GetBusinessPost)
 	router_business.GET("/:idbusiness/menu/:date/category", cartadiaria.CartaDiariaRouter_pg.GetBusinessCategory)
 	router_business.GET("/:idbusiness/menu/:date/category/:idcategory/elements", cartadiaria.CartaDiariaRouter_pg.GetBusinessElement)
 	router_business.GET("/:idbusiness/menu/:date/scheduleranges", cartadiaria.CartaDiariaRouter_pg.GetBusinessSchedule)

@@ -1,7 +1,10 @@
 package carta_web
 
 import (
+	"time"
+
 	"github.com/Aphofisis/po-comensales-servicio-carta/models"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type Response struct {
@@ -20,6 +23,20 @@ type ResponseBusiness_V2 struct {
 	Error     bool                  `json:"error"`
 	DataError string                `json:"dataError"`
 	Data      models.Mo_Business_V2 `json:"data"`
+}
+
+type Mo_Post struct {
+	ID             primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	Url            string             `bson:"url" json:"url"`
+	IdBusiness     int                `bson:"idbusiness" json:"idbusiness"`
+	Dateregistered time.Time          `bson:"dateregistered" json:"dateregistered"`
+	DeletedDate    time.Time          `bson:"deleteddate" json:"deleteddate"`
+}
+
+type ResponsePost struct {
+	Error     bool       `json:"error"`
+	DataError string     `json:"dataError"`
+	Data      []*Mo_Post `json:"data"`
 }
 
 type ResponseJWT struct {
