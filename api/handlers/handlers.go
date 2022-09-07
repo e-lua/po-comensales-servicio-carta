@@ -208,7 +208,7 @@ func Notify_NoCarta() {
 		for {
 			time.Sleep(1 * time.Hour)
 			ahora := time.Now()
-			for ahora.Hour() == 7 || ahora.Hour() == 11 || ahora.Hour() == 4 {
+			if ahora.Hour() == 7 || ahora.Hour() == 11 || ahora.Hour() == 4 {
 				cartadiaria.CartaDiariaRouter_pg.Find__Notify_NoCarta()
 			}
 		}
