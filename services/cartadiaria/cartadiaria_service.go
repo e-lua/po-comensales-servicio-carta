@@ -19,16 +19,24 @@ import (
 
 func Find__Notify_NoCarta_Service() error {
 
-	/*--SENT NOTIFICATION--*/
-	notification := map[string]interface{}{
-		"message":  "No olvide programar su carta diaria y/o programar la carta para el día siguiente",
-		"typeuser": 4,
-		"priority": 1,
-		"title":    "Restoner anfitriones",
+	ahora := time.Now()
+
+	if ahora.Hour() == 9 {
+
+		/*--SENT NOTIFICATION--*/
+		notification := map[string]interface{}{
+			"message":  "No olvide programar la cartaa para el día de hoy en la sección Carta Diaria",
+			"typeuser": 4,
+			"priority": 1,
+			"title":    "Restoner anfitriones",
+		}
+		json_data, _ := json.Marshal(notification)
+		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
+		/*---------------------*/
+
+		return nil
+
 	}
-	json_data, _ := json.Marshal(notification)
-	http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
-	/*---------------------*/
 
 	return nil
 }
