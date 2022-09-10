@@ -206,7 +206,7 @@ func Notify_NoCarta() {
 
 	go func() {
 		for {
-			time.Sleep(1 * time.Hour)
+			time.Sleep(1 * time.Minute)
 			cartadiaria.CartaDiariaRouter_pg.Find__Notify_NoCarta()
 		}
 	}()
