@@ -21,20 +21,21 @@ func Find__Notify_NoCarta_Service() error {
 
 	ahora := time.Now()
 
-	if ahora.Hour() == 9 {
+	if ahora.Hour() == 3 {
 
 		/*--SENT NOTIFICATION--*/
 		notification := map[string]interface{}{
-			"message":  "No olvide programar la cartaa para el día de hoy en la sección Carta Diaria",
+			"message":  "No olvide programar la carta para el día de hoy en la sección Carta Diaria",
+			"iduser":   0,
 			"typeuser": 4,
 			"priority": 1,
 			"title":    "Restoner anfitriones",
 		}
 		json_data, _ := json.Marshal(notification)
-		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
+		_, error_notify := http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
 		/*---------------------*/
 
-		return nil
+		return error_notify
 
 	}
 
