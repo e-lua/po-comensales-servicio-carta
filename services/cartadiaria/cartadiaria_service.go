@@ -21,7 +21,7 @@ func Find__Notify_NoCarta_Service() error {
 
 	ahora := time.Now()
 
-	if ahora.Hour() == 3 {
+	if ahora.Hour() == 4 {
 
 		/*--SENT NOTIFICATION--*/
 		notification := map[string]interface{}{
