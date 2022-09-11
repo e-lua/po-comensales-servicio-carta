@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func Mo_Delete_Update_Elements(pg_element_withaction_external []models.Pg_Element_With_Stock_External, idbusiness int) error {
+func Mo_Delete_Update_Elements(pg_element_withaction_external []models.Pg_Element_With_Stock_External, idcarta int, idbusiness int) error {
 
 	//Variables para el MQTT
 	var elements_mqtt []interface{}
@@ -28,7 +28,7 @@ func Mo_Delete_Update_Elements(pg_element_withaction_external []models.Pg_Elemen
 		one_element_mqtt.DeletedDate = time.Now().AddDate(0, 0, 5)
 		one_element_mqtt.Description = e.Description
 		one_element_mqtt.IDBusiness = idbusiness
-		one_element_mqtt.IDCarta = e.IDCarta
+		one_element_mqtt.IDCarta = idcarta
 		one_element_mqtt.IDCategory = e.IDCategory
 		one_element_mqtt.IDElement = e.IDElement
 		one_element_mqtt.IsExported = false

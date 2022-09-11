@@ -23,20 +23,42 @@ func Find__Notify_NoCarta_Service() error {
 
 	if ahora.Hour() == 14 {
 
-		/*--SENT NOTIFICATION--*/
-		notification := map[string]interface{}{
-			"message":  "No olvide programar la carta para el día de hoy en la sección Carta Diaria",
-			"iduser":   0,
-			"typeuser": 4,
-			"priority": 1,
-			"title":    "Restoner anfitriones",
+		//Obtenemos las categorias
+		list_idbusiness, quantity, error_nocarta := cartadiaria_repository.Pg_Find_NoCarta()
+		if error_nocarta != nil {
+			return error_nocarta
 		}
-		json_data, _ := json.Marshal(notification)
-		_, error_notify := http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
-		/*---------------------*/
 
-		return error_notify
+		if quantity > 0 {
 
+			notification := map[string]interface{}{
+				"message":      "No olvide programar la carta para el día de hoy en la sección Carta Diaria",
+				"multipleuser": list_idbusiness,
+				"typeuser":     6,
+				"priority":     1,
+				"title":        "Restoner anfitriones",
+			}
+			json_data, _ := json.Marshal(notification)
+			http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
+
+			return nil
+		}
+
+		if quantity == 0 {
+
+			/*--SENT NOTIFICATION--*/
+			notification := map[string]interface{}{
+				"message":  "No olvide programar la carta para el día de hoy en la sección Carta Diaria",
+				"iduser":   0,
+				"typeuser": 4,
+				"priority": 1,
+				"title":    "Restoner anfitriones",
+			}
+			json_data, _ := json.Marshal(notification)
+			http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
+			/*---------------------*/
+			return nil
+		}
 	}
 
 	return nil
@@ -244,7 +266,7 @@ func UpdateCartaElements_Service(carta_elements CartaElements_WithAction, idbusi
 	}
 
 	//Registramos los datos en Mongo DB
-	error_update_mo := cartadiaria_anfitrion_repository.Mo_Delete_Update_Elements(carta_elements.ElementsWithAction, idbusiness)
+	error_update_mo := cartadiaria_anfitrion_repository.Mo_Delete_Update_Elements(carta_elements.ElementsWithAction, carta_elements.IDCarta, idbusiness)
 	if error_update_mo != nil {
 		return 500, true, "Error en el servidor interno al intentar actualizar los elementos, detalles: " + error_update_mo.Error(), ""
 	}
@@ -260,7 +282,7 @@ func UpdateCartaScheduleRanges_Service(carta_schedule CartaSchedule, idbusiness 
 	}
 
 	//Registramos los datos en Mongo DB
-	error_update_mo := cartadiaria_anfitrion_repository.Mo_Delete_Update_Schedule(carta_schedule.ScheduleRanges, idbusiness)
+	error_update_mo := cartadiaria_anfitrion_repository.Mo_Delete_Update_Schedule(carta_schedule.ScheduleRanges, carta_schedule.IDCarta, idbusiness)
 	if error_update_mo != nil {
 		return 500, true, "Error en el servidor interno al intentar actualizar los rangos horarios, detalles: " + error_update_mo.Error(), ""
 	}
@@ -369,13 +391,13 @@ func AddCartaFromOther_Service(input_carta Carta, idbusiness int) (int, bool, st
 	}
 
 	//Registramos los datos en Mongo DB
-	error_update_mo := cartadiaria_anfitrion_repository.Mo_Delete_Update_Elements(carta_elements, idbusiness)
+	error_update_mo := cartadiaria_anfitrion_repository.Mo_Delete_Update_Elements(carta_elements, 0, idbusiness)
 	if error_update_mo != nil {
 		return 500, true, "Error en el servidor interno al intentar actualizar los elementos, detalles: " + error_update_mo.Error(), 0
 	}
 
 	//Registramos los datos en Mongo DB
-	error_update_mo_sch := cartadiaria_anfitrion_repository.Mo_Delete_Update_Schedule(carta_scheduleranges, idbusiness)
+	error_update_mo_sch := cartadiaria_anfitrion_repository.Mo_Delete_Update_Schedule(carta_scheduleranges, 0, idbusiness)
 	if error_update_mo != nil {
 		return 500, true, "Error en el servidor interno al intentar actualizar los rangos horarios, detalles: " + error_update_mo_sch.Error(), 0
 	}

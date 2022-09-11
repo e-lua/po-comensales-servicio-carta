@@ -11,7 +11,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func Mo_Delete_Update_Schedule(pg_schedule []models.Pg_ScheduleRange_External, idbusiness int) error {
+func Mo_Delete_Update_Schedule(pg_schedule []models.Pg_ScheduleRange_External, idcarta int, idbusiness int) error {
 
 	//Variables para el MQTT
 	var lista_total_schedule []interface{}
@@ -79,13 +79,13 @@ func Mo_Delete_Update_Schedule(pg_schedule []models.Pg_ScheduleRange_External, i
 
 				//Insertamos los datos en el modelo
 				list_schedule.IDSchedule = sch.IDSchedule
-				list_schedule.IDCarta = sch.IdCarta
+				list_schedule.IDCarta = idcarta
 				list_schedule.Date = sch.Date
 				list_schedule.IDBusiness = idbusiness
 				list_schedule.Starttime = hora_ini_string
 				list_schedule.Endtime = hora_fin_toinsert
 				list_schedule.MaxOrders = sch.MaxOrders
-				list_schedule.Timezone = "-5"
+				list_schedule.Timezone = sch.TimeZone
 
 				if counter_to_skip == 0 {
 					one_date = sch.Date
