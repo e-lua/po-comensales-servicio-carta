@@ -24,7 +24,7 @@ func Find__Notify_NoCarta_Service() error {
 	if ahora.Hour() == 14 {
 
 		//Obtenemos las categorias
-		list_idbusiness, quantity, error_nocarta := cartadiaria_repository.Pg_Find_NoCarta()
+		/*list_idbusiness, quantity, error_nocarta := cartadiaria_repository.Pg_Find_NoCarta()
 		if error_nocarta != nil {
 			return error_nocarta
 		}
@@ -42,23 +42,21 @@ func Find__Notify_NoCarta_Service() error {
 			http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
 
 			return nil
-		}
+		}*/
 
-		if quantity == 0 {
-
-			/*--SENT NOTIFICATION--*/
-			notification := map[string]interface{}{
-				"message":  "No olvide programar la carta para el día de hoy en la sección Carta Diaria",
-				"iduser":   0,
-				"typeuser": 4,
-				"priority": 1,
-				"title":    "Restoner anfitriones",
-			}
-			json_data, _ := json.Marshal(notification)
-			http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
-			/*---------------------*/
-			return nil
+		/*--SENT NOTIFICATION--*/
+		notification := map[string]interface{}{
+			"message":  "No olvide programar la carta para el día de hoy en la sección Carta Diaria",
+			"iduser":   0,
+			"typeuser": 4,
+			"priority": 1,
+			"title":    "Restoner anfitriones",
 		}
+		json_data, _ := json.Marshal(notification)
+		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
+		/*---------------------*/
+		return nil
+
 	}
 
 	return nil
