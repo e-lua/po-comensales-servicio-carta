@@ -11,17 +11,6 @@ services:
     links:
       - postgres-master
       - postgresql-slave
-      - redis
-  redis:
-    container_name: redis_db
-    restart: always
-    image: "redis:6.0.16"
-    networks:
-      - backend
-    volumes: 
-      - cache:/data
-    ports: 
-      - "6000:6379"
   postgres-master:
     container_name: postgres_db
     restart: always
