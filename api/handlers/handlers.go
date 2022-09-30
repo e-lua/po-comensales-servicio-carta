@@ -53,6 +53,15 @@ func Manejadores() {
 	router_business_web.GET("/:idbusiness/menu/:date/elements/:limit", cartadiaria_web.Web_CartaDiariaRouter_pg.Web_GetBusinessElement)
 	router_business_web.GET("/:idbusiness/menu/:date/scheduleranges", cartadiaria_web.Web_CartaDiariaRouter_pg.Web_GetBusinessSchedule)
 	router_business_web.GET("/:idbusiness/menu/:date/search/:limit", cartadiaria_web.Web_CartaDiariaRouter_pg.Web_SearchByNameAndDescription)
+
+	/*===========CARTA ANFITRION===========*/
+	//V1 FROM V1 TO ...TO ENTITY MENU
+	router_anfitrion_web := version_1_web.Group("/anfitrion/menu/createorder")
+	router_anfitrion_web.GET("/:date/category", cartadiaria_web.Web_CartaDiariaRouter_pg.Web_Anfitrion_GetBusinessCategory)
+	router_anfitrion_web.GET("/:date/elements/:limit", cartadiaria_web.Web_CartaDiariaRouter_pg.Web_Anfitrion_GetBusinessElement)
+	router_anfitrion_web.GET("/:date/scheduleranges", cartadiaria_web.Web_CartaDiariaRouter_pg.Web_Anfitrion_GetBusinessSchedule)
+	router_anfitrion_web.GET("/:date/search/:limit", cartadiaria_web.Web_CartaDiariaRouter_pg.Web_Anfitrion_SearchByNameAndDescription)
+
 	/*---------------------------------------------------------------------------------------------------------------------------------*/
 
 	//VERSION
