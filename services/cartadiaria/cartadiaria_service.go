@@ -280,10 +280,10 @@ func UpdateCartaScheduleRanges_Service(carta_schedule CartaSchedule, idbusiness 
 	}
 
 	//Registramos los datos en Mongo DB
-	error_update_mo := cartadiaria_anfitrion_repository.Mo_Delete_Update_Schedule(carta_schedule.ScheduleRanges, carta_schedule.IDCarta, idbusiness)
+	/*error_update_mo := cartadiaria_anfitrion_repository.Mo_Delete_Update_Schedule(carta_schedule.ScheduleRanges, carta_schedule.IDCarta, idbusiness)
 	if error_update_mo != nil {
 		return 500, true, "Error en el servidor interno al intentar actualizar los rangos horarios, detalles: " + error_update_mo.Error(), ""
-	}
+	}*/
 
 	return 201, false, "", "Los rangos horario se actualizaron correctamente"
 }
