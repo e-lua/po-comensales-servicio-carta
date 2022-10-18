@@ -288,6 +288,22 @@ func UpdateCartaScheduleRanges_Service(carta_schedule CartaSchedule, idbusiness 
 	return 201, false, "", "Los rangos horario se actualizaron correctamente"
 }
 
+func UpdateCartaAutomaticDiscounts_Service(carta_automaticdiscount CartaAutomaticDiscount, idbusiness int) (int, bool, string, string) {
+
+	error_update := cartadiaria_anfitrion_repository.Pg_Delete_Update_AutomaticDiscount(carta_automaticdiscount.AutomaticDiscount, carta_automaticdiscount.IDCarta, idbusiness)
+	if error_update != nil {
+		return 500, true, "Error en el servidor interno al intentar actualizar los descuentos automaticos, detalles: " + error_update.Error(), ""
+	}
+
+	//Registramos los datos en Mongo DB
+	/*error_update_mo := cartadiaria_anfitrion_repository.Mo_Delete_Update_Schedule(carta_schedule.ScheduleRanges, carta_schedule.IDCarta, idbusiness)
+	if error_update_mo != nil {
+		return 500, true, "Error en el servidor interno al intentar actualizar los rangos horarios, detalles: " + error_update_mo.Error(), ""
+	}*/
+
+	return 201, false, "", "Los descuentos automaticos, se actualizaron correctamente"
+}
+
 /*----------------------GET DATA OF MENU----------------------*/
 
 func GetCartaBasicData_Service(date string, idbusiness int) (int, bool, string, models.Pg_Carta_External) {
@@ -345,6 +361,17 @@ func GetCartaScheduleRanges_Service(idcarta_int int, idbusiness int) (int, bool,
 	return 201, false, "", carta_scheduleranges
 }
 
+func GetCartAutomaticDiscounts_Service(idcarta_int int, idbusiness int) (int, bool, string, []models.Pg_V2_AutomaticDiscount) {
+
+	//Insertamos los datos en Mo
+	carta_automaticdiscounts, error_update := cartadiaria_anfitrion_repository.Pg_Find_AutomaticDiscounts(idcarta_int, idbusiness)
+	if error_update != nil {
+		return 500, true, "Error en el servidor interno al intentar encontrar los descuentos automaticos de la carta, detalles: " + error_update.Error(), carta_automaticdiscounts
+	}
+
+	return 201, false, "", carta_automaticdiscounts
+}
+
 func GetCartas_Service(idbusiness int) (int, bool, string, []models.Pg_Carta_Found) {
 
 	//Insertamos los datos en Mo
@@ -376,6 +403,11 @@ func AddCartaFromOther_Service(input_carta Carta, idbusiness int) (int, bool, st
 		return 500, true, "Error en el servidor interno al intentar encontrar los rangos horarios de la carta, detalles: " + error_update_schedule.Error(), 0
 	}
 
+	carta_automaticdiscounts, error_update_schedule := cartadiaria_anfitrion_repository.Pg_Find_AutomaticDiscounts(idcarta_int.IDCarta, idbusiness)
+	if error_update_schedule != nil {
+		return 500, true, "Error en el servidor interno al intentar encontrar los los descuentos automaticos de la carta, detalles: " + error_update_schedule.Error(), 0
+	}
+
 	//Creamos la carta
 	idcarta, error_add_carta := cartadiaria_anfitrion_repository.Pg_Add(idbusiness, input_carta.Date)
 	if error_add_carta != nil {
@@ -383,7 +415,7 @@ func AddCartaFromOther_Service(input_carta Carta, idbusiness int) (int, bool, st
 	}
 
 	//Transaccion
-	id_carta, error_update_schedulelist := cartadiaria_anfitrion_repository.Pg_Copy_Carta(carta_scheduleranges, carta_elements, idbusiness, input_carta.Date, idcarta)
+	id_carta, error_update_schedulelist := cartadiaria_anfitrion_repository.Pg_Copy_Carta(carta_automaticdiscounts, carta_scheduleranges, carta_elements, idbusiness, input_carta.Date, idcarta)
 	if error_update_schedulelist != nil {
 		return 500, true, "Error en el servidor interno al intentar agregar los elementos y rangos horarios, detalles: " + error_update_schedulelist.Error(), 0
 	}

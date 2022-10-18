@@ -506,6 +506,35 @@ func (cdr *cartaDiariaRouter_pg) UpdateCartaScheduleRanges(c echo.Context) error
 	return c.JSON(status, results)
 }
 
+func (cdr *cartaDiariaRouter_pg) UpdateCartaAutomaticDiscounts(c echo.Context) error {
+
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idbusiness := GetJWT_Anfitrion(c.Request().Header.Get("Authorization"))
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: dataerror}
+		return c.JSON(status, results)
+	}
+	if data_idbusiness <= 0 {
+		results := Response{Error: boolerror, DataError: "000" + "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Instanciamos una variable del modelo CartaSchedule
+	var carta_automaticdiscount CartaAutomaticDiscount
+
+	//Agregamos los valores enviados a la variable creada
+	err := c.Bind(&carta_automaticdiscount)
+	if err != nil {
+		results := Response{Error: true, DataError: "El valor ingresado no cumple con la regla de negocio", Data: ""}
+		return c.JSON(403, results)
+	}
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := UpdateCartaAutomaticDiscounts_Service(carta_automaticdiscount, data_idbusiness)
+	results := Response{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+}
+
 /*----------------------GET DATA OF MENU----------------------*/
 
 func (cdr *cartaDiariaRouter_pg) GetCartaBasicData(c echo.Context) error {
@@ -623,6 +652,29 @@ func (cdr *cartaDiariaRouter_pg) GetCartaScheduleRanges(c echo.Context) error {
 	//Enviamos los datos al servicio
 	status, boolerror, dataerror, data := GetCartaScheduleRanges_Service(idcarta_int, data_idbusiness)
 	results := ResponseCartaSchedule_Ext{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+}
+
+func (cdr *cartaDiariaRouter_pg) GetCartAutomaticDiscounts(c echo.Context) error {
+
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idbusiness := GetJWT_Anfitrion(c.Request().Header.Get("Authorization"))
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: dataerror}
+		return c.JSON(status, results)
+	}
+	if data_idbusiness <= 0 {
+		results := Response{Error: boolerror, DataError: "000" + "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Recibimos el limit
+	idcarta := c.Param("idcarta")
+	idcarta_int, _ := strconv.Atoi(idcarta)
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := GetCartAutomaticDiscounts_Service(idcarta_int, data_idbusiness)
+	results := ResponseCartaAutomaticDiscount{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 }
 

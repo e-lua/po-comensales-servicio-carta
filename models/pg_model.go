@@ -149,6 +149,7 @@ type Pg_Element_ToCreate struct {
 	Stock            int                     `bson:"stock" json:"stock"`
 	UrlPhoto         string                  `bson:"url" json:"url"`
 	Insumos          []Pg_Mo_Insumo_Elements `bson:"insumos" json:"insumos"`
+	Additionals      []Pg_Additionals        `json:"additionals"`
 	Costo            float64                 `bson:"costo" json:"costo"`
 	AvailableOrders  bool                    `json:"availableorders"`
 }
@@ -201,7 +202,9 @@ type Pg_Element_With_Stock_External struct {
 	TypeMoney        int                     `json:"typemoney"`
 	Stock            int                     `json:"stock"`
 	UrlPhoto         string                  `json:"url"`
+	Discount         float32                 `json:"discount"`
 	Insumos          []Pg_Mo_Insumo_Elements `json:"insumos"`
+	Additionals      []Pg_Additionals        `json:"additionals"`
 	Date             string                  `json:"date"`
 	Costo            float64                 `json:"costo"`
 	AvailableOrders  bool                    `json:"availableorders"`
@@ -239,6 +242,22 @@ type Pg_Schedule struct {
 	TimeZone          string `json:"timezone"`
 }
 
+type Pg_Items struct {
+	IDItem   string  `json:"id"`
+	Name     string  `json:"name"`
+	IsInsumo bool    `json:"isinsumo"`
+	Price    float32 `json:"price"`
+	Stock    int     `json:"stock"`
+}
+
+type Pg_Additionals struct {
+	IDSubElement string     `json:"id"`
+	Name         string     `json:"name"`
+	MaxSelect    int        `json:"maxselect"`
+	IsMandatory  bool       `json:"ismandatory"`
+	Items        []Pg_Items `json:"items"`
+}
+
 type V2_Pg_Element struct {
 	IDElement   int                     `json:"idelement"`
 	IDBusiness  int                     `json:"idbusiness"`
@@ -254,10 +273,27 @@ type V2_Pg_Element struct {
 	Quantity    int                     `json:"quantity"`
 	Discount    float32                 `json:"discount"`
 	Insumos     []Pg_Mo_Insumo_Elements `json:"insumos"`
+	Additionals []Pg_Additionals        `json:"additionals"`
 	Costo       float64                 `json:"costo"`
 }
 
+type Pg_GroupDataDiscount struct {
+	ID       int     `json:"id"`
+	Quantity float32 `json:"quantity"`
+}
+
+type Pg_AutomaticDiscount struct {
+	IDAutomaticDiscount int                    `json:"id"`
+	IDBusiness          int                    `json:"business"`
+	Description         string                 `json:"description"`
+	Discount            float32                `json:"discount"`
+	TypeDiscount        int                    `json:"type"`
+	Group               []Pg_GroupDataDiscount `json:"group"`
+	ClassDiscount       int                    `json:"class"`
+}
+
 type Import_Data struct {
-	Schedule []Pg_Schedule     `json:"schedule"`
-	Elements [][]V2_Pg_Element `json:"elements"`
+	Schedule          []Pg_Schedule          `json:"schedule"`
+	Elements          [][]V2_Pg_Element      `json:"elements"`
+	AutomaticDiscount []Pg_AutomaticDiscount `json:"automaticdiscount"`
 }

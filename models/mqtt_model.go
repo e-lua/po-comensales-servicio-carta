@@ -27,6 +27,8 @@ type Mqtt_Element_With_Stock struct {
 	Date             string                  `bson:"date" json:"date"`
 	DeletedDate      time.Time               `bson:"deleteddate" json:"deleteddate"`
 	Insumos          []Pg_Mo_Insumo_Elements `bson:"insumos"  json:"insumos"`
+	Discount         float32                 `json:"discount"`
+	Additionals      []Pg_Additionals        `json:"additionals"`
 	Costo            float64                 `bson:"costo" json:"costo"`
 }
 

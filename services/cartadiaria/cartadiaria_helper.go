@@ -133,6 +133,11 @@ type CartaSchedule struct {
 	ScheduleRanges []models.Pg_ScheduleRange_External `json:"schedule"`
 }
 
+type CartaAutomaticDiscount struct {
+	IDCarta           int                              `json:"idcarta"`
+	AutomaticDiscount []models.Pg_V2_AutomaticDiscount `json:"automaticdiscount"`
+}
+
 type ResponseInt struct {
 	Error     bool   `json:"error"`
 	DataError string `json:"dataError"`
@@ -161,6 +166,12 @@ type ResponseCartaSchedule_Ext struct {
 	Error     bool                               `json:"error"`
 	DataError string                             `json:"dataError"`
 	Data      []models.Pg_ScheduleRange_External `json:"data"`
+}
+
+type ResponseCartaAutomaticDiscount struct {
+	Error     bool                             `json:"error"`
+	DataError string                           `json:"dataError"`
+	Data      []models.Pg_V2_AutomaticDiscount `json:"data"`
 }
 
 type ResponseCartas struct {

@@ -15,8 +15,9 @@ func Pg_Delete_Update_Element(pg_element_withaction_external []models.Pg_Element
 	defer cancel()
 
 	//Variables a Insertar
-	idelement_pg_insert, idcarta_pg_insert, idcategory_pg_insert, namecategory_pg_insert, urlphotocategory_pg_insert, name_pg_insert, price_pg_insert, description_pg_insert, urlphot_pg_insert, typem_pg_insert, stock_pg_insert, idbusiness_pg_insert, typefood_pg_insert, latitude_pg_insert, longitude_pg_insert, costo_pg_insert := []int{}, []int{}, []int{}, []string{}, []string{}, []string{}, []float32{}, []string{}, []string{}, []int{}, []int{}, []int{}, []string{}, []float64{}, []float64{}, []float64{}
+	idelement_pg_insert, idcarta_pg_insert, idcategory_pg_insert, namecategory_pg_insert, urlphotocategory_pg_insert, name_pg_insert, price_pg_insert, description_pg_insert, urlphot_pg_insert, typem_pg_insert, stock_pg_insert, idbusiness_pg_insert, typefood_pg_insert, latitude_pg_insert, longitude_pg_insert, costo_pg_insert, discount_pg_insert := []int{}, []int{}, []int{}, []string{}, []string{}, []string{}, []float32{}, []string{}, []string{}, []int{}, []int{}, []int{}, []string{}, []float64{}, []float64{}, []float64{}, []float32{}
 	var insumos_pg_insert []interface{}
+	var additionals_pg_insert []interface{}
 
 	//Repartiendo los datos
 	for _, e := range pg_element_withaction_external {
@@ -39,6 +40,8 @@ func Pg_Delete_Update_Element(pg_element_withaction_external []models.Pg_Element
 		longitude_pg_insert = append(longitude_pg_insert, longitude)
 		insumos_pg_insert = append(insumos_pg_insert, e.Insumos)
 		costo_pg_insert = append(costo_pg_insert, e.Costo)
+		discount_pg_insert = append(discount_pg_insert, e.Discount)
+		additionals_pg_insert = append(additionals_pg_insert, e.Additionals)
 	}
 
 	db_external := models.Conectar_Pg_DB()
@@ -57,8 +60,8 @@ func Pg_Delete_Update_Element(pg_element_withaction_external []models.Pg_Element
 	}
 
 	//INSERTAMOS LOS ELEMENTOS
-	query_insert := `INSERT INTO element(idelement,idcarta,idcategory,namecategory,urlphotcategory,name,price,description,urlphoto,typemoney,stock,idbusiness,typefood,latitude,longitude,insumos,costo) (select * from unnest($1::int[],$2::int[],$3::int[],$4::varchar(100)[],$5::varchar(230)[],$6::varchar(100)[],$7::decimal(8,2)[],$8::varchar(250)[],$9::varchar(230)[],$10::int[],$11::int[],$12::int[],$13::varchar(100)[],$14::real[],$15::real[],$16::jsonb[],$17::real[]))`
-	if _, err_i := tx.Exec(ctx, query_insert, idelement_pg_insert, idcarta_pg_insert, idcategory_pg_insert, namecategory_pg_insert, urlphotocategory_pg_insert, name_pg_insert, price_pg_insert, description_pg_insert, urlphot_pg_insert, typem_pg_insert, stock_pg_insert, idbusiness_pg_insert, typefood_pg_insert, latitude_pg_insert, longitude_pg_insert, insumos_pg_insert, costo_pg_insert); err_i != nil {
+	query_insert := `INSERT INTO element(idelement,idcarta,idcategory,namecategory,urlphotcategory,name,price,description,urlphoto,typemoney,stock,idbusiness,typefood,latitude,longitude,insumos,costo,additionals,discount) (select * from unnest($1::int[],$2::int[],$3::int[],$4::varchar(100)[],$5::varchar(230)[],$6::varchar(100)[],$7::decimal(8,2)[],$8::varchar(250)[],$9::varchar(230)[],$10::int[],$11::int[],$12::int[],$13::varchar(100)[],$14::real[],$15::real[],$16::jsonb[],$17::real[],$18::jsonb[],$19::decimal(8,2)[]))`
+	if _, err_i := tx.Exec(ctx, query_insert, idelement_pg_insert, idcarta_pg_insert, idcategory_pg_insert, namecategory_pg_insert, urlphotocategory_pg_insert, name_pg_insert, price_pg_insert, description_pg_insert, urlphot_pg_insert, typem_pg_insert, stock_pg_insert, idbusiness_pg_insert, typefood_pg_insert, latitude_pg_insert, longitude_pg_insert, insumos_pg_insert, costo_pg_insert, additionals_pg_insert, discount_pg_insert); err_i != nil {
 		tx.Rollback(ctx)
 		return err_i
 	}

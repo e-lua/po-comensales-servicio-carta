@@ -92,6 +92,8 @@ func Manejadores() {
 	router_anfitrion_menu.PUT("/scheduleranges", cartadiaria.CartaDiariaRouter_pg.UpdateCartaScheduleRanges)
 	router_anfitrion_menu.GET("/:idcarta/scheduleranges", cartadiaria.CartaDiariaRouter_pg.GetCartaScheduleRanges)
 	router_anfitrion_menu.GET("/carta/:date/insumo/:idinsumo/elements", cartadiaria.CartaDiariaRouter_pg.GetElementsByInsumo)
+	router_anfitrion_menu.PUT("/automaticdiscounts", cartadiaria.CartaDiariaRouter_pg.UpdateCartaAutomaticDiscounts)
+	router_anfitrion_menu.GET("/:idcarta/automaticdiscounts", cartadiaria.CartaDiariaRouter_pg.GetCartAutomaticDiscounts)
 
 	/*Create order*/
 	router_anfitrion_menu_createorder := version_1.Group("/anfitrion/menu/createorder")
@@ -99,6 +101,7 @@ func Manejadores() {
 	router_anfitrion_menu_createorder.GET("/:date/category/:idcategory/elements", cartadiaria.CartaDiariaRouter_pg.GetElements_ToCreateOrder)
 	router_anfitrion_menu_createorder.GET("/:date/scheduleranges", cartadiaria.CartaDiariaRouter_pg.GetSchedule_ToCreateOrder)
 	router_anfitrion_menu_createorder.GET("/:date/search/:text/:limit/:offset", cartadiaria.CartaDiariaRouter_pg.SearchByName_Anfitrion)
+	//router_anfitrion_menu_createorder.GET("/:date/automaticdiscounts", cartadiaria.CartaDiariaRouter_pg.GetAutomaticDiscount_ToCreateOrder)
 
 	//V1 FROM V1 TO ...TO VIEW
 	router_view := version_1.Group("/view")

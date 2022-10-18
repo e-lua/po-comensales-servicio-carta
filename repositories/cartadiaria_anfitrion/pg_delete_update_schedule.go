@@ -11,12 +11,6 @@ import (
 
 func Pg_Delete_Update_ScheduleRange(pg_schedule []models.Pg_ScheduleRange_External, idcarta int, idbusiness int) error {
 
-	//Tiempo limite al contexto
-	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
-	//defer cancelara el contexto
-	defer cancel()
-	db_external := models.Conectar_Pg_DB()
-
 	//Rango horarios
 	idschedule_pg, idcartamain_pg, idbusinessmain_pg, name_pg, description_pg, minutesperfraction_pg, numberfractions_pg, start_pg, end_pg, maxorders_pg, timezone_pg := []int64{}, []int{}, []int{}, []string{}, []string{}, []int{}, []int{}, []string{}, []string{}, []int{}, []string{}
 	for _, sch := range pg_schedule {
@@ -147,6 +141,12 @@ func Pg_Delete_Update_ScheduleRange(pg_schedule []models.Pg_ScheduleRange_Extern
 		}
 
 	}
+
+	//Tiempo limite al contexto
+	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
+	//defer cancelara el contexto
+	defer cancel()
+	db_external := models.Conectar_Pg_DB()
 
 	//BEGIN
 	tx, error_tx := db_external.Begin(ctx)

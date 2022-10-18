@@ -9,17 +9,12 @@ import (
 	models "github.com/Aphofisis/po-comensales-servicio-carta/models"
 )
 
-func Pg_Copy_Carta(pg_schedule []models.Pg_ScheduleRange_External, pg_element_external []models.Pg_Element_With_Stock_External, idbusiness int, date string, idcarta int) (int, error) {
-	//Tiempo limite al contexto
-	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
-	//defer cancelara el contexto
-	defer cancel()
-
-	db_external := models.Conectar_Pg_DB()
+func Pg_Copy_Carta(pg_automaticdiscount []models.Pg_V2_AutomaticDiscount, pg_schedule []models.Pg_ScheduleRange_External, pg_element_external []models.Pg_Element_With_Stock_External, idbusiness int, date string, idcarta int) (int, error) {
 
 	//Elementos
-	idelement_pg, idcarta_pg, idcategory_pg, namecategory_pg, urlphotocategory_pg, name_pg, price_pg, description_pg, urlphot_pg, typem_pg, stock_pg, idbusiness_pg, costo_pg := []int{}, []int{}, []int{}, []string{}, []string{}, []string{}, []float32{}, []string{}, []string{}, []int{}, []int{}, []int{}, []float64{}
+	idelement_pg, idcarta_pg, idcategory_pg, namecategory_pg, urlphotocategory_pg, name_pg, price_pg, description_pg, urlphot_pg, typem_pg, stock_pg, idbusiness_pg, costo_pg, discount_pg := []int{}, []int{}, []int{}, []string{}, []string{}, []string{}, []float32{}, []string{}, []string{}, []int{}, []int{}, []int{}, []float64{}, []float32{}
 	var insumos_pg []interface{}
+	var additionals_pg []interface{}
 
 	for _, e := range pg_element_external {
 		idelement_pg = append(idelement_pg, e.IDElement)
@@ -36,6 +31,8 @@ func Pg_Copy_Carta(pg_schedule []models.Pg_ScheduleRange_External, pg_element_ex
 		idbusiness_pg = append(idbusiness_pg, idbusiness)
 		insumos_pg = append(insumos_pg, e.Insumos)
 		costo_pg = append(costo_pg, e.Costo)
+		discount_pg = append(discount_pg, e.Discount)
+		additionals_pg = append(additionals_pg, e.Additionals)
 	}
 
 	//Rango horarios
@@ -179,6 +176,29 @@ func Pg_Copy_Carta(pg_schedule []models.Pg_ScheduleRange_External, pg_element_ex
 		}
 	}
 
+	//Descuentos automaticos
+	var groupid_pg_4 []interface{}
+	iddiscount_pg_4, description_pg_4, discount_pg_4, typediscount_pg_4, idbusiness_pg_4, classdiscount_pg_4, idcarta_pg_4 := []int{}, []string{}, []float32{}, []int{}, []int{}, []int{}, []int{}
+
+	for _, autodisc := range pg_automaticdiscount {
+
+		iddiscount_pg_4 = append(iddiscount_pg_4, autodisc.IDAutomaticDiscount)
+		description_pg_4 = append(description_pg_4, autodisc.Description)
+		discount_pg_4 = append(discount_pg_4, autodisc.Discount)
+		typediscount_pg_4 = append(typediscount_pg_4, autodisc.TypeDiscount)
+		idbusiness_pg_4 = append(idbusiness_pg_4, idbusiness)
+		classdiscount_pg_4 = append(classdiscount_pg_4, autodisc.ClassDiscount)
+		idcarta_pg_4 = append(idcarta_pg_4, idcarta)
+		groupid_pg_4 = append(groupid_pg_4, autodisc.Group)
+	}
+
+	//Tiempo limite al contexto
+	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
+	//defer cancelara el contexto
+	defer cancel()
+
+	db_external := models.Conectar_Pg_DB()
+
 	//BEGIN
 	tx, error_tx := db_external.Begin(ctx)
 	if error_tx != nil {
@@ -186,8 +206,8 @@ func Pg_Copy_Carta(pg_schedule []models.Pg_ScheduleRange_External, pg_element_ex
 	}
 
 	//INSERTAR ELEMENTO
-	q_element := `INSERT INTO element(idelement,idcarta,idcategory,namecategory,urlphotcategory,name,price,description,urlphoto,typemoney,stock,idbusiness,insumos,costo) (select * from unnest($1::int[],$2::int[],$3::int[],$4::varchar(100)[],$5::varchar(230)[],$6::varchar(100)[],$7::decimal(8,2)[],$8::varchar(250)[],$9::varchar(230)[],$10::int[],$11::int[],$12::int[],$13::jsonb[],$14::real[]));`
-	if _, err_insert_element := tx.Exec(ctx, q_element, idelement_pg, idcarta_pg, idcategory_pg, namecategory_pg, urlphotocategory_pg, name_pg, price_pg, description_pg, urlphot_pg, typem_pg, stock_pg, idbusiness_pg, insumos_pg, costo_pg); err_insert_element != nil {
+	q_element := `INSERT INTO element(idelement,idcarta,idcategory,namecategory,urlphotcategory,name,price,description,urlphoto,typemoney,stock,idbusiness,insumos,costo,additionals,discount) (select * from unnest($1::int[],$2::int[],$3::int[],$4::varchar(100)[],$5::varchar(230)[],$6::varchar(100)[],$7::decimal(8,2)[],$8::varchar(250)[],$9::varchar(230)[],$10::int[],$11::int[],$12::int[],$13::jsonb[],$14::real[],$15::jsonb[],$16::decimal(8,2)[]));`
+	if _, err_insert_element := tx.Exec(ctx, q_element, idelement_pg, idcarta_pg, idcategory_pg, namecategory_pg, urlphotocategory_pg, name_pg, price_pg, description_pg, urlphot_pg, typem_pg, stock_pg, idbusiness_pg, insumos_pg, costo_pg, additionals_pg, discount_pg); err_insert_element != nil {
 		tx.Rollback(ctx)
 		return 0, err_insert_element
 	}
@@ -204,6 +224,13 @@ func Pg_Copy_Carta(pg_schedule []models.Pg_ScheduleRange_External, pg_element_ex
 	if _, err_listschedulerange := tx.Exec(ctx, q_listschedulerange, idcarta_pg_3, idschedulerange_pg_3, idbusiness_pg_3, startime_pg_3, endtime_pg_3, max_orders_3, timezone_pg_3); err_listschedulerange != nil {
 		tx.Rollback(ctx)
 		return 0, err_listschedulerange
+	}
+
+	//INSERTAR LOS DESCUENTOS AUTOMATICOS
+	q_automaticdiscount := `INSERT INTO AutomaticDiscount(idbusiness,idcarta,iddiscount,description,discount,typediscount,groupid,classdiscount) (SELECT * FROM unnest($1::int[],$2::int[],$3::int[],$4::varchar(30)[],$5::decimal(8,2)[],$6::int[],$7::jsonb[],$8::int[]));`
+	if _, err_automaticdiscount := tx.Exec(ctx, q_automaticdiscount, idbusiness_pg_4, idcarta_pg_4, iddiscount_pg_4, description_pg_4, discount_pg_4, typediscount_pg_4, groupid_pg_4, classdiscount_pg_4); err_automaticdiscount != nil {
+		tx.Rollback(ctx)
+		return 0, err_automaticdiscount
 	}
 
 	//TERMINAMOS LA TRANSACCION
