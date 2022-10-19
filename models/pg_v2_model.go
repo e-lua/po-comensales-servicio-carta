@@ -28,6 +28,8 @@ type Pg_V2_Element_With_Stock_External struct {
 	Stock            int                     `json:"stock"`
 	UrlPhoto         string                  `json:"url"`
 	Discount         float32                 `json:"discount"`
+	Latitude         float32                 `json:"latitude"`
+	Longitude        float32                 `json:"longitude"`
 	Insumos          []Pg_Mo_Insumo_Elements `json:"insumos"`
 	Additionals      []Pg_Additionals        `json:"additionals"`
 	Date             string                  `json:"date"`

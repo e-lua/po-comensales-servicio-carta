@@ -148,6 +148,9 @@ type Pg_Element_ToCreate struct {
 	TypeMoney        int                     `bson:"typemoney" json:"typemoney"`
 	Stock            int                     `bson:"stock" json:"stock"`
 	UrlPhoto         string                  `bson:"url" json:"url"`
+	Discount         float32                 `json:"discount"`
+	Latitude         float32                 `json:"latitude"`
+	Longitude        float32                 `json:"longitude"`
 	Insumos          []Pg_Mo_Insumo_Elements `bson:"insumos" json:"insumos"`
 	Additionals      []Pg_Additionals        `json:"additionals"`
 	Costo            float64                 `bson:"costo" json:"costo"`
@@ -198,6 +201,8 @@ type Pg_Element_With_Stock_External struct {
 	UrlPhotoCategory string                  `json:"urlphotocategory"`
 	Name             string                  `json:"name"`
 	Price            float32                 `json:"price"`
+	Latitude         float32                 `json:"latitude"`
+	Longitude        float32                 `json:"longitude"`
 	Description      string                  `json:"description"`
 	TypeMoney        int                     `json:"typemoney"`
 	Stock            int                     `json:"stock"`
