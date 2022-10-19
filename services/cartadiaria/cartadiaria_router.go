@@ -442,8 +442,17 @@ func (cdr *cartaDiariaRouter_pg) UpdateCartaElements(c echo.Context) error {
 		return c.JSON(403, results)
 	}
 
+	//Enviamos los datos al servicio de anfitriones para obtener los datos completos
+	respuesta, _ := http.Get("http://a-informacion.restoner-api.fun:80/v1/business/comensal/bnss/" + strconv.Itoa(data_idbusiness))
+	var get_respuesta ResponseBusiness_V2
+	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
+	if error_decode_respuesta != nil {
+		results := Response{Error: true, DataError: "El valor ingresado no cumple con la regla de negocio", Data: ""}
+		return c.JSON(403, results)
+	}
+
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := UpdateCartaElements_Service(carta_elements, data_idbusiness, 0, 0)
+	status, boolerror, dataerror, data := UpdateCartaElements_Service(carta_elements, data_idbusiness, get_respuesta.Data.Address.Latitude, get_respuesta.Data.Address.Longitude)
 	results := Response{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 }
