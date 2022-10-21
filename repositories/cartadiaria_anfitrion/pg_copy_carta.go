@@ -12,7 +12,7 @@ import (
 func Pg_Copy_Carta(pg_automaticdiscount []models.Pg_V2_AutomaticDiscount, pg_schedule []models.Pg_ScheduleRange_External, pg_element_external []models.Pg_Element_With_Stock_External, idbusiness int, date string, idcarta int) (int, error) {
 
 	//Elementos
-	idelement_pg, idcarta_pg, idcategory_pg, namecategory_pg, urlphotocategory_pg, name_pg, price_pg, description_pg, urlphot_pg, typem_pg, stock_pg, idbusiness_pg, costo_pg, discount_pg := []int{}, []int{}, []int{}, []string{}, []string{}, []string{}, []float32{}, []string{}, []string{}, []int{}, []int{}, []int{}, []float64{}, []float32{}
+	idelement_pg, idcarta_pg, idcategory_pg, namecategory_pg, urlphotocategory_pg, name_pg, price_pg, description_pg, urlphot_pg, typem_pg, stock_pg, idbusiness_pg, costo_pg, discount_pg, latitude_pg, longitude_pg := []int{}, []int{}, []int{}, []string{}, []string{}, []string{}, []float32{}, []string{}, []string{}, []int{}, []int{}, []int{}, []float64{}, []float32{}, []float32{}, []float32{}
 	var insumos_pg []interface{}
 	var additionals_pg []interface{}
 
@@ -33,6 +33,8 @@ func Pg_Copy_Carta(pg_automaticdiscount []models.Pg_V2_AutomaticDiscount, pg_sch
 		costo_pg = append(costo_pg, e.Costo)
 		discount_pg = append(discount_pg, e.Discount)
 		additionals_pg = append(additionals_pg, e.Additionals)
+		latitude_pg = append(latitude_pg, e.Latitude)
+		longitude_pg = append(longitude_pg, e.Longitude)
 	}
 
 	//Rango horarios
@@ -206,8 +208,8 @@ func Pg_Copy_Carta(pg_automaticdiscount []models.Pg_V2_AutomaticDiscount, pg_sch
 	}
 
 	//INSERTAR ELEMENTO
-	q_element := `INSERT INTO element(idelement,idcarta,idcategory,namecategory,urlphotcategory,name,price,description,urlphoto,typemoney,stock,idbusiness,insumos,costo,additionals,discount) (select * from unnest($1::int[],$2::int[],$3::int[],$4::varchar(100)[],$5::varchar(230)[],$6::varchar(100)[],$7::decimal(8,2)[],$8::varchar(250)[],$9::varchar(230)[],$10::int[],$11::int[],$12::int[],$13::jsonb[],$14::real[],$15::jsonb[],$16::decimal(8,2)[]));`
-	if _, err_insert_element := tx.Exec(ctx, q_element, idelement_pg, idcarta_pg, idcategory_pg, namecategory_pg, urlphotocategory_pg, name_pg, price_pg, description_pg, urlphot_pg, typem_pg, stock_pg, idbusiness_pg, insumos_pg, costo_pg, additionals_pg, discount_pg); err_insert_element != nil {
+	q_element := `INSERT INTO element(idelement,idcarta,idcategory,namecategory,urlphotcategory,name,price,description,urlphoto,typemoney,stock,idbusiness,insumos,costo,additionals,discount,latitude,longitude) (select * from unnest($1::int[],$2::int[],$3::int[],$4::varchar(100)[],$5::varchar(230)[],$6::varchar(100)[],$7::decimal(8,2)[],$8::varchar(250)[],$9::varchar(230)[],$10::int[],$11::int[],$12::int[],$13::jsonb[],$14::real[],$15::jsonb[],$16::decimal(8,2)[],$17::real[],$18::real[]));`
+	if _, err_insert_element := tx.Exec(ctx, q_element, idelement_pg, idcarta_pg, idcategory_pg, namecategory_pg, urlphotocategory_pg, name_pg, price_pg, description_pg, urlphot_pg, typem_pg, stock_pg, idbusiness_pg, insumos_pg, costo_pg, additionals_pg, discount_pg, latitude_pg, longitude_pg); err_insert_element != nil {
 		tx.Rollback(ctx)
 		return 0, err_insert_element
 	}

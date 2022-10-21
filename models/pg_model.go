@@ -252,7 +252,6 @@ type Pg_Items struct {
 	Name     string  `json:"name"`
 	IsInsumo bool    `json:"isinsumo"`
 	Price    float32 `json:"price"`
-	Quantity int     `json:"quantity"`
 	Stock    int     `json:"stock"`
 }
 
