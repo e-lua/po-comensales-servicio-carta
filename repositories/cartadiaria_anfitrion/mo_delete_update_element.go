@@ -44,6 +44,9 @@ func Mo_Delete_Update_Elements(pg_element_withaction_external []models.Pg_Elemen
 		one_element_mqtt.Costo = e.Costo
 		one_element_mqtt.Discount = e.Discount
 		one_element_mqtt.Additionals = e.Additionals
+		one_element_mqtt.Latitude = e.Latitude
+		one_element_mqtt.Longitude = e.Longitude
+		one_element_mqtt.Additionals = e.Additionals
 
 		if counter_to_skip == 0 {
 			one_date = e.Date

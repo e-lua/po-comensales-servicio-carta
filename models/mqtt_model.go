@@ -29,6 +29,8 @@ type Mqtt_Element_With_Stock struct {
 	Insumos          []Pg_Mo_Insumo_Elements `bson:"insumos"  json:"insumos"`
 	Discount         float32                 `json:"discount"`
 	Additionals      []Pg_Additionals        `json:"additionals"`
+	Latitude         float32                 `bson:"latitude" json:"latitude"`
+	Longitude        float32                 `bson:"longitude" json:"longitude"`
 	Costo            float64                 `bson:"costo" json:"costo"`
 }
 
