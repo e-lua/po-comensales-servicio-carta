@@ -76,6 +76,8 @@ func Manejadores() {
 	router_business.GET("/:idbusiness/menu/:date/category/:idcategory/elements", cartadiaria.CartaDiariaRouter_pg.GetBusinessElement)
 	router_business.GET("/:idbusiness/menu/:date/scheduleranges", cartadiaria.CartaDiariaRouter_pg.GetBusinessSchedule)
 	router_business.GET("/:idbusiness/menu/:date/search/:text/:limit/:offset", cartadiaria.CartaDiariaRouter_pg.SearchByNameAndDescription)
+	//Ver la lista de elementos por categorias
+	router_business.GET("/:idbusiness/menu/:date/elements/:limit", cartadiaria.CartaDiariaRouter_pg.GetBusinessElement_ListByCategory)
 
 	/*to create an order - ANFITRION*/
 	router_anfitrion_menu := version_1.Group("/anfitrion/menu")

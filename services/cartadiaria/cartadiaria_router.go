@@ -190,6 +190,25 @@ func (cr *cartaDiariaRouter_pg) SearchByNameAndDescription(c echo.Context) error
 	return c.JSON(status, results)
 }
 
+func (cr *cartaDiariaRouter_pg) GetBusinessElement_ListByCategory(c echo.Context) error {
+
+	//Recibimos la fecha de la carta
+	date := c.Param("date")
+
+	//Recibimos el id del negocio
+	idbusiness := c.Param("idbusiness")
+	idbusiness_int, _ := strconv.Atoi(idbusiness)
+
+	//Recibimos el limit
+	limit := c.Param("limit")
+	limit_int, _ := strconv.Atoi(limit)
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := GetBusinessElement_ListByCategory_Service(date, idbusiness_int, limit_int)
+	results := ResponseCartaElements_ListByCateg{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+}
+
 func (cr *cartaDiariaRouter_pg) GetBusinessSchedule(c echo.Context) error {
 
 	//Obtenemos los datos del auth

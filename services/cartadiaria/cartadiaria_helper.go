@@ -48,6 +48,12 @@ type ResponseCartaElements struct {
 	Data      []models.Pg_Element_ToCreate `json:"data"`
 }
 
+type ResponseCartaElements_ListByCateg struct {
+	Error     bool          `json:"error"`
+	DataError string        `json:"dataError"`
+	Data      []interface{} `json:"data"`
+}
+
 type ResponseCartaElements_Searched struct {
 	Error     bool                         `json:"error"`
 	DataError string                       `json:"dataError"`

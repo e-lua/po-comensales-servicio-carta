@@ -137,6 +137,16 @@ func SearchByNameAndDescription_Service(date string, idbusiness int, text string
 	return 201, false, "", carta_elements
 }
 
+func GetBusinessElement_ListByCategory_Service(date string, idbusiness int, limit int) (int, bool, string, []interface{}) {
+
+	carta_elements, error_update := cartadiaria_repository.V2_Pg_Web_Find_Elements(date, idbusiness, limit)
+	if error_update != nil {
+		return 500, true, "Error en el servidor interno al intentar encontrar las categorias de la carta, detalles: " + error_update.Error(), carta_elements
+	}
+
+	return 201, false, "", carta_elements
+}
+
 func GetBusinessSchedule_Service(date string, idbusiness int) (int, bool, string, []models.Pg_ScheduleList) {
 
 	//Obtenemos las categorias
